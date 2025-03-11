@@ -1,0 +1,217 @@
+
+  
+
+  /* Main Container */
+  .container {
+    width: 100%;
+    min-height: 100vh;
+    background: linear-gradient(to bottom, #f9fafb, #ffffff);
+  }
+  
+  /* Hero Section */
+  .heroSection {
+    position: relative;
+    overflow: hidden;
+    background-color: #ffffff;
+    width: 100%;
+  }
+  
+  .heroBackground {
+    position: absolute;
+    inset: 0;
+  }
+  
+  .heroImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    
+  }
+  
+  .heroContent {
+    position: relative;
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: 6rem 1rem;
+    text-align: center;
+  }
+  
+  .heroTitle {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #1a1a1a;
+    margin-bottom: 1.5rem;
+  }
+  
+  .heroHighlight {
+    color: #4f46e5;
+  }
+  
+  .heroSubtitle {
+    font-size: 1.5rem;
+    color: #4b5563;
+    margin-bottom: 2rem;
+  }
+  
+  .heroButtons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+  }
+  
+  .primaryButton {
+    background-color: #4f46e5;
+    color: #ffffff;
+    padding: 0.75rem 2rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    transition: background-color 0.3s;
+  }
+  
+  .primaryButton:hover {
+    background-color: #4338ca;
+  }
+  
+  .secondaryButton {
+    background-color: #ffffff;
+    color: #4f46e5;
+    padding: 0.75rem 2rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    border: 2px solid #4f46e5;
+    transition: background-color 0.3s;
+  }
+  
+  .secondaryButton:hover {
+    background-color: #eef2ff;
+  }
+  
+  /* Features Section */
+  .featuresSection {
+    padding: 5rem 1rem;
+    background-color: #ffffff;
+    width: 100%;
+  }
+  
+  .featuresContainer {
+    max-width: 80rem;
+    margin: 0 auto;
+  }
+  
+  .featuresTitle {
+    font-size: 2.25rem;
+    font-weight: bold;
+    color: #1a1a1a;
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+  
+  .featuresGrid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 2rem;
+  }
+  
+  @media (min-width: 768px) {
+    .featuresGrid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .featuresGrid {
+      grid-template-columns: repeat(5, 1fr); /* 5 columns for large screens */
+    }
+  }
+  
+  .featureCard {
+    background-color: #ffffff;
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: box-shadow 0.3s;
+  }
+  
+  .featureCard:hover {
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  .featureImageContainer {
+    height: 12rem;
+    overflow: hidden;
+  }
+  
+  .featureImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s;
+  }
+  
+  .featureCard:hover .featureImage {
+    transform: scale(1.05);
+  }
+  
+  .featureContent {
+    padding: 1.5rem;
+  }
+  
+  .featureIconContainer {
+    margin-bottom: 1rem;
+  }
+  
+  .featureIcon {
+    width: 2rem;
+    height: 2rem;
+    color: #4f46e5;
+  }
+  
+  .featureCardTitle {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 0.5rem;
+  }
+  
+  .featureCardDescription {
+    color: #4b5563;
+  }
+  
+  /* Call-to-Action Section */
+  .ctaSection {
+    padding: 5rem 1rem;
+    background: linear-gradient(to right, #4f46e5, #3730a3);
+    width: 100%;
+  }
+  
+  .ctaContainer {
+    max-width: 56rem;
+    margin: 0 auto;
+    text-align: center;
+  }
+  
+  .ctaTitle {
+    font-size: 2.25rem;
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 1rem;
+  }
+  
+  .ctaSubtitle {
+    font-size: 1.25rem;
+    color: #a5b4fc;
+    margin-bottom: 2rem;
+  }
+  
+  .ctaButton {
+    background-color: #ffffff;
+    color: #4f46e5;
+    padding: 0.75rem 2rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    transition: background-color 0.3s;
+  }
+  
+  .ctaButton:hover {
+    background-color: #eef2ff;
+  }
