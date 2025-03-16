@@ -1,0 +1,97 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #f0f4f8;
+    padding: 2rem;
+  }
+  
+  .title {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 1rem;
+  }
+  
+  .selector {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  
+  .selector h2 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 1rem;
+  }
+  
+  .options {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+  }
+  
+  .optionButton {
+    padding: 0.75rem 1.5rem;
+    background-color: #e0e7ff;
+    color: #4f46e5;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  .optionButton:hover {
+    background-color: #c7d2fe;
+  }
+  
+  .optionButton.active {
+    background-color: #4f46e5;
+    color: white;
+  }
+  
+  .form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 400px;
+    margin-top: 1rem;
+  }
+  
+  .input {
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+  }
+  
+  .button {
+    padding: 0.75rem;
+    background-color: #4f46e5;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+  }
+  
+  .button:hover {
+    background-color: #4338ca;
+  }
+  
+  .link {
+    margin-top: 1rem;
+    color: #333;
+  }
+  
+  .link a {
+    color: #4f46e5;
+    text-decoration: none;
+  }
+  
+  .link a:hover {
+    text-decoration: underline;
+  }
