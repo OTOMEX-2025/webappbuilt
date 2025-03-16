@@ -1,38 +1,39 @@
 import React from 'react';
-import { Heart, Brain, Cog as Yoga, BookOpen, Users } from 'lucide-react';
+import { MessageCircle, User, Newspaper, Gamepad2, Headphones } from 'lucide-react';
 import styles from '../styles/Home.module.css';
+import Link from 'next/link';
 
-function App() {
+function LandingPage() {
   const features = [
     { 
-      title: '1:1 Coaching', 
-      description: 'Get personalized guidance from a professional', 
-      icon: <Users className={styles.featureIcon} />,
-      image: 'https://images.unsplash.com/photo-1516534775068-ba3e7458af70?auto=format&fit=crop&q=80&w=800'
+      title: 'AI Chatbot', 
+      description: 'Get instant support and guidance from our AI-powered mental health chatbot, available 24/7.', 
+      icon: <MessageCircle className={styles.featureIcon} />,
+      image: 'https://images.unsplash.com/photo-1617042375876-a13e36732a04?auto=format&fit=crop&q=80&w=800'
     },
     { 
-      title: 'Physical Health', 
-      description: 'Stay active with workouts, yoga, and more', 
-      icon: <Heart className={styles.featureIcon} />,
-      image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&q=80&w=800'
+      title: '1:1 Sessions', 
+      description: 'Book personalized one-on-one sessions with certified mental health professionals.', 
+      icon: <User className={styles.featureIcon} />,
+      image: 'https://images.unsplash.com/photo-1580894732930-0babd100d356?auto=format&fit=crop&q=80&w=800'
     },
     { 
-      title: 'Meditation', 
-      description: 'Calm your mind with guided meditation', 
-      icon: <Brain className={styles.featureIcon} />,
-      image: 'https://images.unsplash.com/photo-1593811167562-9cef47bfc4d7?auto=format&fit=crop&q=80&w=800'
+      title: 'Mental Health Articles', 
+      description: 'Stay informed with the latest mental health news, articles, and newsletters curated by experts.', 
+      icon: <Newspaper className={styles.featureIcon} />,
+      image: 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&q=80&w=800'
     },
     { 
-      title: 'Journaling', 
-      description: 'Reflect and relax with daily prompts', 
-      icon: <BookOpen className={styles.featureIcon} />,
-      image: 'https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&q=80&w=800'
+      title: 'Mental Health Games', 
+      description: 'Engage in fun and therapeutic games designed to improve mental well-being and reduce stress.', 
+      icon: <Gamepad2 className={styles.featureIcon} />,
+      image: 'https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?auto=format&fit=crop&q=80&w=800'
     },
     { 
-      title: 'Yoga', 
-      description: 'Improve flexibility, strength, and balance', 
-      icon: <Yoga className={styles.featureIcon} />,
-      image: 'https://images.unsplash.com/photo-1599447421416-3414500d18a5?auto=format&fit=crop&q=80&w=800'
+      title: '8D Music for Relaxation', 
+      description: 'Immerse yourself in 8D audio experiences designed to relax your mind and enhance focus.', 
+      icon: <Headphones className={styles.featureIcon} />,
+      image: 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?auto=format&fit=crop&q=80&w=800'
     },
   ];
 
@@ -55,8 +56,12 @@ function App() {
             Your Mental Health is our Priority
           </p>
           <div className={styles.heroButtons}>
-            <button className={styles.primaryButton}>Get Started</button>
-            <button className={styles.secondaryButton}>Sign In</button>
+            <Link href="/auth/register">
+              <button className={styles.primaryButton}>Get Started</button>
+            </Link>
+            <Link href="/auth/login">
+              <button className={styles.secondaryButton}>Sign In</button>
+            </Link>
           </div>
         </div>
       </header>
@@ -95,11 +100,13 @@ function App() {
           <p className={styles.ctaSubtitle}>
             Start your journey to a healthier, happier you today
           </p>
-          <button className={styles.ctaButton}>Get Started</button>
+          <Link href="/auth/register">
+            <button className={styles.ctaButton}>Get Started</button>
+          </Link>
         </div>
       </section>
     </div>
   );
 }
 
-export default App;
+export default LandingPage;
