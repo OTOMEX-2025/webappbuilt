@@ -6,6 +6,8 @@ export default function Register() {
   const [userType, setUserType] = useState('');
 
   const renderForm = () => {
+
+    
     switch (userType) {
       case 'client':
         return (
