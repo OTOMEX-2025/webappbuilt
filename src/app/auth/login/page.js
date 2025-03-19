@@ -45,6 +45,7 @@ export default function Home() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            suppressHydrationWarning // Add this
           />
 
           <input
@@ -54,6 +55,7 @@ export default function Home() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            suppressHydrationWarning // Add this
           />
 
           <button
