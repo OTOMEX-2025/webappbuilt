@@ -29,9 +29,9 @@ export default function Home() {
           <Image
             src="/WhatsApp_Image_2025-03-18_at_12.19.57-removebg-preview.png"
             alt="Your Logo"
-            width={150} // Add a fixed width
-            height={150} // Add a fixed height
-            priority // Ensures it loads fast
+            width={150} // Fixed width
+            height={150} // Fixed height
+            priority // Ensures faster loading
           />
         </div>
 
@@ -45,6 +45,7 @@ export default function Home() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            suppressHydrationWarning // Add this
           />
 
           <input
@@ -54,6 +55,7 @@ export default function Home() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            suppressHydrationWarning // Add this
           />
 
           <button
