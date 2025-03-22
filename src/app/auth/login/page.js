@@ -1,21 +1,46 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation"; // Correct router import
 import Image from "next/image";
 import Link from "next/link";
 import styles from "../../../styles/Login.module.css";
 
-export default function Home() {
+export default function LoginPage() {
+  const router = useRouter(); // Hook for navigation
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(""); // To handle errors
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    setIsLoading(false);
+    setError(""); // Reset error state
+
+    try {
+      const response = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Login failed");
+      }
+
+      // Store token (use secure storage in production)
+      localStorage.setItem("token", data.token);
+
+      // Redirect after login
+      router.push("/dashboard"); // Change to your dashboard path
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -29,13 +54,16 @@ export default function Home() {
           <Image
             src="/WhatsApp_Image_2025-03-18_at_12.19.57-removebg-preview.png"
             alt="Your Logo"
-            width={150} // Fixed width
-            height={150} // Fixed height
-            priority // Ensures faster loading
+            width={150}
+            height={150}
+            priority
           />
         </div>
 
         <h1 className={styles.title}>Sign in</h1>
+
+        {/* Error Message */}
+        {error && <p className={styles.error}>{error}</p>}
 
         <form onSubmit={handleSubmit} className={styles.form}>
           <input
@@ -45,7 +73,6 @@ export default function Home() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            suppressHydrationWarning // Add this
           />
 
           <input
@@ -55,7 +82,6 @@ export default function Home() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            suppressHydrationWarning // Add this
           />
 
           <button
