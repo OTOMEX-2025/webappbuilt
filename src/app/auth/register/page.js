@@ -1,8 +1,10 @@
 "use client";
 import { useState } from "react";
 import styles from "../../../styles/Register.module.css";
+import { useRouter } from "next/navigation";
 
 export default function Register() {
+  const router = useRouter();
   const [userType, setUserType] = useState("");
   const [formData, setFormData] = useState({
     fullName: "",
@@ -23,41 +25,35 @@ export default function Register() {
       [name]: value,
     }));
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     setLoading(true);
     setError("");
-
+  
     try {
-      const response = await fetch("/api/register/route", {
+      const response = await fetch("/api/register", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...formData,
-          userType,
-        }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...formData, userType }),
       });
-
+  
       const result = await response.json();
-
+      console.log("Response:", result); // Debugging: See what's returned
+  
       if (response.ok) {
         alert("Registration successful!");
-        // Optionally, redirect to another page, e.g., login
+        router.push("/auth/login");
       } else {
         setError(result.message);
       }
     } catch (error) {
+      console.error("Fetch error:", error);
       setError("An error occurred while registering");
-      console.error(error);
     } finally {
       setLoading(false);
     }
   };
-
+  
   const renderForm = () => {
     switch (userType) {
       case "client":

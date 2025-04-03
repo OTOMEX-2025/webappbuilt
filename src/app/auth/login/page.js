@@ -19,7 +19,7 @@ export default function LoginPage() {
     setError(""); // Reset error state
 
     try {
-      const response = await fetch("/api/login/route", {
+      const response = await fetch("/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
