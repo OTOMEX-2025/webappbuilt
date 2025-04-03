@@ -59,6 +59,7 @@ export default function Register() {
       case "client":
         return (
           <form onSubmit={handleSubmit} className={styles.form}>
+            <h2 className={styles.formTitle}>Client Registration</h2>
             <input
               type="text"
               placeholder="Full Name"
@@ -86,14 +87,14 @@ export default function Register() {
               value={formData.password}
               onChange={handleInputChange}
             />
-            <input
-              type="text"
+            <textarea
               placeholder="What are you struggling with?"
-              className={styles.input}
+              className={styles.textarea}
               required
               name="strugglingWith"
               value={formData.strugglingWith}
               onChange={handleInputChange}
+              rows={3}
             />
             <button type="submit" className={styles.button} disabled={loading}>
               {loading ? "Submitting..." : "Register as Client"}
@@ -103,6 +104,7 @@ export default function Register() {
       case "professional":
         return (
           <form onSubmit={handleSubmit} className={styles.form}>
+            <h2 className={styles.formTitle}>Professional Registration</h2>
             <input
               type="text"
               placeholder="Full Name"
@@ -148,6 +150,14 @@ export default function Register() {
               value={formData.specialization}
               onChange={handleInputChange}
             />
+            <input
+              type="text"
+              placeholder="Organization (Optional)"
+              className={styles.input}
+              name="organizationName"
+              value={formData.organizationName}
+              onChange={handleInputChange}
+            />
             <button type="submit" className={styles.button} disabled={loading}>
               {loading ? "Submitting..." : "Register as Professional"}
             </button>
@@ -159,34 +169,70 @@ export default function Register() {
   };
 
   return (
-    <div className={styles.container}>
-      <h1 className={styles.title}>Create an Account</h1>
-      <div className={styles.selector}>
-        <h2>Who are you?</h2>
-        <div className={styles.options}>
-          <button
-            onClick={() => setUserType("client")}
-            className={`${styles.optionButton} ${
-              userType === "client" ? styles.active : ""
-            }`}
-          >
-            Client
-          </button>
-          <button
-            onClick={() => setUserType("professional")}
-            className={`${styles.optionButton} ${
-              userType === "professional" ? styles.active : ""
-            }`}
-          >
-            Professional
-          </button>
+    <div className={styles.pageContainer}>
+      <div className={styles.contentWrapper}>
+        {userType === "professional" && (
+          <div className={styles.imageContainer}>
+            <div className={styles.imageOverlay}></div>
+            <div className={styles.imageContent}>
+              <h2>Join Our Network of Professionals</h2>
+              <p>
+                Connect with clients seeking your expertise and grow your
+                practice with our platform.
+              </p>
+            </div>
+          </div>
+        )}
+
+        <div
+          className={`${styles.formContainer} ${
+            userType === "professional" ? styles.professionalActive : ""
+          }`}
+        >
+          <div className={styles.header}>
+            <h1 className={styles.title}>Create an Account</h1>
+            <div className={styles.selector}>
+              <div className={styles.options}>
+                <button
+                  onClick={() => setUserType("client")}
+                  className={`${styles.optionButton} ${
+                    userType === "client" ? styles.active : ""
+                  }`}
+                >
+                  I'm a Client
+                </button>
+                <button
+                  onClick={() => setUserType("professional")}
+                  className={`${styles.optionButton} ${
+                    userType === "professional" ? styles.active : ""
+                  }`}
+                >
+                  I'm a Professional
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {renderForm()}
+          {error && <p className={styles.error}>{error}</p>}
+          <p className={styles.link}>
+            Already have an account? <a href="/auth/login">Login</a>
+          </p>
         </div>
+
+        {userType !== "professional" && (
+          <div className={styles.imageContainer}>
+            <div className={styles.imageOverlay}></div>
+            <div className={styles.imageContent}>
+              <h2>Find the Right Professional for You</h2>
+              <p>
+                Get matched with qualified professionals who can help you with
+                your specific needs.
+              </p>
+            </div>
+          </div>
+        )}
       </div>
-      {renderForm()}
-      {error && <p className={styles.error}>{error}</p>}
-      <p className={styles.link}>
-        Already have an account? <a href="/auth/login">Login</a>
-      </p>
     </div>
   );
 }
