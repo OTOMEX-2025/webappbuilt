@@ -9,12 +9,14 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@google/generative-ai": "^0.24.0",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^3.0.2",
     "lucide-react": "^0.479.0",
     "mongoose": "^8.12.1",
     "moongoose": "^0.0.5",
     "next": "15.2.1",
+    "openai": "^4.92.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   }

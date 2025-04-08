@@ -1,0 +1,24 @@
+/* app/globals.css */
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+  }
+  
+  .main-content {
+    padding-top: 100px;     /* leaves space below navbar */
+    padding-left: 280px;    /* leaves space next to sidebar */
+    padding-right: 20px;
+    padding-bottom: 20px;
+    min-height: 100vh;
+    box-sizing: border-box;
+  }
+  
+  @media (max-width: 768px) {
+    .main-content {
+      padding-top: 100px;
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+  }
+  
