@@ -13,9 +13,9 @@
   width: 100%;
   background: white;
   border-radius: 12px;
-  overflow: hidden;
+  overflow: hidden; /* Prevent internal scrolling */
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  min-height: 700px;
+  min-height: 450px;
 }
 
 .formContainer {
@@ -33,7 +33,6 @@
 
 .imageContainer {
   flex: 1;
-  /* background-image: url('https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1287&q=80'); */
   background-size: cover;
   background-position: center;
   position: relative;
@@ -141,6 +140,8 @@
   border-radius: 8px;
   font-size: 1rem;
   transition: border 0.3s ease;
+  max-width: 100%;
+  word-wrap: break-word;
 }
 
 .input:focus {
@@ -158,6 +159,8 @@
   resize: vertical;
   min-height: 100px;
   font-family: inherit;
+  max-width: 100%;
+  word-wrap: break-word;
 }
 
 .textarea:focus {

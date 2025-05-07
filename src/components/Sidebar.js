@@ -1,16 +1,12 @@
-// app/components/Sidebar.js
-'use client';
+"use client";
+import Link from "next/link";
 
-import styles from './Sidebar.module.css';
-import Link from 'next/link';
-
-export default function Sidebar({ isOpen }) {
+export default function Sidebar() {
   return (
-    <div className={`${styles.sidebar} ${!isOpen ? styles.hidden : ''}`}>
-      <Link className={styles.link} href="/chatbot">Chatbot</Link>
-      <Link className={styles.link} href="/dashboard">Dashboard</Link>
-      <Link className={styles.link} href="/games">Games</Link>
-      <Link className={styles.link} href="/8dmusic">8D Music</Link>
-    </div>
+    <aside className="sidebar">
+      <Link href="/clients">Dashboard</Link>
+      <Link href="/clients/chat">AI Chat</Link>
+      <Link href="/clients/meetings">Meetings</Link>
+    </aside>
   );
 }

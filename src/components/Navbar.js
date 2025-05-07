@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { usePathname } from 'next/navigation'; // Import usePathname
+import { usePathname, useRouter } from 'next/navigation'; // Import usePathname
 import styles from './Navbar.module.css';
 import Link from 'next/link';
 import Sidebar from './Sidebar';
@@ -28,41 +28,16 @@ export default function Navbar() {
     window.addEventListener('resize', checkScreenSize);
     return () => window.removeEventListener('resize', checkScreenSize);
   }, []);
-
+  const router = useRouter();
+  
+  function handleLogout() {
+    localStorage.removeItem("isLoggedIn");
+    router.push("/");
+  }
   return (
-    <>
-      <nav className={styles.navbar}>
-        <div className={styles.logo}>🧠 MindPal</div>
-
-        {!isMobile && (
-          <div className={styles.links}>
-            <Link className={styles.link} href="/chatbot">Chatbot</Link>
-            <Link className={styles.link} href="/dashboard">Dashboard</Link>
-            <Link className={styles.link} href="/games">Games</Link>
-            <Link className={styles.link} href="/8dmusic">8D Music</Link>
-          </div>
-        )}
-
-        {isMobile && (
-          <div
-            className={styles.menuIcon}
-            onClick={() => setMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            ☰
-          </div>
-        )}
-
-        {isMobileMenuOpen && isMobile && (
-          <div className={styles.dropdown}>
-            <Link className={styles.link} href="/chatbot">Chatbot</Link>
-            <Link className={styles.link} href="/dashboard">Dashboard</Link>
-            <Link className={styles.link} href="/games">Games</Link>
-            <Link className={styles.link} href="/8dmusic">8D Music</Link>
-          </div>
-        )}
-      </nav>
-
-      {/* {!isMobile && <Sidebar isOpen={showSidebar} />} */}
-    </>
+    <header className="navbar">
+      <div className="logo">MindPal</div>
+      <button onClick={handleLogout}>Logout</button>
+    </header>
   );
 }
