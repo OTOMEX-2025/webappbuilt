@@ -1,12 +1,19 @@
-// app/components/Navbar.js
 'use client';
 
 import { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation'; // Import usePathname
 import styles from './Navbar.module.css';
 import Link from 'next/link';
 import Sidebar from './Sidebar';
 
 export default function Navbar() {
+  const pathname = usePathname(); // Get current route
+
+  // Hide navbar on '/', '/login', and '/register'
+  if (pathname === '/' || pathname === '/auth/login' || pathname === '/auth/register' || pathname === '/auth') {
+    return null;
+  }
+
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showSidebar, setShowSidebar] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
