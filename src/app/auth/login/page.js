@@ -31,10 +31,10 @@ export default function LoginPage() {
         throw new Error(data.message || "Login failed");
       }
 
-      // Store token (use secure storage in production)
+     
       localStorage.setItem("token", data.token);
 
-      // Redirect to clients page after login
+      
       router.push("/clients"); // Changed from /dashboard to /clients
     } catch (err) {
       setError(err.message);
