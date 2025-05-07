@@ -5,7 +5,7 @@ import Sidebar from "../../components/Sidebar";
 export default function ClientsLayout({ children }) {
   return (
     <div className="app">
-      <Navbar />
+      {/* <Navbar /> */}
       <div className="main-content">
         <Sidebar />
         <div className="content">{children}</div>

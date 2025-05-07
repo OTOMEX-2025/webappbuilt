@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import "./page.module.css";
+// import "./page.module.css";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -13,7 +13,7 @@ export default function LoginPage() {
     // Simple validation
     if (email && password) {
       localStorage.setItem("isLoggedIn", "true");
-      router.push("/clients");
+      router.push("/client/dashboard");
     }
   }
 
