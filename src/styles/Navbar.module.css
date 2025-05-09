@@ -1,72 +1,98 @@
 .navbar {
-  height: 64px;
-  background-color: white;
-  border-bottom: 1px solid #e2e8f0;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 10;
+  background-color: #fff;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.dark .navbar {
+  background-color: #1f2937;
+  border-bottom-color: #374151;
 }
 
 .container {
-  height: 100%;
   max-width: 100%;
   margin: 0 auto;
-  padding: 0 1.5rem;
+  padding: 0 1rem;
+}
+
+.navContent {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  height: 4rem;
 }
 
-.left {
+.navLeft {
+  display: flex;
+  align-items: center;
+}
+
+.sidebarToggle {
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+  color: #4b5563;
+  transition: background-color 0.2s;
+}
+
+.sidebarToggle:hover {
+  background-color: #f3f4f6;
+}
+
+.dark .sidebarToggle {
+  color: #d1d5db;
+}
+
+.dark .sidebarToggle:hover {
+  background-color: #374151;
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+  margin-left: 1rem;
+}
+
+.logoIcon {
+  height: 2rem;
+  width: 2rem;
+  color: #4f46e5;
+}
+
+.dark .logoIcon {
+  color: #818cf8;
+}
+
+.logoText {
+  margin-left: 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.dark .logoText {
+  color: #fff;
+}
+
+.navRight {
   display: flex;
   align-items: center;
   gap: 1rem;
 }
 
-.menuButton {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
+.navButton {
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+  color: #4b5563;
   transition: background-color 0.2s;
 }
 
-.menuButton:hover {
-  background-color: #f1f5f9;
+.navButton:hover {
+  background-color: #f3f4f6;
 }
 
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 1.25rem;
-  font-weight: 600;
+.dark .navButton {
+  color: #d1d5db;
 }
 
-.logoIcon {
-  color: #3b82f6;
-}
-
-.right {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.iconButton {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  transition: background-color 0.2s;
-}
-
-.iconButton:hover {
-  background-color: #f1f5f9;
+.dark .navButton:hover {
+  background-color: #374151;
 }

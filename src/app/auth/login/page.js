@@ -1,46 +1,35 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation"; // Correct router import
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import styles from "../../../styles/Login.module.css";
+import styles from '../../../styles/Login.module.css';
 
 export default function LoginPage() {
-  const router = useRouter(); // Hook for navigation
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(""); // To handle errors
+  const [error, setError] = useState("");
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     setIsLoading(true);
-    setError(""); // Reset error state
+    setError("");
 
-    try {
-      const response = await fetch("/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || "Login failed");
+    // Simulate login without backend
+    setTimeout(() => {
+      // For demo purposes - just check if fields are filled
+      if (email && password) {
+        // Store a dummy token
+        localStorage.setItem("token", "demo-token");
+        router.push("/client"); // Redirect to client dashboard
+      } else {
+        setError("Please fill in all fields");
       }
-
-     
-      localStorage.setItem("token", data.token);
-
-      
-      router.push("/clients"); // Changed from /dashboard to /clients
-    } catch (err) {
-      setError(err.message);
-    } finally {
       setIsLoading(false);
-    }
+    }, 1000); // Simulate network delay
   };
 
   return (
@@ -49,7 +38,6 @@ export default function LoginPage() {
       <div className={styles.decorativeRight}></div>
 
       <div className={styles.loginBox}>
-        {/* Logo */}
         <div className={styles.logo}>
           <Image
             src="/WhatsApp_Image_2025-03-18_at_12.19.57-removebg-preview.png"
@@ -62,7 +50,6 @@ export default function LoginPage() {
 
         <h1 className={styles.title}>Sign in</h1>
 
-        {/* Error Message */}
         {error && <p className={styles.error}>{error}</p>}
 
         <form onSubmit={handleSubmit} className={styles.form}>
@@ -95,7 +82,7 @@ export default function LoginPage() {
 
         <div className={styles.footer}>
           <p>
-            Don&apos;t have an account?{" "}
+            Don't have an account?{" "}
             <Link href="/auth/register" className={styles.link}>
               Sign up
             </Link>

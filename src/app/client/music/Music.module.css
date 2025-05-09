@@ -1,0 +1,226 @@
+.container {
+    max-width: 56rem;
+    margin: 0 auto;
+  }
+  
+  .title {
+    font-size: 1.875rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+  }
+  
+  .player {
+    background-color: #fff;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .playerContent {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .playerImage {
+    width: 6rem;
+    height: 6rem;
+    border-radius: 0.5rem;
+    object-fit: cover;
+  }
+  
+  .playerInfo {
+    flex: 1;
+  }
+  
+  .playerTitle {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+  }
+  
+  .playerSubtitle {
+    color: #4b5563;
+  }
+  
+  .progressContainer {
+    margin-top: 1rem;
+  }
+  
+  .progressBar {
+    width: 100%;
+    height: 0.25rem;
+    background-color: #e5e7eb;
+    border-radius: 0.125rem;
+    position: relative;
+  }
+  
+  .progress {
+    position: absolute;
+    height: 100%;
+    width: 33%;
+    background-color: #4f46e5;
+    border-radius: 0.125rem;
+  }
+  
+  .timeInfo {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin-top: 0.25rem;
+  }
+  
+  .controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+  }
+  
+  .controlButton {
+    padding: 0.5rem;
+    color: #4b5563;
+    transition: color 0.2s;
+  }
+  
+  .controlButton:hover {
+    color: #4f46e5;
+  }
+  
+  .playButton {
+    padding: 1rem;
+    background-color: #4f46e5;
+    color: #fff;
+    border-radius: 50%;
+    transition: background-color 0.2s;
+  }
+  
+  .playButton:hover {
+    background-color: #4338ca;
+  }
+  
+  .volumeControl {
+    display: flex;
+    align-items: center;
+  }
+  
+  .volumeBar {
+    width: 6rem;
+    height: 0.25rem;
+    background-color: #e5e7eb;
+    border-radius: 0.125rem;
+    margin-left: 0.5rem;
+    position: relative;
+  }
+  
+  .volumeProgress {
+    position: absolute;
+    height: 100%;
+    width: 66%;
+    background-color: #4f46e5;
+    border-radius: 0.125rem;
+  }
+  
+  .playlists {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .playlistCard {
+    background-color: #fff;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+  
+  .playlistImage {
+    width: 100%;
+    height: 12rem;
+    object-fit: cover;
+  }
+  
+  .playlistContent {
+    padding: 1rem;
+  }
+  
+  .playlistTitle {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  
+  .playlistDescription {
+    color: #4b5563;
+    margin-bottom: 1rem;
+  }
+  
+  .playlistFooter {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .playlistMeta {
+    font-size: 0.875rem;
+    color: #6b7280;
+  }
+  
+  .playlistButton {
+    padding: 0.5rem;
+    background-color: #4f46e5;
+    color: #fff;
+    border-radius: 50%;
+    transition: background-color 0.2s;
+  }
+  
+  .playlistButton:hover {
+    background-color: #4338ca;
+  }
+  
+  /* Dark mode styles */
+  @media (prefers-color-scheme: dark) {
+    .title,
+    .playerTitle,
+    .playlistTitle {
+      color: #fff;
+    }
+  
+    .player,
+    .playlistCard {
+      background-color: #1f2937;
+    }
+  
+    .playerSubtitle,
+    .playlistDescription {
+      color: #d1d5db;
+    }
+  
+    .progressBar,
+    .volumeBar {
+      background-color: #4b5563;
+    }
+  
+    .timeInfo,
+    .playlistMeta {
+      color: #9ca3af;
+    }
+  
+    .controlButton {
+      color: #d1d5db;
+    }
+  
+    .controlButton:hover {
+      color: #818cf8;
+    }
+  }
+  
+  /* Responsive styles */
+  @media (min-width: 768px) {
+    .playlists {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }

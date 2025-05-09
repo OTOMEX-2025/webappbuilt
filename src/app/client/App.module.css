@@ -1,0 +1,41 @@
+/* Main container styles */
+.appContainer {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Dark mode root styles */
+  .dark {
+    color-scheme: dark;
+  }
+  
+  /* Layout wrapper */
+  .layoutWrapper {
+    display: flex;
+    height: 100vh;
+    background-color: #f9fafb;
+  }
+  
+  .dark .layoutWrapper {
+    background-color: #111827;
+  }
+  
+  /* Main content area */
+  .contentWrapper {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
+  }
+  
+  /* Responsive sidebar behavior */
+  @media (max-width: 1023px) {
+    .sidebarCollapsed {
+      transform: translateX(-100%);
+    }
+    
+    .sidebarExpanded {
+      transform: translateX(0);
+    }
+  }

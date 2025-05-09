@@ -1,0 +1,160 @@
+.container {
+    max-width: 56rem;
+    margin: 0 auto;
+  }
+  
+  .title {
+    font-size: 1.875rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+  }
+  
+  .meetingsContainer {
+    display: grid;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .meetingCard {
+    background-color: #fff;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+  }
+  
+  .cardHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+  }
+  
+  .cardTitle {
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+  
+  .createButton {
+    padding: 0.5rem 1rem;
+    background-color: #4f46e5;
+    color: #fff;
+    border-radius: 0.5rem;
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .createButton:hover {
+    background-color: #4338ca;
+  }
+  
+  .meetingItem {
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    transition: border-color 0.2s;
+  }
+  
+  .meetingItem:hover {
+    border-color: #4f46e5;
+  }
+  
+  .meetingHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.75rem;
+  }
+  
+  .meetingName {
+    font-size: 1.125rem;
+    font-weight: 500;
+  }
+  
+  .dateBadge {
+    padding: 0.25rem 0.75rem;
+    background-color: #e0e7ff;
+    color: #4f46e5;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+  }
+  
+  .detailsGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .detailItem {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .detailIcon {
+    width: 1rem;
+    height: 1rem;
+  }
+  
+  .joinButton {
+    width: 100%;
+    padding: 0.5rem 1rem;
+    background-color: #4f46e5;
+    color: #fff;
+    border-radius: 0.5rem;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .joinButton:hover {
+    background-color: #4338ca;
+  }
+  
+  /* Dark mode styles */
+  @media (prefers-color-scheme: dark) {
+    .title,
+    .cardTitle,
+    .meetingName {
+      color: #fff;
+    }
+  
+    .meetingCard {
+      background-color: #1f2937;
+    }
+  
+    .meetingItem {
+      border-color: #4b5563;
+    }
+  
+    .meetingItem:hover {
+      border-color: #4f46e5;
+    }
+  
+    .dateBadge {
+      background-color: #3730a3;
+      color: #fff;
+    }
+  
+    .detailItem {
+      color: #d1d5db;
+    }
+  }
+  
+  /* Responsive styles */
+  @media (max-width: 768px) {
+    .detailsGrid {
+      grid-template-columns: 1fr;
+    }
+    
+    .cardHeader {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+  }
