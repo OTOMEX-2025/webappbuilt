@@ -1,125 +1,64 @@
-"use client";
+import React, { useState } from 'react';
+import { Send, Bot, User } from 'lucide-react';
+import styles from './Chat.module.css';
 
-import { useState } from "react";
-import { useRouter } from "next/navigation"; // Correct router import
-import Image from "next/image";
-import Link from "next/link";
-import styles from "../../../styles/Login.module.css";
+const Chat = () => {
+  const [message, setMessage] = useState('');
 
-export default function LoginPage() {
-  const router = useRouter(); // Hook for navigation
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(""); // To handle errors
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError(""); // Reset error state
-
-    try {
-      const response = await fetch("/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || "Login failed");
-      }
-
-      // Store token (use secure storage in production)
-      localStorage.setItem("token", data.token);
-
-      // Redirect to clients page after login
-      router.push("/clients"); // Changed from /dashboard to /clients
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const dummyMessages = [
+    { type: 'bot', content: 'Hello! I\'m your MindPal AI companion. How are you feeling today?' },
+    { type: 'user', content: 'I\'m feeling a bit anxious today.' },
+    { type: 'bot', content: 'I understand that anxiety can be challenging. Would you like to talk about what\'s causing your anxiety, or would you prefer some relaxation techniques that might help?' },
+    { type: 'user', content: 'Some relaxation techniques would be helpful.' },
+    { type: 'bot', content: 'I\'d be happy to guide you through a simple breathing exercise. It\'s called the 4-7-8 technique. Would you like to try it?' }
+  ];
 
   return (
-    <main className={styles.container}>
-      <div className={styles.decorativeLeft}></div>
-      <div className={styles.decorativeRight}></div>
-
-      <div className={styles.loginBox}>
-        {/* Logo */}
-        <div className={styles.logo}>
-          <Image
-            src="/WhatsApp_Image_2025-03-18_at_12.19.57-removebg-preview.png"
-            alt="Your Logo"
-            width={150}
-            height={150}
-            priority
-          />
-        </div>
-
-        <h1 className={styles.title}>Sign in</h1>
-
-        {/* Error Message */}
-        {error && <p className={styles.error}>{error}</p>}
-
-        <form onSubmit={handleSubmit} className={styles.form}>
-          <input
-            type="email"
-            placeholder="Email address"
-            className={styles.input}
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-
-          <input
-            type="password"
-            placeholder="Password"
-            className={styles.input}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-
-          <button
-            type="submit"
-            className={styles.button}
-            disabled={isLoading || !email || !password}
-          >
-            {isLoading ? "Logging in..." : "Login"}
-          </button>
-        </form>
-
-        <div className={styles.footer}>
-          <p>
-            Don&apos;t have an account?{" "}
-            <Link href="/auth/register" className={styles.link}>
-              Sign up
-            </Link>
-          </p>
-          <p>
-            Forgot your password?{" "}
-            <Link href="/auth/reset" className={styles.link}>
-              Reset here
-            </Link>
-          </p>
+    <div className={styles.container}>
+      <h1 className={styles.title}>AI Chat Support</h1>
+      <div className={styles.chatContainer}>
+        <div className={styles.chatWindow}>
+          <div className={styles.messagesContainer}>
+            {dummyMessages.map((msg, index) => (
+              <div
+                key={index}
+                className={`${styles.message} ${msg.type === 'user' ? styles.userMessage : ''}`}
+              >
+                <div className={`${styles.avatar} ${
+                  msg.type === 'bot' ? styles.botAvatar : styles.userAvatar
+                }`}>
+                  {msg.type === 'bot' ? (
+                    <Bot size={20} />
+                  ) : (
+                    <User size={20} />
+                  )}
+                </div>
+                <div className={`${styles.messageContent} ${
+                  msg.type === 'bot' ? styles.botMessage : styles.userMessageContent
+                }`}>
+                  {msg.content}
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className={styles.inputContainer}>
+            <div className={styles.inputWrapper}>
+              <input
+                type="text"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                placeholder="Type your message..."
+                className={styles.inputField}
+              />
+              <button className={styles.sendButton}>
+                <Send size={20} />
+              </button>
+            </div>
+          </div>
         </div>
       </div>
-
-      <div className={styles.bottomLinks}>
-        <Link href="/security" className={styles.link}>
-          Security
-        </Link>
-        <Link href="/legal" className={styles.link}>
-          Legal
-        </Link>
-        <Link href="/privacy" className={styles.link}>
-          Privacy
-        </Link>
-      </div>
-    </main>
+    </div>
   );
 }
+
+export default Chat;

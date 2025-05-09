@@ -1,43 +1,37 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { usePathname, useRouter } from 'next/navigation'; // Import usePathname
-// import styles from '../styles//Navbar.module.css';
-import Link from 'next/link';
-import Sidebar from './Sidebar';
+import {HelpCircle, Moon, Sun, Menu } from 'lucide-react';
+import { useTheme } from 'next-themes';
+import styles from '../styles/Navbar.module.css';
 
-export default function Navbar() {
-  const pathname = usePathname(); // Get current route
+export default function Navbar({ toggleSidebar }) {
+  const { theme, setTheme } = useTheme();
 
-  // Hide navbar on '/', '/login', and '/register'
-  if (pathname === '/' || pathname === '/auth/login' || pathname === '/auth/register' || pathname === '/auth') {
-    return null;
-  }
-
-  const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [showSidebar, setShowSidebar] = useState(true);
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkScreenSize = () => {
-      const isSmall = window.innerWidth < 768;
-      setIsMobile(isSmall);
-      setShowSidebar(!isSmall);
-    };
-    checkScreenSize();
-    window.addEventListener('resize', checkScreenSize);
-    return () => window.removeEventListener('resize', checkScreenSize);
-  }, []);
-  const router = useRouter();
-  
-  function handleLogout() {
-    localStorage.removeItem("isLoggedIn");
-    router.push("/");
-  }
   return (
-    <header className="navbar">
-      <div className="logo">MindPal</div>
-      <button onClick={handleLogout}>Logout</button>
-    </header>
+    <nav className={styles.navbar}>
+      <div className={styles.container}>
+        <div className={styles.navContent}>
+          <div className={styles.navLeft}>
+           
+            
+          </div>
+          <div className={styles.navRight}>
+            <button
+              className={styles.navButton}
+              aria-label="Help"
+            >
+              <HelpCircle size={24} />
+            </button>
+            <button
+              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+              className={styles.navButton}
+              aria-label="Toggle theme"
+            >
+              {theme === 'dark' ? <Sun size={24} /> : <Moon size={24} />}
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
   );
 }
