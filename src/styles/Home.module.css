@@ -1,109 +1,213 @@
+/* Main Container */
 .container {
-  max-width: 56rem;
-  margin-left: auto;
-  margin-right: auto;
+  width: 100vw;
+  min-height: 100vh;
+  background: linear-gradient(to bottom, #f9fafb, #ffffff);
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.header {
-  text-align: center;
-  margin-bottom: 3rem;
+
+.heroBackground {
+  position: absolute;
+  inset: 0;
 }
 
-.icon {
-  width: 4rem;
-  height: 4rem;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 1rem;
-  color: #4f46e5;
-}
-
-.dark .icon {
-  color: #818cf8;
-}
-
-.title {
-  font-size: 2.25rem;
-  line-height: 2.5rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
-  color: #1f2937;
-}
-
-.dark .title {
-  color: #fff;
-}
-
-.subtitle {
-  font-size: 1.125rem;
-  line-height: 1.75rem;
-  color: #4b5563;
-}
-
-.dark .subtitle {
-  color: #d1d5db;
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.5rem;
-}
-
-@media (min-width: 768px) {
-  .grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-.card {
-  background-color: #fff;
-  border-radius: 0.5rem;
-  padding: 1.5rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-.dark .card {
-  background-color: #1f2937;
-}
-
-.cardTitle {
-  font-size: 1.25rem;
-  line-height: 1.75rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
-  color: #1f2937;
-}
-
-.dark .cardTitle {
-  color: #fff;
-}
-
-.cardText {
-  color: #4b5563;
-}
-
-.dark .cardText {
-  color: #d1d5db;
-}
-
-.cardList {
-  margin-top: 1rem;
-}
-
-.cardListItem {
-  margin-bottom: 0.5rem;
-  color: #4b5563;
-}
-
-.dark .cardListItem {
-  color: #d1d5db;
-}
-
-.cardImage {
+.heroImage {
   width: 100%;
-  height: 12rem;
+  height: 100%;
   object-fit: cover;
+}
+
+.heroSection {
+  position: relative;
+  width: 100vw;
+  height: 70vh; /* Ensure hero section takes full viewport height */
+  background-color: #ffffff;
+  text-align: center;
+  overflow: hidden; /* Prevent overflow */
+}
+
+.heroContent {
+  position: absolute;
+  bottom: 0; /* Position at the bottom */
+  left: 0; /* Position at the left */
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 2rem 1rem; /* Reduced padding */
+  text-align: left; /* Align text to the left */
+  z-index: 2; /* Ensure content is above the background image */
+}
+
+.heroTitle {
+  font-size: 2.5rem; /* Slightly smaller font size */
+  font-weight: bold;
+  color: #fffdfd;
+  margin-bottom: 1rem; /* Reduced margin */
+}
+
+.heroHighlight {
+  color: #ffffff;
+  
+}
+
+.heroSubtitle {
+  font-size: 1.25rem; /* Slightly smaller font size */
+  color: #fafafa;
+  margin-bottom: 1.5rem; /* Reduced margin */
+}
+
+.heroButtons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.primaryButton {
+  background-color: #4f46e5;
+  color: #ffffff;
+  padding: 0.75rem 2rem;
+  border-radius: 50px;
+  font-weight: 600;
+  transition: background-color 0.3s;
+  border: none;
+  cursor: pointer;
+}
+
+.primaryButton:hover {
+  background-color: #4338ca;
+}
+
+.secondaryButton {
+  background-color: #ffffff;
+  color: #4f46e5;
+  padding: 0.75rem 2rem;
+  border-radius: 50px;
+  font-weight: 600;
+  border: 2px solid #4f46e5;
+  transition: background-color 0.3s;
+  cursor: pointer;
+}
+
+.secondaryButton:hover {
+  background-color: #eef2ff;
+}
+
+/* Features Section */
+.featuresSection {
+  padding: 3rem 1rem; /* Reduced padding */
+  background-color: #ffffff;
+  width: 100vw;
+}
+
+.featuresContainer {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 0 1rem; /* Added padding to prevent cards from touching edges */
+}
+
+.featuresTitle {
+  font-size: 2rem; /* Slightly smaller font size */
+  font-weight: bold;
+  color: #1a1a1a;
+  text-align: center;
+  margin-bottom: 2rem; /* Reduced margin */
+}
+
+.featuresGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Adjusts columns to fit the available space */
+  gap: 1.5rem; /* Reduced gap */
+  width: 100%;
+}
+
+.featureCard {
+  background-color: #ffffff;
+  border-radius: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: box-shadow 0.3s;
+  padding: 1rem; /* Added padding inside cards */
+  margin: 0 0.5rem; /* Added margin to prevent touching edges */
+}
+
+.featureCard:hover {
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+.featureImageContainer {
+  height: 10rem; /* Reduced height */
+  overflow: hidden;
+}
+
+.featureImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+
+.featureCard:hover .featureImage {
+  transform: scale(1.05);
+}
+
+.featureContent {
+  padding: 1rem; /* Reduced padding */
+}
+
+.featureCardTitle {
+  font-size: 1.125rem; /* Slightly smaller font size */
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 0.5rem;
+}
+
+.featureCardDescription {
+  font-size: 0.875rem; /* Slightly smaller font size */
+  color: #4b5563;
+}
+
+/* Call-to-Action Section */
+.ctaSection {
+  padding: 3rem 1rem; /* Reduced padding */
+  background: linear-gradient(to right, #4f46e5, #3730a3);
+  width: 100vw;
+  text-align: center;
+}
+
+.ctaContainer {
+  max-width: 56rem;
+  margin: 0 auto;
+  padding: 0 1rem; /* Added padding to prevent content from touching edges */
+}
+
+.ctaTitle {
+  font-size: 2rem; /* Slightly smaller font size */
+  font-weight: bold;
+  color: #ffffff;
+  margin-bottom: 1rem; /* Reduced margin */
+}
+
+.ctaSubtitle {
+  font-size: 1.125rem; /* Slightly smaller font size */
+  color: #a5b4fc;
+  margin-bottom: 1.5rem; /* Reduced margin */
+}
+
+.ctaButton {
+  background-color: #ffffff;
+  color: #4f46e5;
+  padding: 0.75rem 2rem;
   border-radius: 0.5rem;
-  margin-bottom: 1rem;
+  font-weight: 600;
+  transition: background-color 0.3s;
+  border: none;
+  cursor: pointer;
+}
+
+.ctaButton:hover {
+  background-color: #eef2ff;
 }

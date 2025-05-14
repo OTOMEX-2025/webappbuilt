@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import { Video, Calendar, Users, Clock } from 'lucide-react';
 import styles from './Meetings.module.css';

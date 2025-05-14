@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import { Trophy, Clock, Users, Star } from 'lucide-react';
 import styles from './Games.module.css';

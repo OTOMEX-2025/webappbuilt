@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import { BookOpen, ThumbsUp, MessageSquare, Share2 } from 'lucide-react';
 import styles from './News.module.css';
