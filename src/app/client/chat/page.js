@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState } from 'react';
 import { Send, Bot, User } from 'lucide-react';
 import styles from './Chat.module.css';

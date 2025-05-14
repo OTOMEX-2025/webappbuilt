@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Play, Pause, SkipForward, SkipBack, Volume2 } from 'lucide-react';
 import styles from './Music.module.css';
