@@ -16,7 +16,7 @@ import styles from '../styles/Sidebar.module.css';
 const Sidebar = ({ isOpen, setIsOpen }) => {
   const pathname = usePathname();
   const menuItems = [
-    { icon: Home, label: 'Home', path: '/client/home' }, 
+    { icon: Home, label: 'Home', path: '/client/page' }, 
     { icon: MessageSquareMore, label: 'AI Chat', path: '/client/chat' },
     { icon: Video, label: 'Meetings', path: '/client/meetings' },
     { icon: Newspaper, label: 'News & Articles', path: '/client/news' },
