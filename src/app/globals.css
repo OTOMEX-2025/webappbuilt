@@ -16,7 +16,8 @@ html, body {
     --text-gray: #4b5563;
     --border-light: #e5e7eb;
     --hover-light: #f3f4f6;
-    --mindpal-dark: #3b82f6; /* Example blue color */
+    --mindpal-dark: #3b82f6;
+     /* Example blue color */
     
     /* Dark mode colors */
     --bg-dark: #1f2937;
