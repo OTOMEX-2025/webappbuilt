@@ -30,7 +30,7 @@ const Meetings = () => {
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>Virtual Meetings</h1>
+      
       
       <div className={styles.meetingsContainer}>
         <div className={styles.meetingCard}>

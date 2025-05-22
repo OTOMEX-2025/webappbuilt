@@ -1,38 +1,8 @@
-/* app/globals.css */
-
-body {
+/* src/globals.css */
+html, body {
   margin: 0;
-  font-family: Arial, sans-serif;
-}
-
-.main-content {
-  padding-top: 100px; /* leaves space below navbar */
-  padding-left: 280px; /* leaves space next to sidebar */
-  padding-right: 20px;
-  padding-bottom: 20px;
-  min-height: 100vh;
-  box-sizing: border-box;
-}
-
-@media (max-width: 768px) {
-  .main-content {
-    padding-top: 100px;
-    padding-left: 20px;
-    padding-right: 20px;
-  }
-}
-
-:root {
-  --background: 0 0% 100%;
-  --foreground: 222.2 84% 4.9%;
-}
-
-.dark {
-  --background: 222.2 84% 4.9%;
-  --foreground: 210 40% 98%;
-}
-
-body {
-  color: rgb(var(--foreground));
-  background: rgb(var(--background));
+  padding: 0;
+  height: 100%;
+  font-family: sans-serif;
+  background-color: #f6f8fc;
 }

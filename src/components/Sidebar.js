@@ -38,10 +38,10 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
         </div>
         
         <div className={styles.menuContainer}>
-        <div className={styles.logoContainer}>
+        {/* <div className={styles.logoContainer}>
               <Brain className={styles.logoIcon} />
               <span className={styles.logoText}>MindPal</span>
-            </div>
+            </div> */}
           {menuItems.map((item) => (
             <Link
               key={item.path}

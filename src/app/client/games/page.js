@@ -34,7 +34,7 @@ const Games = () => {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h1 className={styles.title}>Mental Health Games</h1>
+        
         <div className={styles.pointsContainer}>
           <Trophy className={styles.pointsIcon} />
           <span className={styles.pointsText}>Your Points: 1,250</span>
