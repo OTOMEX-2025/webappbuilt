@@ -11,12 +11,12 @@ import {
   Gamepad2,
   X
 } from 'lucide-react';
-import styles from '../styles/Sidebar.module.css';
+ import styles from '../styles/Sidebar.module.css';
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
   const pathname = usePathname();
   const menuItems = [
-    { icon: Home, label: 'Home', path: '/client/page' }, 
+    { icon: Home, label: 'Home', path: '/client/home' }, 
     { icon: MessageSquareMore, label: 'AI Chat', path: '/client/chat' },
     { icon: Video, label: 'Meetings', path: '/client/meetings' },
     { icon: Newspaper, label: 'News & Articles', path: '/client/news' },
@@ -27,21 +27,13 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
   return (
     <aside className={`${styles.sidebar} ${isOpen ? styles.sidebarOpen : ''}`}>
       <div className={styles.container}>
-        <div className={styles.closeButtonContainer}>
-          <button
-            onClick={() => setIsOpen(false)}
-            className={styles.closeButton}
-            aria-label="Close sidebar"
-          >
-            <X className="w-6 h-6" />
-          </button>
-        </div>
+        
         
         <div className={styles.menuContainer}>
-        {/* <div className={styles.logoContainer}>
+        <div className={styles.logoContainer}>
               <Brain className={styles.logoIcon} />
               <span className={styles.logoText}>MindPal</span>
-            </div> */}
+            </div>
           {menuItems.map((item) => (
             <Link
               key={item.path}

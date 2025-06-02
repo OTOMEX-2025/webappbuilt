@@ -2,7 +2,7 @@
 
 import {HelpCircle, Moon, Sun, Menu } from 'lucide-react';
 import { useTheme } from 'next-themes';
-import styles from '../styles/Navbar.module.css';
+ import styles from '../styles/Navbar.module.css';
 
 export default function Navbar({ toggleSidebar }) {
   const { theme, setTheme } = useTheme();

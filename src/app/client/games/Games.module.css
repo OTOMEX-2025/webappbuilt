@@ -1,179 +1,155 @@
 .container {
-    max-width: 56rem;
-    margin: 0 auto;
-  }
-  
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1.5rem;
-  }
-  
-  .title {
-    font-size: 1.875rem;
-    font-weight: 700;
-  }
-  
-  .pointsContainer {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  
-  .pointsIcon {
-    width: 1.25rem;
-    height: 1.25rem;
-    color: #eab308;
-  }
-  
-  .pointsText {
-    color: #4b5563;
-  }
-  
-  .gamesGrid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
-  
-  .gameCard {
-    background-color: #fff;
-    border-radius: 0.5rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    transition: box-shadow 0.3s ease;
-  }
-  
-  .gameCard:hover {
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  .gameImage {
-    width: 100%;
-    height: 12rem;
-    object-fit: cover;
-  }
-  
-  .gameContent {
-    padding: 1rem;
-  }
-  
-  .gameTitle {
-    font-size: 1.25rem;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-  }
-  
-  .gameDescription {
-    color: #4b5563;
-    margin-bottom: 1rem;
-  }
-  
-  .gameDetails {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
-  }
-  
-  .gameDetail {
-    display: flex;
-    align-items: center;
-    color: #4b5563;
-    font-size: 0.875rem;
-  }
-  
-  .gameDetailIcon {
-    width: 1rem;
-    height: 1rem;
-    margin-right: 0.5rem;
-  }
-  
-  .playButton {
-    width: 100%;
-    padding: 0.5rem 1rem;
-    background-color: #4f46e5;
-    color: #fff;
-    border-radius: 0.5rem;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.2s;
-  }
-  
-  .playButton:hover {
-    background-color: #4338ca;
-  }
-  
-  .dailyChallenge {
-    margin-top: 2rem;
-    background-color: #e0e7ff;
-    border-radius: 0.5rem;
-    padding: 1.5rem;
-  }
-  
-  .challengeTitle {
-    font-size: 1.25rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
-    color: #4f46e5;
-  }
-  
-  .challengeText {
-    color: #374151;
-    margin-bottom: 1rem;
-  }
-  
-  .challengeButton {
-    padding: 0.5rem 1.5rem;
-    background-color: #4f46e5;
-    color: #fff;
-    border-radius: 0.5rem;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.2s;
-  }
-  
-  .challengeButton:hover {
-    background-color: #4338ca;
-  }
-  
-  /* Dark mode styles */
-  @media (prefers-color-scheme: dark) {
-    .title,
-    .gameTitle {
-      color: #fff;
-    }
-    
-    .pointsText,
-    .gameDescription,
-    .gameDetail {
-      color: #d1d5db;
-    }
-    
-    .gameCard {
-      background-color: #1f2937;
-    }
-    
-    .dailyChallenge {
-      background-color: #3730a3;
-    }
-    
-    .challengeTitle,
-    .challengeText {
-      color: #fff;
-    }
-  }
-  
-  /* Responsive styles */
-  @media (min-width: 768px) {
-    .gamesGrid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-  
-  @media (min-width: 1024px) {
-    .gamesGrid {
-      grid-template-columns: repeat(3, 1fr);
-    }
-  }
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 2rem;
+}
+
+.pointsContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #f0f9ff; /* primary-50 */
+  padding: 0.75rem 1.25rem;
+  border-radius: 50px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.pointsIcon {
+  color: #f59e0b; /* trophy gold color */
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.pointsText {
+  font-weight: 600;
+  color: #0369a1; /* mindpal-dark */
+}
+
+.gamesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.gameCard {
+  background-color: white;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.gameCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.gameImage {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.gameContent {
+  padding: 1.5rem;
+}
+
+.gameTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 0.75rem;
+}
+
+.gameDescription {
+  color: #64748b;
+  margin-bottom: 1.25rem;
+  line-height: 1.5;
+}
+
+.gameDetails {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.gameDetail {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: #475569;
+}
+
+.gameDetailIcon {
+  width: 1rem;
+  height: 1rem;
+  color: #64748b;
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.playButton {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #38bdf8; /* mindpal-DEFAULT */
+  color: white;
+  border: none;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.playButton:hover {
+  background-color: #0369a1; /* mindpal-dark */
+}
+
+.dailyChallenge {
+  background-color: #f0fdf4; /* success-50 equivalent */
+  border-radius: 0.75rem;
+  padding: 2rem;
+  text-align: center;
+  border: 1px solid #dcfce7;
+}
+
+.challengeTitle {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #166534; /* success-800 equivalent */
+  margin-bottom: 0.75rem;
+}
+
+.challengeText {
+  color: #3f6212; /* success-700 equivalent */
+  margin-bottom: 1.5rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.5;
+}
+
+.challengeButton {
+  padding: 0.75rem 2rem;
+  background-color: #22c55e; /* success-500 equivalent */
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.challengeButton:hover {
+  background-color: #16a34a; /* success-600 equivalent */
+}

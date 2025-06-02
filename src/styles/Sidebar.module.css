@@ -1,118 +1,122 @@
+/* Sidebar.module.css */
+
+/* === Desktop Sidebar (vertical) === */
 .sidebar {
-  position: fixed;
-  width: 16rem;
+  background-color: #f5f5f5;
+  display: flex;
+  flex-direction: column;
+  width: 220px;
   height: 100vh;
-  background-color: #ffffff;
-  border-right: 1px solid #e5e7eb;
-  z-index: 30;
-  transform: translateX(-100%);
-  transition: transform 300ms ease-in-out;
-}
-
-.sidebarExpanded, .sidebarCollapsed {
   position: fixed;
-  height: 100vh;
-  transition: width 0.3s ease;
-}
-
-.sidebarOpen {
-  transform: translateX(0);
-}
-
-.dark .sidebar {
-  background-color: #1f2937;
-  border-right-color: #374151;
-}
-
-/* Desktop styles */
-@media (min-width: 1024px) {
-  .sidebar {
-    position: relative;
-    transform: translateX(0);
-  }
+  top: 0;
+  left: 0;
+  z-index: 100;
+  border-right: 1px solid #ddd;
 }
 
 .container {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  flex: 1;
 }
 
-.closeButtonContainer {
+.logoContainer {
   display: flex;
-  justify-content: flex-end;
+  align-items: center;
+  gap: 0.5rem;
   padding: 1rem;
 }
 
-@media (min-width: 1024px) {
-  .closeButtonContainer {
-    display: none;
-  }
+.logoIcon {
+  color: #333;
 }
 
-.closeButton {
-  padding: 0.5rem;
-  border-radius: 0.5rem;
-  color: #4b5563;
-  transition: all 0.2s;
-}
-
-.closeButton:hover {
-  background-color: #f3f4f6;
-}
-
-.dark .closeButton {
-  color: #d1d5db;
-}
-
-.dark .closeButton:hover {
-  background-color: #374151;
+.logoText {
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #333;
 }
 
 .menuContainer {
+  display: flex;
+  flex-direction: column;
   flex: 1;
-  padding: 0.75rem 0.75rem 1rem;
 }
 
 .menuItem {
   display: flex;
   align-items: center;
+  gap: 0.5rem;
   padding: 0.75rem 1rem;
-  margin-bottom: 0.25rem;
-  color: #4b5563;
-  border-radius: 0.5rem;
-  transition: all 0.2s;
+  color: #333;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
 }
 
 .menuItem:hover {
-  background-color: #f3f4f6;
-  color: #4b5563;
-}
-
-.dark .menuItem {
-  color: #d1d5db;
-}
-
-.dark .menuItem:hover {
-  background-color: #374151;
-  color: #d1d5db;
+  background-color: #e0e0e0;
 }
 
 .activeMenuItem {
-  background-color: #e0e7ff;
-  color: #4f46e5;
-}
-
-.dark .activeMenuItem {
-  background-color: #3730a3;
-  color: #ffffff;
+  background-color: #ccc;
 }
 
 .menuIcon {
-  width: 1.25rem;
-  height: 1.25rem;
+  width: 20px;
+  height: 20px;
 }
 
 .menuLabel {
-  margin-left: 0.75rem;
+  font-size: 0.9rem;
+}
+
+/* === Mobile: Sidebar as bottom bar === */
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    top: auto;       /* Remove top positioning */
+    width: 100%;
+    height: auto;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid #ddd;
+    border-right: none;
+    background-color: #f5f5f5;
+    z-index: 100;
+  }
+
+  .container {
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+  }
+
+  .logoContainer {
+    display: none; /* Hide logo on mobile */
+  }
+
+  .menuContainer {
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-around;
+    align-items: center;
+  }
+
+  .menuItem {
+    flex-direction: column;
+    padding: 0.25rem;
+  }
+
+  .menuLabel {
+    display: none; /* Hide text labels on mobile for simplicity */
+  }
+
+  .menuIcon {
+    width: 24px;
+    height: 24px;
+  }
 }
