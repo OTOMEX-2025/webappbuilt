@@ -1,30 +1,39 @@
+/* Navbar.module.css */
+
 .navbar {
+  position: fixed;
+  top: 0;
+  left: 220px;      /* offset for sidebar on desktop */
+  right: 0;
   height: 60px;
   background-color: #ddd;
   display: flex;
   align-items: center;
-  justify-content: center;
-  position: fixed;
-  top: 0;
-  left: 220px; /* Desktop: start after sidebar */
-  right: 0;
-  z-index: 1000;
+  z-index: 110;
+  border-bottom: 1px solid #ccc;
+  padding: 0 1rem;
+  box-sizing: border-box;
+  transition: left 0.3s ease;
+}
+
+.logo{
+  display : none;
 }
 
 .container {
   width: 100%;
   max-width: 1200px;
-  padding: 0 1rem;
+  margin: 0 auto;
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
 }
 
 .navContent {
   display: flex;
-  width: 100%;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
 }
 
 .navLeft {
@@ -55,10 +64,13 @@
   transform: scale(1.1);
 }
 
-/* Mobile adjustments */
+/* Mobile view adjustments */
 @media (max-width: 768px) {
   .navbar {
-    left: 0; /* Full width at the top on mobile */
-    right: 0;
+    left: 0;           /* Full width navbar on mobile */
+  }
+
+  .logo {
+    display: contents;
   }
 }

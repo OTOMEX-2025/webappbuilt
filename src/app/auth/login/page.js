@@ -34,8 +34,8 @@ export default function LoginPage() {
 
   return (
     <main className={styles.container}>
-      <div className={styles.decorativeLeft}></div>
-      <div className={styles.decorativeRight}></div>
+      {/* <div className={styles.decorativeLeft}></div>
+      <div className={styles.decorativeRight}></div> */}
 
       <div className={styles.loginBox}>
         <div className={styles.logo}>

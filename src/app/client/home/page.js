@@ -1,12 +1,12 @@
 import React from 'react';
-import { Brain } from 'lucide-react';
-import styles from '../Home.module.css';
+import Image from 'next/image';
+import styles from './Home.module.css';
 
 const Home = () => {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <Brain className={styles.icon} />
+       
         <h1 className={styles.title}>Welcome to MindPal</h1>
         <p className={styles.subtitle}>
           Your companion for mental wellness and personal growth
@@ -20,11 +20,11 @@ const Home = () => {
             Explore our various features designed to support your mental well-being:
           </p>
           <ul className={styles.cardList}>
-            <li className={styles.cardListItem}>• Chat with our AI companion</li>
-            <li className={styles.cardListItem}>• Join virtual support meetings</li>
-            <li className={styles.cardListItem}>• Read mental health articles</li>
-            <li className={styles.cardListItem}>• Listen to calming 8D music</li>
-            <li className={styles.cardListItem}>• Play mindfulness games</li>
+            <li className={styles.cardListItem}> Chat with our AI companion</li>
+            <li className={styles.cardListItem}> Join virtual support meetings</li>
+            <li className={styles.cardListItem}> Read mental health articles</li>
+            <li className={styles.cardListItem}> Listen to calming 8D music</li>
+            <li className={styles.cardListItem}> Play mindfulness games</li>
           </ul>
         </div>
 

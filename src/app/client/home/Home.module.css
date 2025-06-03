@@ -1,0 +1,109 @@
+.container {
+  max-width: 64rem; /* ~1024px */
+  margin-left: auto;
+  margin-right: auto;
+  padding: 2rem 1rem;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+    Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 3rem;
+  color: #1f2937; /* gray-800 */
+}
+
+.headerDark {
+  color: #f9fafb; /* white in dark */
+}
+
+.icon {
+  width: 4rem; /* 64px */
+  height: 4rem;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 1rem;
+  color: #1e40af; /* mindpal-dark blue */
+  fill: currentColor;
+}
+
+.title {
+  font-size: 2.25rem; /* text-4xl */
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.subtitle {
+  font-size: 1.125rem; /* text-lg */
+  color: #4b5563; /* gray-600 */
+  margin: 0;
+}
+
+.subtitleDark {
+  color: #d1d5db; /* gray-300 */
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.card {
+  background-color: #ffffff;
+  border-radius: 0.5rem; /* rounded-lg */
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  color: #1f2937; /* gray-800 */
+  display: flex;
+  flex-direction: column;
+}
+
+.cardDark {
+  background-color: #1f2937; /* gray-800 dark */
+  color: #f9fafb; /* white */
+}
+
+.cardTitle {
+  font-size: 1.25rem; /* text-xl */
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.cardText {
+  color: #4b5563; /* gray-600 */
+  margin-bottom: 1rem;
+}
+
+.cardTextDark {
+  color: #d1d5db; /* gray-300 */
+}
+
+.cardList {
+  margin-top: 1rem;
+  padding-left: 1.25rem; /* padding for bullets */
+  color: #4b5563;
+  font-weight: 500;
+  font-size: 1rem;
+  list-style-type: disc;
+}
+
+.cardListDark {
+  color: #d1d5db;
+}
+
+.image {
+  width: 100%;
+  height: 12rem; /* 48 * 3 = 144px */
+  object-fit: cover;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}

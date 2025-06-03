@@ -1,40 +1,59 @@
-/* Client.module.css */
 .appRoot {
   display: flex;
-  flex-direction: row;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
 }
 
-/* Sidebar on the left (handled in Sidebar.module.css) */
+.light {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.dark {
+  background-color: #121212;
+  color: #f9fafb;
+}
+
 .sidebar {
-  /* No extra styles needed here */
+  width: 250px;
+  flex-shrink: 0;
+  box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+}
+
+.sidebarLight {
+  background-color: #fff;
+}
+
+.sidebarDark {
+  background-color: #1f2937;
 }
 
 .contentArea {
   flex: 1;
   display: flex;
   flex-direction: column;
-  margin-left: 220px; /* Desktop: space for sidebar */
+  height: 100vh;
+  overflow: hidden;
 }
 
-/* Account for Navbar height */
+.navbar {
+  height: 60px;
+  flex-shrink: 0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.navbarLight {
+  background-color: #f5f5f5;
+}
+
+.navbarDark {
+  background-color: #2c2c2c;
+}
+
 .mainContent {
   flex: 1;
-  margin-top: 56px; /* Adjust this to your actual Navbar height */
+  overflow-y: auto;
   padding: 1rem;
-}
-
-/* Adjust for mobile view */
-@media (max-width: 768px) {
-  .appRoot {
-    flex-direction: column;
-  }
-
-  .contentArea {
-    margin-left: 0;
-    padding-bottom: 56px; /* Space for bottom sidebar */
-  }
-
-  .mainContent {
-    margin-top: 56px; /* Same Navbar height for mobile */
-  }
+  box-sizing: border-box;
 }

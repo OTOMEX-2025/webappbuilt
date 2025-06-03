@@ -30,8 +30,8 @@ const Meetings = () => {
 
   return (
     <div className={styles.container}>
-      
-      
+      <h1 className={styles.heading}>Virtual Meetings</h1>
+
       <div className={styles.meetingsContainer}>
         <div className={styles.meetingCard}>
           <div className={styles.cardHeader}>
@@ -41,7 +41,7 @@ const Meetings = () => {
               Create Meeting
             </button>
           </div>
-          
+
           <div className={styles.meetingsList}>
             {upcomingMeetings.map((meeting, index) => (
               <div key={index} className={styles.meetingItem}>
@@ -63,9 +63,7 @@ const Meetings = () => {
                     <span>{meeting.host}</span>
                   </div>
                 </div>
-                <button className={styles.joinButton}>
-                  Join Session
-                </button>
+                <button className={styles.joinButton}>Join Session</button>
               </div>
             ))}
           </div>
@@ -73,6 +71,6 @@ const Meetings = () => {
       </div>
     </div>
   );
-}
+};
 
 export default Meetings;
