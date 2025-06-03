@@ -1,8 +1,22 @@
-/* src/globals.css */
+:root {
+  --bg-color: #ffffff;
+  --text-color: #000000;
+  --sidebar-bg: #fff;
+  --navbar-bg: #f5f5f5;
+}
+
+[data-theme="dark"] {
+  --bg-color: #121212;
+  --text-color: #f9fafb;
+  --sidebar-bg: #1f2937;
+  --navbar-bg: #2c2c2c;
+}
+
 html, body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
   margin: 0;
   padding: 0;
-  height: 100%;
   font-family: sans-serif;
-  background-color: #f6f8fc;
+  height: 100%;
 }

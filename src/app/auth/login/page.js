@@ -35,8 +35,8 @@ export default function LoginPage() {
 
   return (
     <main className={styles.container}>
-      <div className={styles.decorativeLeft}></div>
-      <div className={styles.decorativeRight}></div>
+      {/* <div className={styles.decorativeLeft}></div>
+      <div className={styles.decorativeRight}></div> */}
 
       <div className={styles.loginBox}>
         <div className={styles.logo}>
@@ -71,7 +71,7 @@ export default function LoginPage() {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-
+            <Link href="/client/home">
           <button
             type="submit"
             className={styles.button}
@@ -79,6 +79,8 @@ export default function LoginPage() {
           >
             {isLoading ? "Logging in..." : "Login"}
           </button>
+          </Link>
+
         </form>
 
         <div className={styles.footer}>

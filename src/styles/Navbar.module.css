@@ -1,68 +1,76 @@
 /* Navbar.module.css */
 
 .navbar {
-  position: sticky;
+  position: fixed;
   top: 0;
-  width: 100%;
-  background-color: var(--navbar-bg);
-  color: var(--navbar-text);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  z-index: 100;
-  transition: background-color 0.3s ease;
+  left: 220px;      /* offset for sidebar on desktop */
+  right: 0;
+  height: 60px;
+  background-color: #ddd;
+  display: flex;
+  align-items: center;
+  z-index: 110;
+  border-bottom: 1px solid #ccc;
+  padding: 0 1rem;
+  box-sizing: border-box;
+  transition: left 0.3s ease;
+}
+
+.logo{
+  display : none;
 }
 
 .container {
+  width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .navContent {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 4rem;
+  width: 100%;
 }
 
-.navLeft, .navRight {
+.navLeft {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.navRight {
   display: flex;
   align-items: center;
   gap: 1rem;
 }
 
 .navButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #333;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: 50%;
-  background-color: transparent;
-  color: var(--navbar-text);
-  border: none;
-  cursor: pointer;
-  transition: all 0.2s ease;
+  padding: 0.25rem;
+  transition: transform 0.2s ease;
 }
 
 .navButton:hover {
-  background-color: var(--navbar-button-hover);
-  transform: translateY(-1px);
+  transform: scale(1.1);
 }
 
-.navButton:active {
-  transform: translateY(0);
-}
-
-
-
-/* Responsive adjustments */
+/* Mobile view adjustments */
 @media (max-width: 768px) {
-  .navContent {
-    height: 3.5rem;
+  .navbar {
+    left: 0;           /* Full width navbar on mobile */
   }
-  
-  .navButton {
-    width: 2.25rem;
-    height: 2.25rem;
+
+  .logo {
+    display: contents;
   }
 }
