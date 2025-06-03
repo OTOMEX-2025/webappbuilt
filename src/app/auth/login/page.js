@@ -24,7 +24,7 @@ export default function LoginPage() {
       if (email && password) {
         // Store a dummy token
         localStorage.setItem("token", "demo-token");
-        router.push('/client/dashboard', '/home');
+        router.push('/client/dashboard',);
  // Redirect to client dashboard
       } else {
         setError("Please fill in all fields");
@@ -71,7 +71,7 @@ export default function LoginPage() {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-            <Link href="/client/home">
+            <Link href="/client/dashboard">
           <button
             type="submit"
             className={styles.button}
