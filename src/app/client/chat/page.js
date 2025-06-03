@@ -17,7 +17,7 @@ const Chat = () => {
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>AI Chat Support</h1>
+      
       <div className={styles.chatContainer}>
         <div className={styles.chatWindow}>
           <div className={styles.messagesContainer}>

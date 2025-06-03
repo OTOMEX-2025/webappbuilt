@@ -36,7 +36,7 @@ const News = () => {
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>Mental Health News & Articles</h1>
+      
       
       <div className={styles.articlesList}>
         {articles.map((article, index) => (

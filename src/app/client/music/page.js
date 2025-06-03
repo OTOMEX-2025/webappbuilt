@@ -30,7 +30,7 @@ const Music = () => {
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>8D Music Therapy</h1>
+      
 
       <div className={styles.player}>
         <div className={styles.playerContent}>

@@ -1,17 +1,18 @@
-import React from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { 
+import React from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import {
   Brain,
-  Home, 
-  MessageSquareMore, 
-  Video, 
-  Newspaper, 
-  Music, 
+  Home,
+  MessageSquareMore,
+  Video,
+  Newspaper,
+  Music,
   Gamepad2,
-  X
-} from 'lucide-react';
-import styles from '../styles/Sidebar.module.css';
+  X,
+} from "lucide-react";
+import styles from "../styles/Sidebar.module.css";
+import Image from 'next/image';
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
   const pathname = usePathname();
@@ -25,30 +26,25 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
   ];
 
   return (
-    <aside className={`${styles.sidebar} ${isOpen ? styles.sidebarOpen : ''}`}>
+    <aside className={`${styles.sidebar} ${isOpen ? styles.sidebarOpen : ""}`}>
       <div className={styles.container}>
-        <div className={styles.closeButtonContainer}>
-          <button
-            onClick={() => setIsOpen(false)}
-            className={styles.closeButton}
-            aria-label="Close sidebar"
-          >
-            <X className="w-6 h-6" />
-          </button>
-        </div>
-        
         <div className={styles.menuContainer}>
-        <div className={styles.logoContainer}>
-              <Brain className={styles.logoIcon} />
-              <span className={styles.logoText}>MindPal</span>
-            </div>
+          <div className={styles.logo}>
+            <Image
+              src="/WhatsApp_Image_2025-03-18_at_12.19.57-removebg-preview.png"
+              alt="Your Logo"
+              width={150}
+              height={150}
+              priority
+            />
+          </div>
           {menuItems.map((item) => (
             <Link
               key={item.path}
               href={item.path}
               onClick={() => window.innerWidth < 1024 && setIsOpen(false)}
               className={`${styles.menuItem} ${
-                pathname === item.path ? styles.activeMenuItem : ''
+                pathname === item.path ? styles.activeMenuItem : ""
               }`}
             >
               <item.icon className={styles.menuIcon} />

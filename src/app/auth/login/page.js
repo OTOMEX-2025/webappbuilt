@@ -24,7 +24,7 @@ export default function LoginPage() {
       if (email && password) {
         // Store a dummy token
         localStorage.setItem("token", "demo-token");
-        router.push('/client/dashboard', '/home');
+        router.push('/client/dashboard',);
  // Redirect to client dashboard
       } else {
         setError("Please fill in all fields");
@@ -35,8 +35,8 @@ export default function LoginPage() {
 
   return (
     <main className={styles.container}>
-      <div className={styles.decorativeLeft}></div>
-      <div className={styles.decorativeRight}></div>
+      {/* <div className={styles.decorativeLeft}></div>
+      <div className={styles.decorativeRight}></div> */}
 
       <div className={styles.loginBox}>
         <div className={styles.logo}>
@@ -71,7 +71,7 @@ export default function LoginPage() {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-
+            <Link href="/client/dashboard">
           <button
             type="submit"
             className={styles.button}
@@ -79,6 +79,8 @@ export default function LoginPage() {
           >
             {isLoading ? "Logging in..." : "Login"}
           </button>
+          </Link>
+
         </form>
 
         <div className={styles.footer}>
