@@ -4,6 +4,7 @@ import Sidebar from "../../components/Sidebar";
 import Navbar from "../../components/Navbar";
 import styles from "./Client.module.css";
 
+
 export default function ClientLayout({ children }) {
   const { theme, toggleTheme } = useTheme();
 
@@ -17,10 +18,10 @@ export default function ClientLayout({ children }) {
         <div className={styles.sidebarContainer}>
           <Sidebar />
         </div>
-        <div className={styles.mainArea}>
-          <div className={styles.navbarContainer}>
+                  <div className={styles.navbarContainer}>
             <Navbar onToggleTheme={toggleTheme} theme={theme} />
           </div>
+        <div className={styles.mainArea}>
           <main className={styles.content}>{children}</main>
         </div>
       </div>

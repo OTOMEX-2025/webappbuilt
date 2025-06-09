@@ -10,12 +10,17 @@ import {
   Music,
   Gamepad2,
   X,
+  Moon,
+  Sun,
 } from "lucide-react";
 import styles from "../styles/Sidebar.module.css";
 import Image from 'next/image';
+import { useTheme } from "../context/ThemeContext"; // Adjust the path as needed
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
   const pathname = usePathname();
+  const { theme, toggleTheme } = useTheme();
+  
   const menuItems = [
     { icon: Home, label: 'Home', path: '/client/dashboard' }, 
     { icon: MessageSquareMore, label: 'AI Chat', path: '/client/chat' },
@@ -27,7 +32,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
 
   return (
     <>
-      <aside className={`${styles.sidebar} ${isOpen ? styles.sidebarOpen : ""}`}>
+      <aside className={`${styles.sidebar} ${isOpen ? styles.sidebarOpen : ""}`} data-theme={theme}>
         <div className={styles.container}>
           <div className={styles.menuContainer}>
             <div className={styles.logo}>
@@ -52,6 +57,10 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                 <span className={styles.menuLabel}>{item.label}</span>
               </Link>
             ))}
+            <button onClick={toggleTheme} className={styles.themeToggle}>
+              {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
+              <span className={styles.menuLabel}>Toggle Theme</span>
+            </button>
           </div>
         </div>
       </aside>

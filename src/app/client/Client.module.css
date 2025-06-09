@@ -32,25 +32,28 @@
 }
 
 .mainArea {
-  flex: 1;
+  position: center;
+  justify-items: center;
+  /* flex: 1;
   display: flex;
   flex-direction: column;
-  min-width: 0; /* Important for proper flexbox behavior */
+  min-width: 0; */
+   /* Important for proper flexbox behavior */
+}
+
+
+.content {
+  /* flex: 1;
+  padding: 20px;
+  overflow-y: auto; */
 }
 
 .navbarContainer {
-  position: sticky;
+  /* position: sticky;
   top: 0;
   z-index: 5;
-  width: 100%;
+  width: 100%; */
 }
-
-.content {
-  flex: 1;
-  padding: 20px;
-  overflow-y: auto;
-}
-
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .sidebarContainer {
