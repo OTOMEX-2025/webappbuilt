@@ -26,34 +26,46 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
   ];
 
   return (
-    <aside className={`${styles.sidebar} ${isOpen ? styles.sidebarOpen : ""}`}>
-      <div className={styles.container}>
-        <div className={styles.menuContainer}>
-          <div className={styles.logo}>
-            <Image
-              src="/WhatsApp_Image_2025-03-18_at_12.19.57-removebg-preview.png"
-              alt="Your Logo"
-              width={150}
-              height={150}
-              priority
-            />
+    <>
+      <aside className={`${styles.sidebar} ${isOpen ? styles.sidebarOpen : ""}`}>
+        <div className={styles.container}>
+          <div className={styles.menuContainer}>
+            <div className={styles.logo}>
+              <Image
+                src="/WhatsApp_Image_2025-03-18_at_12.19.57-removebg-preview.png"
+                alt="Your Logo"
+                width={150}
+                height={150}
+                priority
+              />
+            </div>
+            {menuItems.map((item) => (
+              <Link
+                key={item.path}
+                href={item.path}
+                onClick={() => window.innerWidth < 1024 && setIsOpen(false)}
+                className={`${styles.menuItem} ${
+                  pathname === item.path ? styles.activeMenuItem : ""
+                }`}
+              >
+                <item.icon className={styles.menuIcon} />
+                <span className={styles.menuLabel}>{item.label}</span>
+              </Link>
+            ))}
           </div>
-          {menuItems.map((item) => (
-            <Link
-              key={item.path}
-              href={item.path}
-              onClick={() => window.innerWidth < 1024 && setIsOpen(false)}
-              className={`${styles.menuItem} ${
-                pathname === item.path ? styles.activeMenuItem : ""
-              }`}
-            >
-              <item.icon className={styles.menuIcon} />
-              <span className={styles.menuLabel}>{item.label}</span>
-            </Link>
-          ))}
         </div>
-      </div>
-    </aside>
+      </aside>
+      {/* Add padding to main content when sidebar is open on desktop */}
+      {isOpen && (
+        <style jsx global>{`
+          @media (min-width: 769px) {
+            .main-content {
+              margin-left: 220px;
+            }
+          }
+        `}</style>
+      )}
+    </>
   );
 };
 
