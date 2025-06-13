@@ -1,0 +1,87 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 30;
+  transition: all 300ms ease;
+  background-color: var(--navbar-bg);
+  border-bottom: 1px solid var(--border-color);
+  height: 3.5rem;
+}
+
+.navbarScrolled {
+  backdrop-filter: blur(12px);
+  background-color: var(--navbar-scrolled);
+}
+
+.container {
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+}
+
+.logo {
+  font-size: 1.25rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  color: var(--text-color);
+}
+
+.pageTitle {
+  font-weight: 600;
+  color: var(--text-color);
+  margin-left: 1rem;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.themeToggle {
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--toggle-bg);
+  border: none;
+  cursor: pointer;
+  color: var(--toggle-color);
+  transition: all 0.2s ease;
+}
+
+.themeToggle:hover {
+  background-color: var(--toggle-hover);
+}
+
+/* Light theme variables */
+:root 
+.light {
+  --bg-color: #f8fafc;
+  --navbar-bg: #96baee;
+  --navbar-scrolled: rgba(150, 186, 238, 0.9);
+  --text-color: #1e293b;
+  --toggle-bg: rgba(255, 255, 255, 0.7);
+  --toggle-color: #1e293b;
+  --toggle-hover: rgba(255, 255, 255, 0.9);
+  --border-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Dark theme variables */
+.dark {
+  --bg-color: #1a202c;
+  --navbar-bg: #1a365d;
+  --navbar-scrolled: rgba(26, 54, 93, 0.9);
+  --text-color: #f7fafc;
+  --toggle-bg: rgba(255, 255, 255, 0.1);
+  --toggle-color: #f7fafc;
+  --toggle-hover: rgba(255, 255, 255, 0.2);
+  --border-color: rgba(255, 255, 255, 0.1);
+}
