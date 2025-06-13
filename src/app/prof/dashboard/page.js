@@ -82,7 +82,7 @@ const DashboardPage = () => {
   });
 
   return (
-    <div className={styles.dashboardContainer}>
+    <div className={`${styles.dashboardContainer} container`}>
       <h1><RiMentalHealthLine /> Therapist Dashboard</h1>
       
       {/* Stats Overview */}

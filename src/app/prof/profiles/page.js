@@ -1,78 +1,57 @@
 import { RiUserLine } from 'react-icons/ri';
-
+import styles from './ProfilesPage.module.css';
+import data from '../../../backend/data.json';
 
 const ProfilesPage = () => {
-  // Sample student data
-  const students = [
-    {
-      id: 1,
-      name: 'John Doe',
-      year: 'Junior',
-      major: 'Computer Science',
-      lastSession: '2023-05-15',
-      status: 'Active',
-      image: '/dummy-avatar1.jpg'
-    },
-    {
-      id: 2,
-      name: 'Jane Smith',
-      year: 'Senior',
-      major: 'Psychology',
-      lastSession: '2023-05-10',
-      status: 'Active',
-      image: '/dummy-avatar2.jpg'
-    },
-    {
-      id: 3,
-      name: 'Alex Johnson',
-      year: 'Freshman',
-      major: 'Biology',
-      lastSession: '2023-04-28',
-      status: 'At Risk',
-      image: '/dummy-avatar3.jpg'
-    },
-    {
-      id: 4,
-      name: 'Maria Garcia',
-      year: 'Sophomore',
-      major: 'Economics',
-      lastSession: '2023-05-12',
-      status: 'Active',
-      image: '/dummy-avatar4.jpg'
-    },
-  ];
+  // Get active patients from the imported data
+  const patients = data.patients.active;
 
   return (
-    <div className="profiles-container">
-      <h1><RiUserLine /> Student Profiles</h1>
+    <div className={styles.profilesContainer}>
+      <h1 className={styles.pageTitle}><RiUserLine /> Patient Profiles</h1>
       
-      <div className="search-filter">
-        <input type="text" placeholder="Search students..." />
-        <select>
+      <div className={styles.searchFilter}>
+        <input 
+          type="text" 
+          placeholder="Search patients..." 
+          className={styles.searchInput}
+        />
+        <select className={styles.filterSelect}>
           <option>All Statuses</option>
           <option>Active</option>
           <option>At Risk</option>
-          <option>Inactive</option>
+          <option>Stable</option>
         </select>
-        <select>
-          <option>All Years</option>
-          <option>Freshman</option>
-          <option>Sophomore</option>
-          <option>Junior</option>
-          <option>Senior</option>
+        <select className={styles.filterSelect}>
+          <option>All Diagnoses</option>
+          <option>Anxiety Disorders</option>
+          <option>Depression</option>
+          <option>PTSD</option>
+          <option>Bipolar Disorder</option>
+          <option>OCD</option>
         </select>
       </div>
       
-      <div className="profiles-grid">
-        {students.map(student => (
-          <div key={student.id} className="profile-card">
-            <img src={student.image} alt={student.name} className="profile-pic" />
-            <h3>{student.name}</h3>
-            <p><strong>Year:</strong> {student.year}</p>
-            <p><strong>Major:</strong> {student.major}</p>
-            <p><strong>Last Session:</strong> {student.lastSession}</p>
-            <p><strong>Status:</strong> <span className={`status-${student.status.toLowerCase().replace(' ', '-')}`}>{student.status}</span></p>
-            <button className="view-profile-btn">View Profile</button>
+      <div className={styles.profilesGrid}>
+        {patients.map(patient => (
+          <div key={patient.id} className={styles.profileCard}>
+            <img 
+              src={patient.image} 
+              alt={patient.name} 
+              className={styles.profilePic} 
+            />
+            <h3>{patient.name}</h3>
+            <p><strong>Age:</strong> {patient.age}</p>
+            <p><strong>Gender:</strong> {patient.gender}</p>
+            <p><strong>Diagnosis:</strong> {patient.primaryDiagnosis}</p>
+            <p><strong>Last Session:</strong> {patient.lastSession}</p>
+            <p>
+              <strong>Status:</strong> 
+              <span className={`${styles.status} ${styles['status-' + patient.status.toLowerCase().replace(' ', '-')]}`}>
+                {patient.status}
+              </span>
+            </p>
+            <button className={styles.viewProfileBtn}>View Full Profile</button>
           </div>
         ))}
       </div>

@@ -1,104 +1,73 @@
 import { RiAlertLine } from 'react-icons/ri';
-
+import data from '../../../backend/data.json';
+import styles from './EmergenciesPage.module.css';
 
 const EmergenciesPage = () => {
-  // Sample emergency data
-  const activeEmergencies = [
-    {
-      id: 1,
-      student: 'Alex Johnson',
-      date: '2023-06-12',
-      time: '9:45 AM',
-      type: 'Mental Health Crisis',
-      severity: 'High',
-      status: 'Active',
-      description: 'Student reported severe anxiety and panic attacks. Initial contact made, needs follow-up.'
-    }
-  ];
-
-  const resolvedEmergencies = [
-    {
-      id: 2,
-      student: 'Taylor Brown',
-      date: '2023-05-28',
-      time: '3:15 PM',
-      type: 'Academic Distress',
-      severity: 'Medium',
-      status: 'Resolved',
-      resolution: 'Referred to academic support services. Follow-up confirmed improvement.'
-    },
-    {
-      id: 3,
-      student: 'Chris Lee',
-      date: '2023-05-15',
-      time: '11:30 AM',
-      type: 'Personal Safety',
-      severity: 'High',
-      status: 'Resolved',
-      resolution: 'Connected with campus security and counseling services. Situation stabilized.'
-    }
-  ];
+  const { active, resolved, resources } = data.crisis;
 
   return (
-    <div className="emergencies-container">
-      <h1><RiAlertLine /> Emergency Cases</h1>
+    <div className={styles.emergenciesContainer}>
+      <h1 className={styles.pageTitle}><RiAlertLine /> Crisis Cases</h1>
       
-      <div className="emergency-tabs">
-        <button className="active">Active</button>
-        <button>Resolved</button>
-        <button>Protocols</button>
+      <div className={styles.emergencyTabs}>
+        <button className={styles.activeTab}>Active</button>
+        <button className={styles.tabButton}>Resolved</button>
+        <button className={styles.tabButton}>Protocols</button>
       </div>
       
-      <div className="active-emergencies">
-        <h2>Active Emergencies</h2>
-        {activeEmergencies.length > 0 ? (
-          activeEmergencies.map(emergency => (
-            <div key={emergency.id} className="emergency-card high-priority">
-              <div className="emergency-header">
-                <h3>{emergency.student}</h3>
-                <span className={`severity-${emergency.severity.toLowerCase()}`}>{emergency.severity} Priority</span>
+      <div className={styles.activeEmergencies}>
+        <h2>Active Crisis Cases</h2>
+        {active.length > 0 ? (
+          active.map(emergency => (
+            <div key={emergency.id} className={`${styles.emergencyCard} ${styles['priority-' + emergency.severity.toLowerCase()]}`}>
+              <div className={styles.emergencyHeader}>
+                <h3>{emergency.patient}</h3>
+                <span className={styles.severityBadge}>{emergency.severity} Priority</span>
               </div>
               <p><strong>Type:</strong> {emergency.type}</p>
               <p><strong>Reported:</strong> {emergency.date} at {emergency.time}</p>
               <p><strong>Description:</strong> {emergency.description}</p>
-              <div className="emergency-actions">
-                <button className="primary-action">Take Action</button>
-                <button>Contact Student</button>
-                <button>Escalate</button>
-                <button>Document</button>
+              <div className={styles.emergencyActions}>
+                <button className={styles.primaryAction}>Take Action</button>
+                <button className={styles.secondaryAction}>Contact Patient</button>
+                <button className={styles.secondaryAction}>Escalate</button>
+                <button className={styles.secondaryAction}>Document</button>
               </div>
             </div>
           ))
         ) : (
-          <p>No active emergencies at this time.</p>
+          <p className={styles.noEmergencies}>No active crisis cases at this time.</p>
         )}
       </div>
       
-      <div className="resolved-emergencies">
+      <div className={styles.resolvedEmergencies}>
         <h2>Recently Resolved</h2>
-        {resolvedEmergencies.map(emergency => (
-          <div key={emergency.id} className="emergency-card resolved">
-            <div className="emergency-header">
-              <h3>{emergency.student}</h3>
-              <span className="status-resolved">Resolved</span>
+        {resolved.map(emergency => (
+          <div key={emergency.id} className={`${styles.emergencyCard} ${styles.resolved}`}>
+            <div className={styles.emergencyHeader}>
+              <h3>{emergency.patient}</h3>
+              <span className={styles.resolvedBadge}>Resolved</span>
             </div>
             <p><strong>Type:</strong> {emergency.type}</p>
             <p><strong>Reported:</strong> {emergency.date} at {emergency.time}</p>
             <p><strong>Resolution:</strong> {emergency.resolution}</p>
-            <button className="view-details">View Details</button>
+            <button className={styles.viewDetails}>View Details</button>
           </div>
         ))}
       </div>
       
-      <div className="emergency-resources">
+      <div className={styles.emergencyResources}>
         <h2>Emergency Resources</h2>
-        <ul>
-          <li>Campus Security: <strong>555-1234</strong></li>
-          <li>Crisis Counseling: <strong>555-5678</strong></li>
-          <li>Title IX Office: <strong>555-9012</strong></li>
-          <li>Student Health Services: <strong>555-3456</strong></li>
+        <ul className={styles.resourcesList}>
+          {resources.map((resource, index) => (
+            <li key={index}>
+              {resource.name}: <strong>{resource.number}</strong>
+            </li>
+          ))}
         </ul>
       </div>
     </div>
   );
 };
+
+export default EmergenciesPage;

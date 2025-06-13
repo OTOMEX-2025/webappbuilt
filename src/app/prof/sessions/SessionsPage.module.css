@@ -1,0 +1,149 @@
+.sessionsContainer {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.pageTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #2c3e50;
+  margin-bottom: 2rem;
+}
+
+.sessionTabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 0.5rem;
+}
+
+.tabButton {
+  padding: 0.5rem 1rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #666;
+  font-weight: 500;
+}
+
+.activeTab {
+  padding: 0.5rem 1rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #3498db;
+  font-weight: 600;
+  border-bottom: 2px solid #3498db;
+}
+
+.upcomingSessions, .pastSessions {
+  margin-bottom: 3rem;
+}
+
+.h2 {
+  color: #2c3e50;
+  margin-bottom: 1rem;
+}
+
+.tableContainer {
+  overflow-x: auto;
+}
+
+.sessionsTable {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.sessionsTable th {
+  background-color: #f8f9fa;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-weight: 600;
+  color: #495057;
+}
+
+.sessionsTable td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #eee;
+  color: #555;
+}
+
+.sessionsTable tr:hover {
+  background-color: #f8f9fa;
+}
+
+.status {
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.status-confirmed {
+  background-color: #e3f7e8;
+  color: #27ae60;
+}
+
+.status-pending {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.status-completed {
+  background-color: #e3f2fd;
+  color: #2980b9;
+}
+
+.actionsCell {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.actionButton {
+  padding: 0.25rem 0.5rem;
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.actionButton:hover {
+  background-color: #e9ecef;
+}
+
+.confirmButton {
+  padding: 0.25rem 0.5rem;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.confirmButton:hover {
+  background-color: #218838;
+}
+
+.notesCell {
+  max-width: 300px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 768px) {
+  .actionsCell {
+    flex-direction: column;
+  }
+  
+  .actionButton, .confirmButton {
+    width: 100%;
+  }
+}

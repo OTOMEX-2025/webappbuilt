@@ -10,13 +10,11 @@ const ProfLayout = ({ children }) => {
 
   return (
     <div className={styles.container}>
-      <Navbar />
+      <Navbar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
       <div className={styles.contentWrapper}>
         <Sidebar isOpen={sidebarOpen} setIsOpen={setSidebarOpen} />
-        <main className={`${styles.mainContent} ${sidebarOpen ? styles.mainContentShifted : ''}`}>
-          <div className={styles.innerContainer}>
-            {children}
-          </div>
+        <main className={`${styles.mainContent} ${sidebarOpen ? styles.sidebarOpen : styles.sidebarClosed}`}>
+          {children}
         </main>
       </div>
     </div>

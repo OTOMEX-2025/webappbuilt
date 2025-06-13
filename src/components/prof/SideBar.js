@@ -8,9 +8,7 @@ import {
   RiUserLine, 
   RiTimeLine, 
   RiAlertLine, 
-  RiBarChartLine,
-  RiMenuLine,
-  RiCloseLine
+  RiBarChartLine
 } from '@remixicon/react';
 import styles from '../../styles/prof/SideBar.module.css';
 import { useTheme } from '../../context/ThemeContext';
@@ -23,21 +21,11 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
-      if (window.innerWidth >= 768) {
-        setIsOpen(true);
-      } else {
-        setIsOpen(false);
-      }
     };
-
     handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, [setIsOpen]);
-
-  const toggleSidebar = () => {
-    setIsOpen(!isOpen);
-  };
+  }, []);
 
   const navItems = [
     { name: 'Dashboard', path: '/prof/dashboard', icon: <RiDashboardLine size={20} /> },
@@ -48,40 +36,28 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
   ];
 
   return (
-    <>
-      {isMobile && (
-        <button
-          onClick={toggleSidebar}
-          className={`${styles.mobileToggle} ${theme === 'dark' ? styles.dark : ''}`}
-          aria-label="Toggle sidebar"
-        >
-          {isOpen ? <RiCloseLine size={24} /> : <RiMenuLine size={24} />}
-        </button>
-      )}
-
-      <aside className={`${styles.sidebar} ${isOpen ? styles.sidebarOpen : ''} ${theme === 'dark' ? styles.dark : ''}`}>
-        <div className={styles.header}>
-          <h1 className={styles.title}>Logo</h1>
-        </div>
-        <nav className={styles.nav}>
-          <ul className={styles.navList}>
-            {navItems.map((item) => (
-              <li key={item.name} className={styles.navItem}>
-                <Link
-                  href={item.path}
-                  className={`${styles.navLink} ${
-                    pathname === item.path ? styles.navLinkActive : ''
-                  } ${theme === 'dark' ? styles.dark : ''}`}
-                >
-                  <span className={styles.icon}>{item.icon}</span>
-                  <span>{item.name}</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      </aside>
-    </>
+    <aside className={`${styles.sidebar} ${isOpen ? styles.sidebarOpen : styles.sidebarClosed} ${theme === 'dark' ? styles.dark : ''}`}>
+      <div className={styles.header}>
+        <h1 className={styles.title}>Logo</h1>
+      </div>
+      <nav className={styles.nav}>
+        <ul className={styles.navList}>
+          {navItems.map((item) => (
+            <li key={item.name} className={styles.navItem}>
+              <Link
+                href={item.path}
+                className={`${styles.navLink} ${
+                  pathname === item.path ? styles.navLinkActive : ''
+                } ${theme === 'dark' ? styles.dark : ''}`}
+              >
+                <span className={styles.icon}>{item.icon}</span>
+                <span>{item.name}</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </aside>
   );
 };
 

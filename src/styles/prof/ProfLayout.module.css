@@ -2,39 +2,35 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background-color: var(--bg-color);
-  transition: background-color 300ms ease;
+  width: 100%;
 }
 
 .contentWrapper {
   display: flex;
   flex: 1;
-  position: relative;
-  overflow: hidden;
+  margin-top: 2.5rem; /* Height of navbar */
 }
 
 .mainContent {
   flex: 1;
-  transition: margin-left 300ms ease-in-out;
-  padding-top: 3.5rem; /* Navbar height */
-  overflow-y: auto;
-  height: calc(100vh - 3.5rem); /* Viewport height minus navbar */
-  background-color: var(--bg-color);
+  transition: margin-left 0.3s ease;
+  min-height: calc(100vh - 3.5rem);
 }
 
-.mainContentShifted {
-  margin-left: 16rem;
+.sidebarOpen {
+  margin-left: 250px;
 }
 
-.innerContainer {
-  width: 100%;
-  margin: 0 auto;
-  padding: 1rem;
-  min-height: calc(100% - 3.5rem);
+.sidebarClosed {
+  margin-left: 0;
 }
 
-@media (min-width: 768px) {
-  .innerContainer {
-    padding: 1.5rem;
+@media (max-width: 768px) {
+  .sidebarOpen {
+    margin-left: 0;
+  }
+  
+  .mainContent {
+    padding: 1rem;
   }
 }
