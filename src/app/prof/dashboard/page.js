@@ -1,5 +1,6 @@
-import { RiDashboardLine, RiUserLine, RiTimeLine, RiAlertLine, RiBarChartLine } from 'react-icons/ri';
+import { RiDashboardLine, RiUserLine, RiTimeLine, RiAlertLine, RiBarChartLine, RiMentalHealthLine } from 'react-icons/ri';
 import data from '../../../backend/data.json';
+import styles from './dashboard.module.css';
 
 // Visx imports
 import { Bar } from '@visx/shape';
@@ -8,6 +9,43 @@ import { AxisBottom, AxisLeft } from '@visx/axis';
 import { scaleBand, scaleLinear, scaleOrdinal } from '@visx/scale';
 import { Pie } from '@visx/shape';
 import { Text } from '@visx/text';
+
+// Reusable Components
+const StatCard = ({ icon, title, value, description }) => (
+  <div className={styles.statCard}>
+    <h3>{icon} {title}</h3>
+    <p className={styles.statValue}>{value}</p>
+    <p className={styles.statLabel}>{description}</p>
+  </div>
+);
+
+const ProfileCard = ({ patient }) => (
+  <div className={styles.profileCard}>
+    <div className={styles.profileHeader}>
+      <img src={patient.image || '/default-avatar.jpg'} alt={patient.name} />
+      <div>
+        <h4>{patient.name}</h4>
+        <p>{patient.age} years • {patient.gender}</p>
+      </div>
+    </div>
+    <div className={styles.profileDetails}>
+      <p><strong>Condition:</strong> {patient.primaryDiagnosis}</p>
+      <p><strong>Last Session:</strong> {patient.lastSession}</p>
+      <p><strong>Status:</strong> <span className={styles[`status${patient.status.replace('-', '').toLowerCase()}`]}>{patient.status}</span></p>
+    </div>
+  </div>
+);
+
+const SessionCard = ({ session }) => (
+  <div className={styles.sessionCard}>
+    <h4>{session.type} Session</h4>
+    <p><strong>Patient:</strong> {session.patient}</p>
+    <p><strong>When:</strong> {session.date} at {session.time}</p>
+    <p><strong>Duration:</strong> {session.duration}</p>
+    <p><strong>Status:</strong> {session.status}</p>
+    {session.notes && <p className={styles.sessionNotes}>{session.notes}</p>}
+  </div>
+);
 
 const DashboardPage = () => {
   // Bar Chart Data and Configuration
@@ -33,56 +71,60 @@ const DashboardPage = () => {
   });
 
   // Pie Chart Data and Configuration
-  const studentDistribution = data.dashboard.studentDistribution;
+  const patientDistribution = data.dashboard.patientDistribution;
   const pieWidth = 300;
   const pieHeight = 300;
   const half = pieWidth / 2;
   
   const pieScale = scaleOrdinal({
-    domain: studentDistribution.map(d => d.name),
+    domain: patientDistribution.map(d => d.name),
     range: ['#8884d8', '#82ca9d', '#ffc658', '#ff8042', '#a4de6c'],
   });
 
   return (
-    <div className="dashboard-container">
-      <h1><RiDashboardLine /> Professor Dashboard</h1>
+    <div className={styles.dashboardContainer}>
+      <h1><RiMentalHealthLine /> Therapist Dashboard</h1>
       
       {/* Stats Overview */}
-      <div className="stats-grid">
-        <div className="stat-card">
-          <h3><RiTimeLine /> Upcoming Sessions</h3>
-          <p className="stat-value">{data.dashboard.stats.upcomingSessions}</p>
-          <p className="stat-label">Next 7 days</p>
-        </div>
+      <div className={styles.statsGrid}>
+        <StatCard 
+          icon={<RiTimeLine />}
+          title="Upcoming Sessions"
+          value={data.dashboard.stats.upcomingSessions}
+          description="Next 7 days"
+        />
         
-        <div className="stat-card">
-          <h3><RiUserLine /> Active Students</h3>
-          <p className="stat-value">{data.dashboard.stats.activeStudents}</p>
-          <p className="stat-label">Current semester</p>
-        </div>
+        <StatCard 
+          icon={<RiUserLine />}
+          title="Active Patients"
+          value={data.dashboard.stats.activePatients}
+          description="Current caseload"
+        />
         
-        <div className="stat-card">
-          <h3><RiAlertLine /> Pending Requests</h3>
-          <p className="stat-value">{data.dashboard.stats.pendingRequests}</p>
-          <p className="stat-label">Require attention</p>
-        </div>
+        <StatCard 
+          icon={<RiAlertLine />}
+          title="Crisis Cases"
+          value={data.dashboard.stats.crisisCases}
+          description="Require immediate attention"
+        />
         
-        <div className="stat-card">
-          <h3><RiAlertLine /> Emergency Cases</h3>
-          <p className="stat-value">{data.dashboard.stats.emergencyCases}</p>
-          <p className="stat-label">Active</p>
-        </div>
+        <StatCard 
+          icon={<RiBarChartLine />}
+          title="Follow-ups Needed"
+          value={data.dashboard.stats.followUpsNeeded}
+          description="Pending follow-up sessions"
+        />
       </div>
       
       {/* Charts Row */}
-      <div className="charts-row">
-        <div className="chart-container">
+      <div className={styles.chartsRow}>
+        <div className={styles.chartContainer}>
           <h3>Weekly Sessions</h3>
           <svg width={barWidth} height={barHeight}>
             <Group left={margin.left} top={margin.top}>
               {weeklySessions.map((d) => {
                 const barWidth = xScale.bandwidth();
-                const barHeight = yMax - (yScale(d.sessions) || 0); // Fixed this line
+                const barHeight = yMax - (yScale(d.sessions) || 0);
                 const barX = xScale(d.name) || 0;
                 const barY = yMax - barHeight;
                 
@@ -111,12 +153,12 @@ const DashboardPage = () => {
           </svg>
         </div>
         
-        <div className="chart-container">
-          <h3>Student Distribution</h3>
+        <div className={styles.chartContainer}>
+          <h3>Patient Distribution by Condition</h3>
           <svg width={pieWidth} height={pieHeight}>
             <Group top={pieHeight / 2} left={half}>
               <Pie
-                data={studentDistribution}
+                data={patientDistribution}
                 pieValue={(d) => d.value}
                 outerRadius={half - 20}
                 innerRadius={half - 60}
@@ -149,58 +191,56 @@ const DashboardPage = () => {
               </Pie>
             </Group>
           </svg>
-          <div className="pie-legend">
-            {studentDistribution.map((d, i) => (
-              <div key={`legend-${i}`} className="legend-item">
+          <div className={styles.pieLegend}>
+            {patientDistribution.map((d, i) => (
+              <div key={`legend-${i}`} className={styles.legendItem}>
                 <span 
-                  className="legend-color" 
+                  className={styles.legendColor} 
                   style={{ backgroundColor: pieScale(d.name) }}
                 />
-                <span className="legend-label">{d.name}</span>
+                <span className={styles.legendLabel}>{d.name}</span>
               </div>
             ))}
           </div>
         </div>
       </div>
       
-      {/* Highlights from Analysis */}
-      <div className="highlights-section">
-        <h2><RiBarChartLine /> Analysis Highlights</h2>
-        <div className="highlight-cards">
-          <div className="highlight-card">
-            <h3>Most Common Session Type</h3>
-            <p>{data.analysis.sessionTypes[0].name} ({data.analysis.sessionTypes[0].value}%)</p>
-          </div>
-          <div className="highlight-card">
-            <h3>Student Status</h3>
-            <p>{data.analysis.studentStatus[0].value}% Active</p>
-          </div>
-          <div className="highlight-card">
-            <h3>Current Month Sessions</h3>
-            <p>{data.analysis.sessionTrends[data.analysis.sessionTrends.length - 1].sessions} sessions</p>
-          </div>
+      {/* Patient Profiles */}
+      <div className={styles.profilesSection}>
+        <h2><RiUserLine /> Active Patients</h2>
+        <div className={styles.profileGrid}>
+          {data.patients.active.map(patient => (
+            <ProfileCard key={patient.id} patient={patient} />
+          ))}
         </div>
       </div>
       
-      {/* Recent Activity */}
-      <div className="recent-activity">
-        <h3>Recent Activity</h3>
-        <ul>
-          {data.dashboard.recentActivity.map((activity, index) => (
-            <li key={index}>{activity}</li>
+      {/* Upcoming Sessions */}
+      <div className={styles.sessionsSection}>
+        <h2><RiTimeLine /> Upcoming Sessions</h2>
+        <div className={styles.sessionList}>
+          {data.sessions.upcoming.map(session => (
+            <SessionCard key={session.id} session={session} />
           ))}
-        </ul>
+        </div>
       </div>
       
-      {/* Emergency Overview */}
-      <div className="emergency-overview">
-        <h3><RiAlertLine /> Emergency Overview</h3>
-        <p>Active emergencies: {data.emergencies.active.length}</p>
-        {data.emergencies.active.length > 0 && (
-          <div className="emergency-alert">
-            <p><strong>{data.emergencies.active[0].student}</strong> - {data.emergencies.active[0].type}</p>
-            <p>Status: {data.emergencies.active[0].status}</p>
+      {/* Crisis Overview */}
+      <div className={styles.crisisOverview}>
+        <h2><RiAlertLine /> Crisis Cases</h2>
+        {data.crisis.active.length > 0 ? (
+          <div className={styles.crisisList}>
+            {data.crisis.active.map(crisisCase => (
+              <div key={crisisCase.id} className={styles.crisisAlert}>
+                <h3>{crisisCase.patient} - {crisisCase.type}</h3>
+                <p><strong>Severity:</strong> {crisisCase.severity}</p>
+                <p><strong>Status:</strong> {crisisCase.status}</p>
+                <p>{crisisCase.description}</p>
+              </div>
+            ))}
           </div>
+        ) : (
+          <p>No active crisis cases</p>
         )}
       </div>
     </div>

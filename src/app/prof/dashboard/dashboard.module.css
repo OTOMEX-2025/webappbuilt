@@ -1,0 +1,263 @@
+/* Main Container */
+.dashboard-container {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  color: #333;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.dashboard-container h1 {
+  color: #4a4a4a;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: white;
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s;
+}
+
+.stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.stat-card h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #555;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #4a6fa5;
+  margin: 0.5rem 0;
+}
+
+.stat-label {
+  color: #777;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+/* Charts Row */
+.charts-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.chart-container {
+  background: white;
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  flex: 1;
+  min-width: 300px;
+}
+
+.chart-container h3 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  color: #555;
+}
+
+.pie-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.legend-color {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+}
+
+.legend-label {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+/* Patient Profiles */
+.profiles-section {
+  margin-bottom: 2rem;
+}
+
+.profiles-section h2 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #555;
+  margin-bottom: 1.5rem;
+}
+
+.profile-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.profile-card {
+  background: white;
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.profile-header img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.profile-header h4 {
+  margin: 0;
+  color: #444;
+}
+
+.profile-header p {
+  margin: 0.2rem 0 0;
+  font-size: 0.9rem;
+  color: #777;
+}
+
+.profile-details p {
+  margin: 0.5rem 0;
+  font-size: 0.95rem;
+}
+
+.status-active {
+  color: #28a745;
+  font-weight: 600;
+}
+
+.status-at-risk {
+  color: #ffc107;
+  font-weight: 600;
+}
+
+.status-stable {
+  color: #17a2b8;
+  font-weight: 600;
+}
+
+/* Sessions Section */
+.sessions-section {
+  margin-bottom: 2rem;
+}
+
+.sessions-section h2 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #555;
+  margin-bottom: 1.5rem;
+}
+
+.session-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.session-card {
+  background: white;
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.session-card h4 {
+  margin-top: 0;
+  color: #4a6fa5;
+}
+
+.session-card p {
+  margin: 0.5rem 0;
+  font-size: 0.95rem;
+}
+
+.session-notes {
+  padding: 0.75rem;
+  background: #f8f9fa;
+  border-radius: 6px;
+  margin-top: 1rem !important;
+  font-style: italic;
+  color: #555;
+}
+
+/* Crisis Overview */
+.crisis-overview {
+  background: #fff8f8;
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border-left: 4px solid #dc3545;
+}
+
+.crisis-overview h2 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #dc3545;
+  margin-top: 0;
+}
+
+.crisis-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.crisis-alert {
+  background: white;
+  border-radius: 8px;
+  padding: 1.25rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  border-left: 3px solid #dc3545;
+}
+
+.crisis-alert h3 {
+  margin-top: 0;
+  color: #dc3545;
+}
+
+.crisis-alert p {
+  margin: 0.5rem 0;
+}

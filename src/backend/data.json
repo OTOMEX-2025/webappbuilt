@@ -1,153 +1,67 @@
 {
   "dashboard": {
     "stats": {
-      "upcomingSessions": 5,
-      "activeStudents": 42,
-      "pendingRequests": 3,
-      "emergencyCases": 1
+      "upcomingSessions": 8,
+      "activePatients": 24,
+      "crisisCases": 2,
+      "followUpsNeeded": 5
     },
     "weeklySessions": [
-      { "name": "Mon", "sessions": 12 },
-      { "name": "Tue", "sessions": 19 },
-      { "name": "Wed", "sessions": 8 },
-      { "name": "Thu", "sessions": 15 },
-      { "name": "Fri", "sessions": 10 }
+      { "name": "Mon", "sessions": 6 },
+      { "name": "Tue", "sessions": 9 },
+      { "name": "Wed", "sessions": 7 },
+      { "name": "Thu", "sessions": 8 },
+      { "name": "Fri", "sessions": 5 }
     ],
-    "studentDistribution": [
-      { "name": "Freshmen", "value": 35 },
-      { "name": "Sophomores", "value": 25 },
-      { "name": "Juniors", "value": 20 },
-      { "name": "Seniors", "value": 20 }
-    ],
-    "recentActivity": [
-      "Meeting with John Doe completed (Yesterday, 3:45 PM)",
-      "New session request from Jane Smith (Yesterday, 11:20 AM)",
-      "Progress report submitted for Student#42 (Monday, 4:30 PM)",
-      "Emergency alert from Alex Johnson (Monday, 9:15 AM)"
+    "patientDistribution": [
+      { "name": "Anxiety Disorders", "value": 35 },
+      { "name": "Depression", "value": 30 },
+      { "name": "PTSD", "value": 15 },
+      { "name": "Bipolar Disorder", "value": 10 },
+      { "name": "OCD", "value": 10 }
     ]
   },
-  "analysis": {
-    "sessionTrends": [
-      { "month": "Jan", "sessions": 18 },
-      { "month": "Feb", "sessions": 22 },
-      { "month": "Mar", "sessions": 25 },
-      { "month": "Apr", "sessions": 30 },
-      { "month": "May", "sessions": 28 },
-      { "month": "Jun", "sessions": 15 }
-    ],
-    "sessionTypes": [
-      { "name": "Academic Advising", "value": 45 },
-      { "name": "Career Counseling", "value": 25 },
-      { "name": "Personal Counseling", "value": 20 },
-      { "name": "Thesis Consultation", "value": 10 }
-    ],
-    "studentStatus": [
-      { "name": "Active", "value": 75 },
-      { "name": "At Risk", "value": 15 },
-      { "name": "Inactive", "value": 10 }
-    ],
-    "yearlyComparison": [
-      { "year": "2020", "sessions": 210 },
-      { "year": "2021", "sessions": 240 },
-      { "year": "2022", "sessions": 275 },
-      { "year": "2023", "sessions": 180 }
-    ],
-    "keyMetrics": {
-      "avgSessionDuration": "42 mins",
-      "avgSessionDurationChange": "+5%",
-      "studentSatisfaction": "4.7/5",
-      "studentSatisfactionChange": "+0.2",
-      "emergencyCases": 8,
-      "emergencyCasesChange": -3,
-      "followUpRate": "78%",
-      "followUpRateChange": "+12%"
-    },
-    "insights": [
-      "Academic advising sessions peak in April during course registration period",
-      "Increase in personal counseling sessions correlates with midterm exams",
-      "Consider adding evening availability during high-demand periods",
-      "Freshmen represent 60% of 'At Risk' students - consider targeted outreach"
-    ]
-  },
-  "emergencies": {
+  "patients": {
     "active": [
       {
         "id": 1,
-        "student": "Alex Johnson",
-        "date": "2023-06-12",
-        "time": "9:45 AM",
-        "type": "Mental Health Crisis",
-        "severity": "High",
+        "name": "Sarah Johnson",
+        "age": 28,
+        "gender": "Female",
+        "primaryDiagnosis": "Generalized Anxiety Disorder",
+        "lastSession": "2023-06-10",
         "status": "Active",
-        "description": "Student reported severe anxiety and panic attacks. Initial contact made, needs follow-up."
-      }
-    ],
-    "resolved": [
-      {
-        "id": 2,
-        "student": "Taylor Brown",
-        "date": "2023-05-28",
-        "time": "3:15 PM",
-        "type": "Academic Distress",
-        "severity": "Medium",
-        "status": "Resolved",
-        "resolution": "Referred to academic support services. Follow-up confirmed improvement."
-      },
-      {
-        "id": 3,
-        "student": "Chris Lee",
-        "date": "2023-05-15",
-        "time": "11:30 AM",
-        "type": "Personal Safety",
-        "severity": "High",
-        "status": "Resolved",
-        "resolution": "Connected with campus security and counseling services. Situation stabilized."
-      }
-    ],
-    "resources": [
-      { "name": "Campus Security", "number": "555-1234" },
-      { "name": "Crisis Counseling", "number": "555-5678" },
-      { "name": "Title IX Office", "number": "555-9012" },
-      { "name": "Student Health Services", "number": "555-3456" }
-    ]
-  },
-  "profiles": {
-    "students": [
-      {
-        "id": 1,
-        "name": "John Doe",
-        "year": "Junior",
-        "major": "Computer Science",
-        "lastSession": "2023-05-15",
-        "status": "Active",
-        "image": "/dummy-avatar1.jpg"
+        "image": "/patient-avatar1.jpg"
       },
       {
         "id": 2,
-        "name": "Jane Smith",
-        "year": "Senior",
-        "major": "Psychology",
-        "lastSession": "2023-05-10",
+        "name": "Michael Chen",
+        "age": 35,
+        "gender": "Male",
+        "primaryDiagnosis": "Major Depressive Disorder",
+        "lastSession": "2023-06-12",
         "status": "Active",
-        "image": "/dummy-avatar2.jpg"
+        "image": "/patient-avatar2.jpg"
       },
       {
         "id": 3,
-        "name": "Alex Johnson",
-        "year": "Freshman",
-        "major": "Biology",
-        "lastSession": "2023-04-28",
+        "name": "Emma Rodriguez",
+        "age": 22,
+        "gender": "Female",
+        "primaryDiagnosis": "PTSD",
+        "lastSession": "2023-06-08",
         "status": "At Risk",
-        "image": "/dummy-avatar3.jpg"
+        "image": "/patient-avatar3.jpg"
       },
       {
         "id": 4,
-        "name": "Maria Garcia",
-        "year": "Sophomore",
-        "major": "Economics",
-        "lastSession": "2023-05-12",
-        "status": "Active",
-        "image": "/dummy-avatar4.jpg"
+        "name": "David Wilson",
+        "age": 40,
+        "gender": "Male",
+        "primaryDiagnosis": "Bipolar Disorder",
+        "lastSession": "2023-06-05",
+        "status": "Stable",
+        "image": "/patient-avatar4.jpg"
       }
     ]
   },
@@ -155,63 +69,77 @@
     "upcoming": [
       {
         "id": 1,
-        "student": "John Doe",
+        "patient": "Sarah Johnson",
         "date": "2023-06-15",
         "time": "10:00 AM",
-        "duration": "45 mins",
-        "type": "Academic Advising",
-        "status": "Confirmed"
+        "duration": "50 mins",
+        "type": "Cognitive Behavioral Therapy",
+        "status": "Confirmed",
+        "notes": "Focus on exposure techniques"
       },
       {
         "id": 2,
-        "student": "Jane Smith",
+        "patient": "Michael Chen",
         "date": "2023-06-16",
         "time": "2:30 PM",
-        "duration": "30 mins",
-        "type": "Career Counseling",
-        "status": "Confirmed"
+        "duration": "45 mins",
+        "type": "Psychotherapy",
+        "status": "Confirmed",
+        "notes": "Review medication effectiveness"
       },
       {
         "id": 3,
-        "student": "Alex Johnson",
+        "patient": "Emma Rodriguez",
         "date": "2023-06-17",
         "time": "11:15 AM",
         "duration": "60 mins",
-        "type": "Thesis Consultation",
-        "status": "Pending"
+        "type": "Trauma Therapy",
+        "status": "Pending",
+        "notes": "EMDR session planned"
       }
     ],
     "past": [
       {
         "id": 4,
-        "student": "Maria Garcia",
+        "patient": "David Wilson",
         "date": "2023-06-10",
         "time": "3:00 PM",
-        "duration": "30 mins",
-        "type": "Academic Advising",
-        "status": "Completed",
-        "notes": "Discussed course selection for next semester"
-      },
-      {
-        "id": 5,
-        "student": "Robert Chen",
-        "date": "2023-06-08",
-        "time": "9:30 AM",
         "duration": "45 mins",
-        "type": "Personal Counseling",
+        "type": "Mood Stabilization",
         "status": "Completed",
-        "notes": "Follow-up needed in 2 weeks"
-      },
-      {
-        "id": 6,
-        "student": "Sarah Williams",
-        "date": "2023-06-05",
-        "time": "1:00 PM",
-        "duration": "60 mins",
-        "type": "Thesis Consultation",
-        "status": "Completed",
-        "notes": "Reviewed chapter 3 draft"
+        "notes": "Patient reports improved sleep patterns"
       }
+    ]
+  },
+  "crisis": {
+    "active": [
+      {
+        "id": 1,
+        "patient": "Emma Rodriguez",
+        "date": "2023-06-12",
+        "time": "9:45 AM",
+        "type": "Suicidal Ideation",
+        "severity": "High",
+        "status": "Active",
+        "description": "Patient reported passive suicidal thoughts. Safety plan implemented."
+      }
+    ],
+    "resolved": [
+      {
+        "id": 2,
+        "patient": "Jason Miller",
+        "date": "2023-05-28",
+        "time": "3:15 PM",
+        "type": "Panic Attack",
+        "severity": "Medium",
+        "status": "Resolved",
+        "resolution": "Patient stabilized with breathing techniques."
+      }
+    ],
+    "resources": [
+      { "name": "Crisis Hotline", "number": "988" },
+      { "name": "Local ER", "number": "555-1234" },
+      { "name": "Psychiatrist On Call", "number": "555-5678" }
     ]
   }
 }
