@@ -1,21 +1,21 @@
 .sidebar {
-  background-color: #96baee; /* Light blue */
-  color: #000; /* Black text */
+  background-color: #96baee;
+  color: #000;
   display: flex;
   flex-direction: column;
   height: 100vh;
   position: fixed;
   top: 0;
   left: 0;
-  width: 250px;
+  width: 250px; /* Default width, can be overridden by prop */
   z-index: 20;
   transition: transform 0.3s ease-in-out, background-color 0.3s ease;
   transform: translateX(0);
-  padding-top: 3.5rem; /* Space for navbar */
+  padding-top: 3.5rem;
 }
 
 .sidebar.dark {
-  background-color: #1a365d; /* Dark blue */
+  background-color: #1a365d;
   color: #fff;
 }
 
@@ -93,25 +93,6 @@
   flex-shrink: 0;
 }
 
-.mobileToggle {
-  position: fixed;
-  top: 1rem;
-  left: 1rem;
-  z-index: 50;
-  padding: 0.5rem;
-  border-radius: 0.375rem;
-  background-color: #96baee;
-  color: #000;
-  border: none;
-  cursor: pointer;
-  display: none;
-}
-
-.dark .mobileToggle {
-  background-color: #1a365d;
-  color: #fff;
-}
-
 @media (max-width: 768px) {
   .sidebar {
     transform: translateX(-100%);
@@ -121,9 +102,5 @@
   .sidebarOpen {
     transform: translateX(0);
     box-shadow: 2px 0 10px rgba(0,0,0,0.1);
-  }
-  
-  .mobileToggle {
-    display: block;
   }
 }

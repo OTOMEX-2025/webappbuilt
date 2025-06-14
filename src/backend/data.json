@@ -7,18 +7,48 @@
       "followUpsNeeded": 5
     },
     "weeklySessions": [
-      { "name": "Mon", "sessions": 6 },
-      { "name": "Tue", "sessions": 9 },
-      { "name": "Wed", "sessions": 7 },
-      { "name": "Thu", "sessions": 8 },
-      { "name": "Fri", "sessions": 5 }
+      {
+        "name": "Mon",
+        "sessions": 6
+      },
+      {
+        "name": "Tue",
+        "sessions": 9
+      },
+      {
+        "name": "Wed",
+        "sessions": 7
+      },
+      {
+        "name": "Thu",
+        "sessions": 8
+      },
+      {
+        "name": "Fri",
+        "sessions": 5
+      }
     ],
     "patientDistribution": [
-      { "name": "Anxiety Disorders", "value": 35 },
-      { "name": "Depression", "value": 30 },
-      { "name": "PTSD", "value": 15 },
-      { "name": "Bipolar Disorder", "value": 10 },
-      { "name": "OCD", "value": 10 }
+      {
+        "name": "Anxiety Disorders",
+        "value": 35
+      },
+      {
+        "name": "Depression",
+        "value": 30
+      },
+      {
+        "name": "PTSD",
+        "value": 15
+      },
+      {
+        "name": "Bipolar Disorder",
+        "value": 10
+      },
+      {
+        "name": "OCD",
+        "value": 10
+      }
     ]
   },
   "patients": {
@@ -96,18 +126,69 @@
         "type": "Trauma Therapy",
         "status": "Pending",
         "notes": "EMDR session planned"
+      },
+      {
+        "id": 4,
+        "patient": "David Wilson",
+        "date": "2023-06-18",
+        "time": "3:00 PM",
+        "duration": "45 mins",
+        "type": "Mood Stabilization",
+        "status": "Pending",
+        "notes": "Discuss recent mood swings"
+      },
+      {
+        "patientId": 3,
+        "date": "2025-06-14",
+        "time": "20:20",
+        "duration": "60 mins",
+        "type": "Trauma Therapy",
+        "notes": "akere ka testa",
+        "patient": "Emma Rodriguez",
+        "id": 9,
+        "status": "Pending"
       }
     ],
     "past": [
       {
-        "id": 4,
+        "id": 5,
+        "patient": "Sarah Johnson",
+        "date": "2023-06-01",
+        "time": "10:00 AM",
+        "duration": "50 mins",
+        "type": "Cognitive Behavioral Therapy",
+        "status": "Completed",
+        "notes": "Patient showed improvement in managing anxiety triggers"
+      },
+      {
+        "id": 6,
+        "patient": "Michael Chen",
+        "date": "2023-05-28",
+        "time": "2:30 PM",
+        "duration": "45 mins",
+        "type": "Psychotherapy",
+        "status": "Completed",
+        "notes": "Discussed medication side effects, adjusted dosage"
+      },
+      {
+        "id": 7,
+        "patient": "Emma Rodriguez",
+        "date": "2023-05-25",
+        "time": "11:15 AM",
+        "duration": "60 mins",
+        "type": "Trauma Therapy",
+        "status": "Completed",
+        "notes": "Processed recent traumatic memory, patient was emotional but responsive"
+      },
+      {
+        "id": 8,
         "patient": "David Wilson",
-        "date": "2023-06-10",
+        "date": "2023-05-20",
         "time": "3:00 PM",
         "duration": "45 mins",
         "type": "Mood Stabilization",
         "status": "Completed",
-        "notes": "Patient reports improved sleep patterns"
+        "notes": "Stable mood reported, no manic episodes in past month"
       }
     ]
   },
@@ -137,9 +218,18 @@
       }
     ],
     "resources": [
-      { "name": "Crisis Hotline", "number": "988" },
-      { "name": "Local ER", "number": "555-1234" },
-      { "name": "Psychiatrist On Call", "number": "555-5678" }
+      {
+        "name": "Crisis Hotline",
+        "number": "988"
+      },
+      {
+        "name": "Local ER",
+        "number": "555-1234"
+      },
+      {
+        "name": "Psychiatrist On Call",
+        "number": "555-5678"
+      }
     ]
   }
 }

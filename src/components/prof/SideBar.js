@@ -3,17 +3,17 @@
 import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { 
-  RiDashboardLine, 
-  RiUserLine, 
-  RiTimeLine, 
-  RiAlertLine, 
-  RiBarChartLine
-} from '@remixicon/react';
 import styles from '../../styles/prof/SideBar.module.css';
 import { useTheme } from '../../context/ThemeContext';
 
-const Sidebar = ({ isOpen, setIsOpen }) => {
+const Sidebar = ({ 
+  isOpen, 
+  setIsOpen, 
+  navItems = [],
+  logo = "Logo",
+  logoComponent,
+  width = "250px"
+}) => {
   const [isMobile, setIsMobile] = useState(false);
   const pathname = usePathname();
   const { theme } = useTheme();
@@ -27,18 +27,15 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const navItems = [
-    { name: 'Dashboard', path: '/prof/dashboard', icon: <RiDashboardLine size={20} /> },
-    { name: 'Profiles', path: '/prof/profiles', icon: <RiUserLine size={20} /> },
-    { name: 'Sessions', path: '/prof/sessions', icon: <RiTimeLine size={20} /> },
-    { name: 'Emergencies', path: '/prof/emergencies', icon: <RiAlertLine size={20} /> },
-    { name: 'Analysis', path: '/prof/analysis', icon: <RiBarChartLine size={20} /> },
-  ];
-
   return (
-    <aside className={`${styles.sidebar} ${isOpen ? styles.sidebarOpen : styles.sidebarClosed} ${theme === 'dark' ? styles.dark : ''}`}>
+    <aside 
+      className={`${styles.sidebar} ${isOpen ? styles.sidebarOpen : styles.sidebarClosed} ${theme === 'dark' ? styles.dark : ''}`}
+      style={{ width }}
+    >
       <div className={styles.header}>
-        <h1 className={styles.title}>Logo</h1>
+        <h1 className={styles.title}>
+          {logoComponent || logo}
+        </h1>
       </div>
       <nav className={styles.nav}>
         <ul className={styles.navList}>
@@ -50,7 +47,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                   pathname === item.path ? styles.navLinkActive : ''
                 } ${theme === 'dark' ? styles.dark : ''}`}
               >
-                <span className={styles.icon}>{item.icon}</span>
+                {item.icon && <span className={styles.icon}>{item.icon}</span>}
                 <span>{item.name}</span>
               </Link>
             </li>
