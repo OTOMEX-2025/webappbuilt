@@ -12,6 +12,16 @@
   --toggle-color: #1e293b;
   --toggle-hover: rgba(255, 255, 255, 0.9);
   --border-color: rgba(0, 0, 0, 0.1);
+  --highlight-bg: #f8f9fa;
+  --highlight-title: #2c3e50;
+  --highlight-text: #495057;
+  --card-bg: #ffffff;
+  --section-title: #343a40;
+  --text-secondary: #6c757d;
+  --secondary-button-bg: #e9ecef;
+  --secondary-button-text: #495057;
+  --secondary-button-hover: #dee2e6;
+  --accent-color: #4361ee;
 }
 
 [data-theme="dark"] {
@@ -23,7 +33,17 @@
   --toggle-bg: rgba(255, 255, 255, 0.1);
   --toggle-color: #f7fafc;
   --toggle-hover: rgba(255, 255, 255, 0.2);
-  --border-color: rgba(255, 255, 255, 0.1);;
+  --border-color: rgba(255, 255, 255, 0.1);
+  --highlight-bg: #2d3748;
+  --highlight-title: #e2e8f0;
+  --highlight-text: #a0aec0;
+  --card-bg: #1a202c;
+  --section-title: #e2e8f0;
+  --text-secondary: #718096;
+  --secondary-button-bg: #2d3748;
+  --secondary-button-text: #e2e8f0;
+  --secondary-button-hover: #4a5568;
+  --accent-color: #63b3ed;
 }
 
 html, body {
