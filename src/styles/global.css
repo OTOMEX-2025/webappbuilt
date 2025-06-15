@@ -22,6 +22,45 @@
   --secondary-button-text: #495057;
   --secondary-button-hover: #dee2e6;
   --accent-color: #4361ee;
+
+  /* New Color Palette */
+  --primary: #2a9d8f;       /* Greenish-blue */
+  --primary-light: #76c7ba; /* Lighter greenish-blue */
+  --primary-dark: #1d7a6d;  /* Darker greenish-blue */
+  --secondary: #264653;     /* Dark teal */
+  --accent: #e9c46a;        /* Soft yellow */
+  --danger: #e76f51;        /* Coral red */
+  --danger-light: #f8d7da;
+  --success: #2a9d8f;       /* Same as primary for consistency */
+  
+  /* Neutral Colors */
+  --white: #ffffff;
+  --gray-50: #f8f9fa;
+  --gray-100: #f1f3f5;
+  --gray-200: #e9ecef;
+  --gray-300: #dee2e6;
+  --gray-400: #ced4da;
+  --gray-500: #adb5bd;
+  --gray-600: #868e96;
+  --gray-700: #495057;
+  --gray-800: #343a40;
+  --gray-900: #212529;
+  
+  /* Text Colors */
+  --text-primary: var(--gray-900);
+  --text-secondary: var(--gray-600);
+  --text-light: var(--gray-100);
+  
+  /* Background Colors */
+  --bg-primary: var(--white);
+  --bg-secondary: var(--gray-50);
+  --bg-tertiary: var(--gray-100);
+  --bg-hover: var(--gray-100);
+  
+  /* Borders */
+  --border: var(--gray-200);
+
+
 }
 
 [data-theme="dark"] {
