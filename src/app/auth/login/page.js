@@ -13,31 +13,52 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     setError("");
 
-    // Simulate login without backend
-    setTimeout(() => {
-      // For demo purposes - just check if fields are filled
-      if (email && password) {
-        // Store a dummy token
-        localStorage.setItem("token", "demo-token");
-        router.push('/client/dashboard',);
- // Redirect to client dashboard
-      } else {
-        setError("Please fill in all fields");
+    try {
+      const response = await fetch('/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Login failed');
       }
+
+      // Store the token in localStorage
+      localStorage.setItem("token", data.token);
+      
+      // Redirect based on user type
+      switch(data.userType) {
+        case 'client':
+          router.push('/client/dashboard');
+          break;
+        case 'professional':
+          router.push('/prof/dashboard');
+          break;
+        case 'admin':
+          router.push('/admin/dashboard');
+          break;
+        default:
+          router.push('/client/dashboard');
+      }
+    } catch (error) {
+      setError(error.message || "Login failed. Please try again.");
+    } finally {
       setIsLoading(false);
-    }, 1000); // Simulate network delay
+    }
   };
 
   return (
     <main className={styles.container}>
-      {/* <div className={styles.decorativeLeft}></div>
-      <div className={styles.decorativeRight}></div> */}
-
       <div className={styles.loginBox}>
         <div className={styles.logo}>
           <Image
@@ -71,7 +92,7 @@ export default function LoginPage() {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-            <Link href="/client/dashboard">
+
           <button
             type="submit"
             className={styles.button}
@@ -79,13 +100,11 @@ export default function LoginPage() {
           >
             {isLoading ? "Logging in..." : "Login"}
           </button>
-          </Link>
-
         </form>
 
         <div className={styles.footer}>
           <p>
-            Don't have an account?{" "}
+            Don&apos;t have an account?{" "}
             <Link href="/auth/register" className={styles.link}>
               Sign up
             </Link>

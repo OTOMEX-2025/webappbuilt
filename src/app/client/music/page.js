@@ -1,104 +1,143 @@
+'use client';
+import { useContext, useEffect } from 'react';
+import { MusicContext } from '@/context/MusicContext';
+import MusicPlayer from '@/components/MusicPlayer/MusicPlayer';
+import styles from './MusicPage.module.css';
 
-import React from 'react';
-import { Play, Pause, SkipForward, SkipBack, Volume2 } from 'lucide-react';
-import styles from './Music.module.css';
+const MusicPage = () => {
+  const { 
+    musicData, 
+    currentTrack, 
+    playTrack,
+    setPlaylist,
+    error
+  } = useContext(MusicContext);
 
-const Music = () => {
-  const playlists = [
-    {
-      title: "Calming Nature Sounds",
-      description: "Immersive 8D nature sounds for deep relaxation",
-      duration: "2h 15m",
-      tracks: 12,
-      image: "https://images.unsplash.com/photo-1501426026826-31c667bdf23d?auto=format&fit=crop&q=80&w=2000"
-    },
-    {
-      title: "Meditation Melodies",
-      description: "Peaceful 8D music for meditation and mindfulness",
-      duration: "1h 45m",
-      tracks: 8,
-      image: "https://images.unsplash.com/photo-1528715471579-d1bcf0ba5e83?auto=format&fit=crop&q=80&w=2000"
-    },
-    {
-      title: "Sleep Sounds",
-      description: "Gentle 8D ambient sounds for better sleep",
-      duration: "8h",
-      tracks: 10,
-      image: "https://images.unsplash.com/photo-1506929562872-bb421503ef21?auto=format&fit=crop&q=80&w=2000"
+  useEffect(() => {
+    if (musicData?.tracks) {
+      setPlaylist(musicData.tracks);
     }
-  ];
+  }, [musicData, setPlaylist]);
+
+  if (error) {
+    return (
+      <div className={styles.errorContainer}>
+        <h1>Music Error</h1>
+        <p>{error}</p>
+      </div>
+    );
+  }
+
+  if (!musicData) {
+    return <div className={styles.loading}>Loading music...</div>;
+  }
 
   return (
     <div className={styles.container}>
+      <h1 className={styles.title}>Mindful Music</h1>
       
+      <div className={styles.sections}>
+        {/* Recently Played */}
+        {musicData.userData?.recentlyPlayed?.length > 0 && (
+          <section className={styles.section} aria-labelledby="recently-played-heading">
+            <h2 id="recently-played-heading">Recently Played</h2>
+            <div className={styles.trackGrid}>
+              {musicData.userData.recentlyPlayed.map(trackId => {
+                const track = musicData.tracks.find(t => t.id === trackId);
+                if (!track) return null;
+                return (
+                  <div 
+                    key={track.id} 
+                    className={`${styles.trackCard} ${currentTrack?.id === track.id ? styles.active : ''}`}
+                    onClick={() => playTrack(track)}
+                    role="button"
+                    tabIndex="0"
+                    aria-label={`Play ${track.title} by ${track.artist}`}
+                  >
+                    <img 
+                      src={track.coverArt} 
+                      alt="" 
+                      className={styles.trackImage} 
+                    />
+                    <div className={styles.trackInfo}>
+                      <h3>{track.title}</h3>
+                      <p>{track.artist}</p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+        )}
 
-      <div className={styles.player}>
-        <div className={styles.playerContent}>
-          <img
-            src="https://images.unsplash.com/photo-1528715471579-d1bcf0ba5e83?auto=format&fit=crop&q=80&w=2000"
-            alt="Now Playing"
-            className={styles.playerImage}
-          />
-          <div className={styles.playerInfo}>
-            <h3 className={styles.playerTitle}>Peaceful Meditation</h3>
-            <p className={styles.playerSubtitle}>8D Ambient Music</p>
-            
-            <div className={styles.progressContainer}>
-              <div className={styles.progressBar}>
-                <div className={styles.progress}></div>
-              </div>
-              <div className={styles.timeInfo}>
-                <span>1:23</span>
-                <span>4:56</span>
-              </div>
+        {/* Playlists */}
+        {musicData.playlists?.length > 0 && (
+          <section className={styles.section} aria-labelledby="playlists-heading">
+            <h2 id="playlists-heading">Your Playlists</h2>
+            <div className={styles.playlistGrid}>
+              {musicData.playlists.map(playlist => (
+                <div 
+                  key={playlist.id} 
+                  className={styles.playlistCard}
+                  role="button"
+                  tabIndex="0"
+                  aria-label={`View ${playlist.title} playlist`}
+                >
+                  <img 
+                    src={playlist.image} 
+                    alt="" 
+                    className={styles.playlistImage} 
+                  />
+                  <div className={styles.playlistInfo}>
+                    <h3>{playlist.title}</h3>
+                    <p>{playlist.description}</p>
+                    <div className={styles.playlistMeta}>
+                      <span>{playlist.tracks.length} tracks • {playlist.duration}</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
+          </section>
+        )}
+
+        {/* All Tracks */}
+        <section className={styles.section} aria-labelledby="all-tracks-heading">
+          <h2 id="all-tracks-heading">All Tracks</h2>
+          <div className={styles.trackList}>
+            {musicData.tracks?.map(track => (
+              <div 
+                key={track.id} 
+                className={`${styles.trackItem} ${currentTrack?.id === track.id ? styles.active : ''}`}
+                onClick={() => playTrack(track)}
+                role="button"
+                tabIndex="0"
+                aria-label={`Play ${track.title} by ${track.artist}`}
+              >
+                <img 
+                  src={track.coverArt} 
+                  alt="" 
+                  className={styles.trackImage} 
+                />
+                <div className={styles.trackDetails}>
+                  <h3>{track.title}</h3>
+                  <p>{track.artist}</p>
+                </div>
+                <div className={styles.trackDuration}>
+                  {Math.floor(track.duration / 60)}:{String(track.duration % 60).padStart(2, '0')}
+                </div>
+              </div>
+            ))}
           </div>
-        </div>
-        
-        <div className={styles.controls}>
-          <button className={styles.controlButton}>
-            <SkipBack size={24} />
-          </button>
-          <button className={styles.playButton}>
-            <Pause size={24} />
-          </button>
-          <button className={styles.controlButton}>
-            <SkipForward size={24} />
-          </button>
-          <div className={styles.volumeControl}>
-            <Volume2 size={20} />
-            <div className={styles.volumeBar}>
-              <div className={styles.volumeProgress}></div>
-            </div>
-          </div>
-        </div>
+        </section>
       </div>
 
-      <div className={styles.playlists}>
-        {playlists.map((playlist, index) => (
-          <div key={index} className={styles.playlistCard}>
-            <img
-              src={playlist.image}
-              alt={playlist.title}
-              className={styles.playlistImage}
-            />
-            <div className={styles.playlistContent}>
-              <h3 className={styles.playlistTitle}>{playlist.title}</h3>
-              <p className={styles.playlistDescription}>{playlist.description}</p>
-              <div className={styles.playlistFooter}>
-                <span className={styles.playlistMeta}>
-                  {playlist.tracks} tracks • {playlist.duration}
-                </span>
-                <button className={styles.playlistButton}>
-                  <Play size={20} />
-                </button>
-              </div>
-            </div>
-          </div>
-        ))}
+      {/* Player is fixed at the bottom */}
+      <div className={styles.playerWrapper}>
+        <MusicPlayer />
       </div>
     </div>
   );
-}
+};
 
-export default Music;
+export default MusicPage;

@@ -85,7 +85,7 @@ const Games = () => {
           Daily Challenge
         </h2>
         <p className={styles.challengeText}>
-          Complete today's mindfulness exercise to earn 100 bonus points!
+          Complete today&apos;s mindfulness exercise to earn 100 bonus points!
         </p>
         <button className={styles.challengeButton}>
           Start Challenge

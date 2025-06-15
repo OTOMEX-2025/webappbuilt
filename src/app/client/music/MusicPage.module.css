@@ -1,0 +1,248 @@
+.container {
+  padding: 2rem;
+  padding-bottom: 150px; /* Space for fixed player */
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.errorContainer {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+  color: var(--error-color);
+}
+
+.errorContainer h1 {
+  color: var(--error-color);
+}
+
+.title {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: var(--text-primary);
+}
+
+.sections {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.section h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.trackGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+.trackCard {
+  background: var(--background-secondary);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+  border: 1px solid var(--border-color);
+}
+
+.trackCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.trackCard:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+}
+
+.trackCard.active {
+  outline: 2px solid var(--accent-primary);
+}
+
+.trackImage {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  background: var(--background-tertiary);
+}
+
+.trackInfo {
+  padding: 1rem;
+}
+
+.trackInfo h3 {
+  margin: 0;
+  font-size: 1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--text-primary);
+}
+
+.trackInfo p {
+  margin: 0.25rem 0 0;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.playlistGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.playlistCard {
+  background: var(--background-secondary);
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  transition: transform 0.2s;
+  border: 1px solid var(--border-color);
+}
+
+.playlistCard:hover {
+  transform: translateY(-4px);
+}
+
+.playlistCard:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+}
+
+.playlistImage {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  background: var(--background-tertiary);
+}
+
+.playlistInfo {
+  padding: 1rem;
+  flex: 1;
+}
+
+.playlistInfo h3 {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--text-primary);
+}
+
+.playlistInfo p {
+  margin: 0.5rem 0;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.playlistMeta {
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+}
+
+.trackList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.trackItem {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem;
+  border-radius: 4px;
+  background: var(--background-secondary);
+  transition: background 0.2s;
+  cursor: pointer;
+  border: 1px solid var(--border-color);
+}
+
+.trackItem:hover {
+  background: var(--background-tertiary);
+}
+
+.trackItem:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+}
+
+.trackItem.active {
+  background: var(--accent-primary-transparent);
+}
+
+.trackImage {
+  width: 50px;
+  height: 50px;
+  border-radius: 4px;
+  object-fit: cover;
+  background: var(--background-tertiary);
+}
+
+.trackDetails {
+  flex: 1;
+}
+
+.trackDetails h3 {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--text-primary);
+}
+
+.trackDetails p {
+  margin: 0.25rem 0 0;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.trackDuration {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.playerWrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--background-primary);
+  border-top: 1px solid var(--border-color);
+  z-index: 100;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 1.25rem;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+    padding-bottom: 150px;
+  }
+  
+  .trackGrid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+  
+  .playlistGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .playlistCard {
+    flex-direction: column;
+  }
+  
+  .playlistImage {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+  }
+}
