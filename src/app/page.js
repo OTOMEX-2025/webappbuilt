@@ -1,39 +1,55 @@
-import React from 'react';
-import { MessageCircle, User, Newspaper, Gamepad2, Headphones } from 'lucide-react';
-import styles from '../styles/Home.module.css';
-import Link from 'next/link';
+import React from "react";
+import {
+  MessageCircle,
+  User,
+  Newspaper,
+  Gamepad2,
+  Headphones,
+} from "lucide-react";
+import styles from "../styles/Home.module.css";
+import Link from "next/link";
 
 function LandingPage() {
   const features = [
-    { 
-      title: 'AI Chatbot', 
-      description: 'Get instant support and guidance from our AI-powered mental health chatbot, available 24/7.', 
+    {
+      title: "AI Chatbot",
+      description:
+        "Get instant support and guidance from our AI-powered mental health chatbot, available 24/7.",
       icon: <MessageCircle className={styles.featureIcon} />,
-      image: 'https://images.unsplash.com/photo-1617042375876-a13e36732a04?auto=format&fit=crop&q=80&w=800'
+      image:
+        "https://images.unsplash.com/photo-1617042375876-a13e36732a04?auto=format&fit=crop&q=80&w=800",
     },
-    { 
-      title: '1:1 Sessions', 
-      description: 'Book personalized one-on-one sessions with certified mental health professionals.', 
+    {
+      title: "1:1 Sessions",
+      description:
+        "Book personalized one-on-one sessions with certified mental health professionals.",
       icon: <User className={styles.featureIcon} />,
-      image: 'https://images.unsplash.com/photo-1580894732930-0babd100d356?auto=format&fit=crop&q=80&w=800'
+      image:
+        "https://images.unsplash.com/photo-1580894732930-0babd100d356?auto=format&fit=crop&q=80&w=800",
     },
-    { 
-      title: 'Mental Health Articles', 
-      description: 'Stay informed with the latest mental health news, articles, and newsletters curated by experts.', 
+    {
+      title: "Mental Health Articles",
+      description:
+        "Stay informed with the latest mental health news, articles, and newsletters curated by experts.",
       icon: <Newspaper className={styles.featureIcon} />,
-      image: 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&q=80&w=800'
+      image:
+        "https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&q=80&w=800",
     },
-    { 
-      title: 'Mental Health Games', 
-      description: 'Engage in fun and therapeutic games designed to improve mental well-being and reduce stress.', 
+    {
+      title: "Mental Health Games",
+      description:
+        "Engage in fun and therapeutic games designed to improve mental well-being and reduce stress.",
       icon: <Gamepad2 className={styles.featureIcon} />,
-      image: 'https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?auto=format&fit=crop&q=80&w=800'
+      image:
+        "https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?auto=format&fit=crop&q=80&w=800",
     },
-    { 
-      title: '8D Music for Relaxation', 
-      description: 'Immerse yourself in 8D audio experiences designed to relax your mind and enhance focus.', 
+    {
+      title: "8D Music for Relaxation",
+      description:
+        "Immerse yourself in 8D audio experiences designed to relax your mind and enhance focus.",
       icon: <Headphones className={styles.featureIcon} />,
-      image: 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?auto=format&fit=crop&q=80&w=800'
+      image:
+        "https://images.unsplash.com/photo-1511379938547-c1f69419868d?auto=format&fit=crop&q=80&w=800",
     },
   ];
 
@@ -96,7 +112,9 @@ function LandingPage() {
       {/* Call-to-Action Section */}
       <section className={styles.cta}>
         <div className={styles.ctaContainer}>
-          <h2 className={styles.ctaTitle}>Don't let stress take over your life</h2>
+          <h2 className={styles.ctaTitle}>
+            Don't let stress take over your life
+          </h2>
           <p className={styles.ctaSubtitle}>
             Start your journey to a healthier, happier you today
           </p>

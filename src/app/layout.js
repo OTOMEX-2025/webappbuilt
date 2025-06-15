@@ -26,9 +26,7 @@ export default function RootLayout({ children }) {
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <ThemeProvider>
           <MusicProvider>
-            <div className="main-content">
-              {children}
-            </div>
+            <div className="main-content">{children}</div>
           </MusicProvider>
         </ThemeProvider>
       </body>
