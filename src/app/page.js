@@ -67,25 +67,25 @@ function LandingPage() {
       </header>
 
       {/* Features Section */}
-      <section className={styles.featuresSection}>
+      <section className={styles.features}>
         <div className={styles.featuresContainer}>
-          <h2 className={styles.featuresTitle}>Explore our Features</h2>
+          <h2 className={styles.sectionTitle}>Explore our Features</h2>
           <div className={styles.featuresGrid}>
             {features.map((feature, index) => (
               <div key={index} className={styles.featureCard}>
-                <div className={styles.featureImageContainer}>
+                <div className={styles.cardImage}>
                   <img
                     src={feature.image}
                     alt={feature.title}
                     className={styles.featureImage}
                   />
                 </div>
-                <div className={styles.featureContent}>
+                <div className={styles.cardContent}>
                   <div className={styles.featureIconContainer}>
                     {feature.icon}
                   </div>
-                  <h3 className={styles.featureCardTitle}>{feature.title}</h3>
-                  <p className={styles.featureCardDescription}>{feature.description}</p>
+                  <h3 className={styles.cardTitle}>{feature.title}</h3>
+                  <p className={styles.cardText}>{feature.description}</p>
                 </div>
               </div>
             ))}
@@ -94,7 +94,7 @@ function LandingPage() {
       </section>
 
       {/* Call-to-Action Section */}
-      <section className={styles.ctaSection}>
+      <section className={styles.cta}>
         <div className={styles.ctaContainer}>
           <h2 className={styles.ctaTitle}>Don't let stress take over your life</h2>
           <p className={styles.ctaSubtitle}>

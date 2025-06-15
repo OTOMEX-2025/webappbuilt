@@ -1,0 +1,170 @@
+/* Highlights Section */
+.highlights {
+  padding: 2rem 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.highlightCard {
+  display: flex;
+  background: var(--highlight-bg);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 3rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.highlightContent {
+  flex: 1;
+  padding: 2rem;
+}
+
+.highlightImage {
+  flex: 1;
+  position: relative;
+  min-height: 300px;
+}
+
+.highlightTitle {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  color: var(--highlight-title);
+}
+
+.highlightText {
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  color: var(--highlight-text);
+}
+
+.featureGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.featureItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.featureIcon {
+  color: var(--accent-color);
+}
+
+.stats {
+  display: flex;
+  gap: 1rem;
+  margin: 1.5rem 0;
+  font-size: 0.9rem;
+  color: var(--highlight-text);
+}
+
+/* Section Titles */
+.sectionTitle {
+  font-size: 1.5rem;
+  margin: 2rem 0 1rem;
+  color: var(--section-title);
+}
+
+/* Grid Layouts */
+.meetingsGrid,
+.newsGrid,
+.musicGrid,
+.gamesGrid {
+  display: grid;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.meetingsGrid {
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+
+.newsGrid {
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+
+.musicGrid,
+.gamesGrid {
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+}
+
+/* Card Styles */
+.meetingCard,
+.newsCard,
+.musicCard,
+.gameCard {
+  background: var(--card-bg);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+.meetingCard:hover,
+.newsCard:hover,
+.musicCard:hover,
+.gameCard:hover {
+  transform: translateY(-5px);
+}
+
+.meetingImage,
+.newsImage,
+.musicImage,
+.gameImage {
+  position: relative;
+  height: 180px;
+}
+
+.meetingContent,
+.newsContent,
+.musicContent,
+.gameContent {
+  padding: 1.5rem;
+}
+
+.meetingTherapist,
+.newsMeta,
+.musicMeta,
+.gameMeta {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin: 0.5rem 0;
+}
+
+/* Buttons */
+.secondaryButton {
+  background: var(--secondary-button-bg);
+  color: var(--secondary-button-text);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: background 0.2s;
+}
+
+.secondaryButton:hover {
+  background: var(--secondary-button-hover);
+}
+
+.textButton {
+  background: none;
+  border: none;
+  color: var(--accent-color);
+  cursor: pointer;
+  padding: 0;
+  margin-top: 1rem;
+}
+
+/* Loading State */
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 1.2rem;
+}
