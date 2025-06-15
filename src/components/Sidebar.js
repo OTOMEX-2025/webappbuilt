@@ -57,10 +57,10 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                 <span className={styles.menuLabel}>{item.label}</span>
               </Link>
             ))}
-            {/* <button onClick={toggleTheme} className={styles.themeToggle}>
+            <button onClick={toggleTheme} className={styles.themeToggle}>
               {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
               <span className={styles.menuLabel}>Toggle Theme</span>
-            </button> */}
+            </button>
           </div>
         </div>
       </aside>

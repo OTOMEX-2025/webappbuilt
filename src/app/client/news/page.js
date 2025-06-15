@@ -1,98 +1,95 @@
 'use client';
-import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
+import React from 'react';
 import { BookOpen, ThumbsUp, MessageSquare, Share2 } from 'lucide-react';
 import styles from './News.module.css';
 
-const NewsPage = () => {
-  const [articles, setArticles] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const fetchArticles = async () => {
-      try {
-        const response = await fetch('/api/clt/news');
-        if (!response.ok) throw new Error('Failed to fetch articles');
-        const data = await response.json();
-        setArticles(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchArticles();
-  }, []);
-
-  if (loading) return <div className={styles.loading}>Loading articles...</div>;
-  if (error) return <div className={styles.error}>Error: {error}</div>;
+const News = () => {
+  const articles = [
+    {
+      title: "Understanding and Managing Anxiety in Daily Life",
+      excerpt: "Discover practical strategies for managing anxiety and building resilience in your everyday routine...",
+      author: "Dr. Rachel Thompson",
+      readTime: "5 min read",
+      likes: 128,
+      comments: 32,
+      image: "https://images.unsplash.com/photo-1499209974431-9dddcece7f88?auto=format&fit=crop&q=80&w=2000"
+    },
+    {
+      title: "The Science Behind Mindfulness Meditation",
+      excerpt: "Recent studies show how mindfulness meditation can physically alter brain structure and reduce stress...",
+      author: "Prof. David Anderson",
+      readTime: "8 min read",
+      likes: 245,
+      comments: 56,
+      image: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&q=80&w=2000"
+    },
+    {
+      title: "Building Healthy Digital Habits",
+      excerpt: "Learn how to maintain a balanced relationship with technology while protecting your mental health...",
+      author: "Emma Martinez",
+      readTime: "6 min read",
+      likes: 189,
+      comments: 43,
+      image: "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&q=80&w=2000"
+    }
+  ];
 
   return (
     <div className={styles.container}>
-      <div className={styles.header}>
-        <h1>Mental Health News & Articles</h1>
-        <p>Stay informed with the latest research and insights on mental wellbeing</p>
-        <Link href="/client/news/create" className={styles.createButton}>
-          Create New Article
-        </Link>
-      </div>
+      
       
       <div className={styles.articlesList}>
-        {articles.map((article) => (
-          <article key={article.id} className={styles.articleCard}>
-            <Link href={`/client/news/${article.id}`} className={styles.articleLink}>
-              <div className={styles.articleContent}>
-                <img
-                  src={article.image}
-                  alt={article.title}
-                  className={styles.articleImage}
-                />
-                <div className={styles.articleText}>
-                  <div className={styles.articleHeader}>
-                    <span className={styles.category}>{article.category}</span>
-                    <span className={styles.readTime}>
-                      <BookOpen className={styles.readTimeIcon} />
-                      {article.readTime}
-                    </span>
-                  </div>
+        {articles.map((article, index) => (
+          <article key={index} className={styles.articleCard}>
+            <div className={styles.articleContent}>
+              <img
+                src={article.image}
+                alt={article.title}
+                className={styles.articleImage}
+              />
+              <div className={styles.articleText}>
+                <div className={styles.articleHeader}>
+                  <span className={styles.category}>Mental Health</span>
+                  <span className={styles.readTime}>
+                    <BookOpen className={styles.readTimeIcon} />
+                    {article.readTime}
+                  </span>
+                </div>
+                
+                <h2 className={styles.articleTitle}>
+                  {article.title}
+                </h2>
+                
+                <p className={styles.articleExcerpt}>
+                  {article.excerpt}
+                </p>
+                
+                <div className={styles.articleFooter}>
+                  <span className={styles.author}>
+                    By {article.author}
+                  </span>
                   
-                  <h2 className={styles.articleTitle}>
-                    {article.title}
-                  </h2>
-                  
-                  <p className={styles.articleExcerpt}>
-                    {article.summary}
-                  </p>
-                  
-                  <div className={styles.articleFooter}>
-                    <span className={styles.author}>
-                      By {article.author} • {article.date}
-                    </span>
-                    
-                    <div className={styles.articleActions}>
-                      <button className={styles.actionButton}>
-                        <ThumbsUp className={styles.actionIcon} />
-                        <span>{article.likes}</span>
-                      </button>
-                      <button className={styles.actionButton}>
-                        <MessageSquare className={styles.actionIcon} />
-                        <span>{article.comments}</span>
-                      </button>
-                      <button className={styles.shareButton}>
-                        <Share2 className={styles.actionIcon} />
-                      </button>
-                    </div>
+                  <div className={styles.articleActions}>
+                    <button className={styles.actionButton}>
+                      <ThumbsUp className={styles.actionIcon} />
+                      <span>{article.likes}</span>
+                    </button>
+                    <button className={styles.actionButton}>
+                      <MessageSquare className={styles.actionIcon} />
+                      <span>{article.comments}</span>
+                    </button>
+                    <button className={styles.shareButton}>
+                      <Share2 className={styles.actionIcon} />
+                    </button>
                   </div>
                 </div>
               </div>
-            </Link>
+            </div>
           </article>
         ))}
       </div>
     </div>
   );
-};
+}
 
-export default NewsPage;
+export default News;

@@ -3,8 +3,6 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: var(--bg-color);
-  color: var(--text-color);
   transition: all 0.3s ease;
 }
 
@@ -31,48 +29,27 @@
 }
 
 /* Hero Section */
-.heroSection {
+.hero {
+  background: var(--hero-bg);
+  color: white;
+  padding: 6rem 2rem 4rem;
+  text-align: center;
   position: relative;
-  height: 100vh;
-  min-height: 600px;
-  width: 100%;
-  display: flex;
-  align-items: center;
   overflow: hidden;
 }
 
-.heroBackground {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-}
-
-.heroImage {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
 .heroContent {
+  max-width: 1200px;
+  margin: 0 auto;
   position: relative;
   z-index: 2;
-  max-width: 1200px;
-  width: 100%;
-  padding: 0 2rem;
-  margin: 0 auto;
-  text-align: left;
 }
 
 .heroTitle {
-  font-size: 3.5rem;
+  font-size: 3rem;
   font-weight: 700;
   margin-bottom: 1.5rem;
   line-height: 1.2;
-  color: white;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .heroHighlight {
@@ -81,52 +58,9 @@
 
 .heroSubtitle {
   font-size: 1.5rem;
-  max-width: 600px;
-  margin-bottom: 2rem;
+  max-width: 700px;
+  margin: 0 auto 2rem;
   opacity: 0.9;
-  color: white;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-}
-
-.heroButtons {
-  display: flex;
-  gap: 1rem;
-  margin-top: 2rem;
-}
-
-.primaryButton {
-  background: #4f46e5;
-  color: white;
-  border: none;
-  padding: 0.75rem 2rem;
-  font-size: 1rem;
-  font-weight: 600;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.primaryButton:hover {
-  background: #4338ca;
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-}
-
-.secondaryButton {
-  background: transparent;
-  color: white;
-  border: 2px solid white;
-  padding: 0.75rem 2rem;
-  font-size: 1rem;
-  font-weight: 600;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.secondaryButton:hover {
-  background: rgba(255, 255, 255, 0.1);
-  transform: translateY(-2px);
 }
 
 /* Features Section */
@@ -136,22 +70,12 @@
   flex: 1;
 }
 
-.featuresContainer {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.sectionTitle {
-  font-size: 2.5rem;
-  text-align: center;
-  margin-bottom: 3rem;
-  color: var(--text-color);
-}
-
 .featuresGrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .featureCard {
@@ -175,27 +99,11 @@
   width: 100%;
 }
 
-.featureImage {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
 .cardContent {
   padding: 1.5rem;
   flex: 1;
   display: flex;
   flex-direction: column;
-}
-
-.featureIconContainer {
-  margin-bottom: 1rem;
-}
-
-.featureIcon {
-  width: 2.5rem;
-  height: 2.5rem;
-  color: var(--primary-color);
 }
 
 .cardTitle {
@@ -212,6 +120,36 @@
   line-height: 1.6;
 }
 
+.cardList {
+  list-style-type: none;
+  padding: 0;
+  margin: 0 0 1.5rem;
+}
+
+.cardListItem {
+  padding: 0.5rem 0;
+  color: var(--text-color);
+  position: relative;
+  padding-left: 1.5rem;
+  line-height: 1.6;
+}
+
+.cardListItem::before {
+  content: "•";
+  color: var(--primary-color);
+  position: absolute;
+  left: 0;
+  font-size: 1.2rem;
+}
+
+.cardQuote {
+  font-style: italic;
+  color: var(--text-color);
+  opacity: 0.9;
+  line-height: 1.6;
+  margin: auto 0 0;
+}
+
 /* Call to Action */
 .cta {
   background: var(--hero-bg);
@@ -220,21 +158,13 @@
   text-align: center;
 }
 
-.ctaContainer {
-  max-width: 800px;
-  margin: 0 auto;
-}
-
 .ctaTitle {
   font-size: 2rem;
   font-weight: 700;
-  margin-bottom: 1rem;
-}
-
-.ctaSubtitle {
-  font-size: 1.25rem;
   margin-bottom: 2rem;
-  opacity: 0.9;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .ctaButton {
@@ -244,7 +174,7 @@
   padding: 0.75rem 2.5rem;
   font-size: 1rem;
   font-weight: 600;
-  border-radius: 8px;
+  border-radius: 50px;
   cursor: pointer;
   transition: all 0.3s ease;
 }
@@ -256,14 +186,6 @@
 
 /* Responsive Adjustments */
 @media (max-width: 768px) {
-  .heroSection {
-    min-height: 500px;
-  }
-  
-  .heroContent {
-    padding: 0 1.5rem;
-  }
-  
   .heroTitle {
     font-size: 2.5rem;
   }
@@ -272,29 +194,14 @@
     font-size: 1.25rem;
   }
   
-  .sectionTitle {
-    font-size: 2rem;
-  }
-  
   .featuresGrid {
     grid-template-columns: 1fr;
-  }
-  
-  .heroButtons {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  
-  .primaryButton,
-  .secondaryButton {
-    width: 100%;
-    max-width: 250px;
   }
 }
 
 @media (max-width: 480px) {
-  .heroSection {
-    min-height: 400px;
+  .hero {
+    padding: 4rem 1.5rem 3rem;
   }
   
   .heroTitle {
@@ -306,18 +213,14 @@
   }
   
   .features {
-    padding: 3rem 1rem;
+    padding: 3rem 1.5rem;
   }
   
   .cta {
-    padding: 3rem 1rem;
+    padding: 3rem 1.5rem;
   }
   
   .ctaTitle {
     font-size: 1.5rem;
-  }
-  
-  .ctaSubtitle {
-    font-size: 1rem;
   }
 }

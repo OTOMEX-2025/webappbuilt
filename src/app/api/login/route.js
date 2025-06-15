@@ -22,11 +22,7 @@ export async function POST(request) {
       return NextResponse.json({ message: "Invalid credentials" }, { status: 401 });
     }
 
-    return NextResponse.json({ 
-      message: "Login successful!", 
-      token: "fake-jwt-token",
-      userType: user.userType // Include the userType in the response
-    }, { status: 200 });
+    return NextResponse.json({ message: "Login successful!", token: "fake-jwt-token" }, { status: 200 });
 
   } catch (error) {
     console.error(error);
