@@ -147,7 +147,7 @@ const Meetings = () => {
               <Calendar size={48} />
             </div>
             <h3>No {activeTab} meetings</h3>
-            <p>You don't have any {activeTab} meetings scheduled</p>
+            <p>You don&quot;t have any {activeTab} meetings scheduled</p>
             {activeTab === 'upcoming' && (
               <Link href="/client/meetings/create" className={styles.createButton}>
                 Schedule a Meeting
@@ -245,7 +245,7 @@ const Meetings = () => {
         <div className={styles.modalOverlay}>
           <div className={styles.modal}>
             <h3>Cancel Meeting</h3>
-            <p>Are you sure you want to cancel "{currentMeeting?.title}"?</p>
+            <p>Are you sure you want to cancel &apos;{currentMeeting?.title}&apos;?</p>
             <div className={styles.formGroup}>
               <label htmlFor="cancelReason">Reason for cancellation:</label>
               <textarea
@@ -279,7 +279,7 @@ const Meetings = () => {
         <div className={styles.modalOverlay}>
           <div className={styles.modal}>
             <h3>Reschedule Meeting</h3>
-            <p>Select a new date and time for "{currentMeeting?.title}"</p>
+            <p>Select a new date and time for &apos;{currentMeeting?.title}&apos;</p>
             <div className={styles.formGroup}>
               <label htmlFor="newDate">New Date & Time:</label>
               <input

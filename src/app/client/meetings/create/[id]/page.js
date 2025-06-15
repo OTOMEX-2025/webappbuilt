@@ -1,7 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import styles from '../../../../styles/create.module.css';
+import styles from '../create.module.css';
 
 const EditMeeting = () => {
   const { id } = useParams();

@@ -113,7 +113,7 @@ function LandingPage() {
       <section className={styles.cta}>
         <div className={styles.ctaContainer}>
           <h2 className={styles.ctaTitle}>
-            Don't let stress take over your life
+            Don&apos;t let stress take over your life
           </h2>
           <p className={styles.ctaSubtitle}>
             Start your journey to a healthier, happier you today

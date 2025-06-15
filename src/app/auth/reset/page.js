@@ -112,7 +112,7 @@ export default function ResetPassword() {
         {step === 1 && (
           <form onSubmit={handleSubmitEmail} className={styles.form}>
             <p className={styles.description}>
-              Enter your email address and we'll send you a verification code.
+              Enter your email address and we&apos;ll send you a verification code.
             </p>
             
             <input
@@ -159,7 +159,7 @@ export default function ResetPassword() {
             </button>
 
             <p className={styles.resend}>
-              Didn't receive a code?{" "}
+              Didn&apos;t receive a code?{" "}
               <button 
                 type="button" 
                 className={styles.linkButton}

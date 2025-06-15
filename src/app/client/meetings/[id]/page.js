@@ -239,7 +239,7 @@ const MeetingDetail = () => {
         <div className={styles.modalOverlay}>
           <div className={styles.modal}>
             <h3>Cancel Meeting</h3>
-            <p>Are you sure you want to cancel "{meeting.title}"?</p>
+            <p>Are you sure you want to cancel &quot;{meeting.title}&quot;?</p>
             <div className={styles.formGroup}>
               <label htmlFor="cancelReason">Reason for cancellation:</label>
               <textarea
@@ -281,7 +281,7 @@ const MeetingDetail = () => {
         <div className={styles.modalOverlay}>
           <div className={styles.modal}>
             <h3>Reschedule Meeting</h3>
-            <p>Select a new date and time for "{meeting.title}"</p>
+            <p>Select a new date and time for &quot;{meeting.title}&quot;</p>
             <div className={styles.formGroup}>
               <label htmlFor="newDate">New Date & Time:</label>
               <input

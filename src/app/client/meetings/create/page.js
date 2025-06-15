@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useParams } from 'next/navigation';
+import { CalendarIcon, ClockIcon, UsersIcon } from '@/components/Icons';
 import styles from './create.module.css';
 
 const CreateMeeting = () => {
@@ -98,7 +99,7 @@ const CreateMeeting = () => {
             <div className={styles.formGroup}>
               <label htmlFor="date">Start Date & Time *</label>
               <div className={styles.inputWithIcon}>
-                <Calendar className={styles.inputIcon} />
+                <CalendarIcon className={styles.inputIcon} />
                 <input
                   type="datetime-local"
                   id="date"
@@ -115,7 +116,7 @@ const CreateMeeting = () => {
             <div className={styles.formGroup}>
               <label htmlFor="duration">Duration (minutes) *</label>
               <div className={styles.inputWithIcon}>
-                <Clock className={styles.inputIcon} />
+                <ClockIcon className={styles.inputIcon} />
                 <input
                   type="number"
                   id="duration"
@@ -138,7 +139,7 @@ const CreateMeeting = () => {
             <div className={styles.formGroup}>
               <label htmlFor="maxParticipants">Maximum Participants *</label>
               <div className={styles.inputWithIcon}>
-                <Users className={styles.inputIcon} />
+                <UsersIcon className={styles.inputIcon} />
                 <input
                   type="number"
                   id="maxParticipants"

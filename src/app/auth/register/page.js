@@ -199,7 +199,7 @@ export default function Register() {
                     userType === "client" ? styles.active : ""
                   }`}
                 >
-                  I'm a Client
+                  I&apos;m a Client
                 </button>
                 <button
                   onClick={() => setUserType("professional")}
@@ -207,7 +207,7 @@ export default function Register() {
                     userType === "professional" ? styles.active : ""
                   }`}
                 >
-                  I'm a Professional
+                  I&apos;m a Professional
                 </button>
               </div>
             </div>
