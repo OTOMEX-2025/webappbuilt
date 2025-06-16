@@ -1,7 +1,7 @@
 /* === Theme Variables === */
 .sidebar {
   /* Light theme defaults */
-  --sidebar-bg: #f5f5f5;
+  --sidebar-bg: #ffffff;
   --sidebar-border: #ddd;
   --sidebar-text: #333;
   --sidebar-hover: #e0e0e0;
@@ -9,13 +9,27 @@
 }
 
 .sidebar[data-theme="dark"] {
-  --sidebar-bg: #1a1a1a;
+  --sidebar-bg: #000000;
   --sidebar-border: #333;
   --sidebar-text: #e0e0e0;
   --sidebar-hover: #333;
   --sidebar-active: #444;
 }
+.sidebarOpen {
+    transform: translateX(0);
+    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+  }
+.sidebarClosed {
+  transform: translateX(-100%);
+}
 
+.layoutContainer {
+  position: relative;
+}
+.mainArea {
+  flex: 1;
+  transition: margin-left 0.3s ease;
+}
 /* === Desktop Sidebar (vertical) === */
 .sidebar {
   background-color: var(--sidebar-bg);
@@ -29,6 +43,7 @@
   z-index: 100;
   border-right: 1px solid var(--sidebar-border);
   transition: background-color 0.3s ease, border-color 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .container {
@@ -136,5 +151,12 @@
   .menuIcon {
     width: 22px;
     height: 22px;
+  }
+  .sidebarClosed {
+    transform: translateX(-100%);
+  }
+  
+  .sidebarOpen {
+    transform: translateX(0);
   }
 }

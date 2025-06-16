@@ -1,10 +1,13 @@
+// app/auth/register/page.js
 "use client";
 import { useState } from "react";
 import styles from "../../../styles/Register.module.css";
 import { useRouter } from "next/navigation";
+import { useUser } from "@/context/UserContext";
 
 export default function Register() {
   const router = useRouter();
+  const { register } = useUser();
   const [userType, setUserType] = useState("");
   const [formData, setFormData] = useState({
     fullName: "",
@@ -25,29 +28,22 @@ export default function Register() {
       [name]: value,
     }));
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError("");
   
     try {
-      const response = await fetch("/api/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...formData, userType }),
-      });
-  
-      const result = await response.json();
-      console.log("Response:", result); // Debugging: See what's returned
-  
-      if (response.ok) {
-        alert("Registration successful!");
+      const result = await register({ ...formData, userType });
+      
+      if (result.success) {
         router.push("/auth/login");
       } else {
         setError(result.message);
       }
     } catch (error) {
-      console.error("Fetch error:", error);
+      console.error("Registration error:", error);
       setError("An error occurred while registering");
     } finally {
       setLoading(false);

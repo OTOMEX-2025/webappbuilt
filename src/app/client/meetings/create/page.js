@@ -2,11 +2,12 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useParams } from 'next/navigation';
-import { CalendarIcon, ClockIcon, UsersIcon } from '@/components/Icons';
-import styles from './create.module.css';
+import { Calendar, Clock, Users, ArrowLeft } from 'lucide-react';
+import { useTheme } from '@/context/ThemeContext';
 
 const CreateMeeting = () => {
-    const { id } = useParams();
+  const { theme } = useTheme();
+  const { id } = useParams();
   const isEditMode = !!id;
   const router = useRouter();
   const [formData, setFormData] = useState({
@@ -56,137 +57,173 @@ const CreateMeeting = () => {
   };
 
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <h1 className={styles.heading}>Create New Meeting</h1>
-        <p className={styles.subheading}>Schedule a new virtual therapy session</p>
-      </div>
-      
-      <form onSubmit={handleSubmit} className={styles.form}>
-        <div className={styles.formSection}>
-          <h2 className={styles.sectionHeading}>Meeting Details</h2>
-          <div className={styles.formGroup}>
-            <label htmlFor="title">Meeting Title *</label>
-            <input
-              type="text"
-              id="title"
-              name="title"
-              value={formData.title}
-              onChange={handleChange}
-              required
-              className={styles.input}
-              placeholder="e.g. Weekly Therapy Session"
-            />
+    <div className={`min-h-screen w-screen ${theme === 'dark' ? 'bg-black text-gray-100' : 'bg-gray-50 text-gray-900'}`}>
+      <div className="container mx-auto px-4 py-8">
+        {/* Header */}
+        <div className="mb-8">
+          <button 
+            onClick={() => router.push('/client/meetings')}
+            className="flex items-center gap-2 text-blue-600 dark:text-blue-400 hover:underline mb-6"
+          >
+            <ArrowLeft size={16} /> Back to Meetings
+          </button>
+          <h1 className="text-3xl font-bold mb-2">Create New Meeting</h1>
+          <p className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+            Schedule a new virtual therapy session
+          </p>
+        </div>
+        
+        {/* Form */}
+        <form onSubmit={handleSubmit} className={`space-y-8 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} p-6 rounded-lg shadow-md`}>
+          {/* Meeting Details Section */}
+          <div>
+            <h2 className="text-xl font-semibold mb-4">Meeting Details</h2>
+            <div className="space-y-4">
+              <div>
+                <label htmlFor="title" className="block text-sm font-medium mb-1">
+                  Meeting Title <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="title"
+                  name="title"
+                  value={formData.title}
+                  onChange={handleChange}
+                  required
+                  className={`w-full px-4 py-2 border rounded-lg ${theme === 'dark' ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'}`}
+                  placeholder="e.g. Weekly Therapy Session"
+                />
+              </div>
+              
+              <div>
+                <label htmlFor="description" className="block text-sm font-medium mb-1">
+                  Description
+                </label>
+                <textarea
+                  id="description"
+                  name="description"
+                  value={formData.description}
+                  onChange={handleChange}
+                  className={`w-full px-4 py-2 border rounded-lg ${theme === 'dark' ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'}`}
+                  rows={4}
+                  placeholder="Add any details participants should know..."
+                />
+              </div>
+            </div>
           </div>
           
-          <div className={styles.formGroup}>
-            <label htmlFor="description">Description</label>
-            <textarea
-              id="description"
-              name="description"
-              value={formData.description}
-              onChange={handleChange}
-              className={styles.textarea}
-              rows={4}
-              placeholder="Add any details participants should know..."
-            />
-          </div>
-        </div>
-        
-        <div className={styles.formSection}>
-          <h2 className={styles.sectionHeading}>Date & Time</h2>
-          <div className={styles.formRow}>
-            <div className={styles.formGroup}>
-              <label htmlFor="date">Start Date & Time *</label>
-              <div className={styles.inputWithIcon}>
-                <CalendarIcon className={styles.inputIcon} />
-                <input
-                  type="datetime-local"
-                  id="date"
-                  name="date"
-                  value={formData.date}
-                  onChange={handleChange}
-                  required
-                  className={styles.input}
-                  min={new Date().toISOString().slice(0, 16)}
-                />
+          {/* Date & Time Section */}
+          <div>
+            <h2 className="text-xl font-semibold mb-4">Date & Time</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label htmlFor="date" className="block text-sm font-medium mb-1">
+                  Start Date & Time <span className="text-red-500">*</span>
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Calendar size={18} className={theme === 'dark' ? 'text-gray-400' : 'text-gray-500'} />
+                  </div>
+                  <input
+                    type="datetime-local"
+                    id="date"
+                    name="date"
+                    value={formData.date}
+                    onChange={handleChange}
+                    required
+                    className={`w-full pl-10 px-4 py-2 border rounded-lg ${theme === 'dark' ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'}`}
+                    min={new Date().toISOString().slice(0, 16)}
+                  />
+                </div>
               </div>
-            </div>
-            
-            <div className={styles.formGroup}>
-              <label htmlFor="duration">Duration (minutes) *</label>
-              <div className={styles.inputWithIcon}>
-                <ClockIcon className={styles.inputIcon} />
-                <input
-                  type="number"
-                  id="duration"
-                  name="duration"
-                  value={formData.duration}
-                  onChange={handleChange}
-                  min="15"
-                  max="240"
-                  required
-                  className={styles.input}
-                />
+              
+              <div>
+                <label htmlFor="duration" className="block text-sm font-medium mb-1">
+                  Duration (minutes) <span className="text-red-500">*</span>
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Clock size={18} className={theme === 'dark' ? 'text-gray-400' : 'text-gray-500'} />
+                  </div>
+                  <input
+                    type="number"
+                    id="duration"
+                    name="duration"
+                    value={formData.duration}
+                    onChange={handleChange}
+                    min="15"
+                    max="240"
+                    required
+                    className={`w-full pl-10 px-4 py-2 border rounded-lg ${theme === 'dark' ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'}`}
+                  />
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        
-        <div className={styles.formSection}>
-          <h2 className={styles.sectionHeading}>Participants</h2>
-          <div className={styles.formRow}>
-            <div className={styles.formGroup}>
-              <label htmlFor="maxParticipants">Maximum Participants *</label>
-              <div className={styles.inputWithIcon}>
-                <UsersIcon className={styles.inputIcon} />
+          
+          {/* Participants Section */}
+          <div>
+            <h2 className="text-xl font-semibold mb-4">Participants</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label htmlFor="maxParticipants" className="block text-sm font-medium mb-1">
+                  Maximum Participants <span className="text-red-500">*</span>
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Users size={18} className={theme === 'dark' ? 'text-gray-400' : 'text-gray-500'} />
+                  </div>
+                  <input
+                    type="number"
+                    id="maxParticipants"
+                    name="maxParticipants"
+                    value={formData.maxParticipants}
+                    onChange={handleChange}
+                    min="1"
+                    max="50"
+                    required
+                    className={`w-full pl-10 px-4 py-2 border rounded-lg ${theme === 'dark' ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'}`}
+                  />
+                </div>
+              </div>
+              
+              <div>
+                <label htmlFor="therapist" className="block text-sm font-medium mb-1">
+                  Host/Therapist <span className="text-red-500">*</span>
+                </label>
                 <input
-                  type="number"
-                  id="maxParticipants"
-                  name="maxParticipants"
-                  value={formData.maxParticipants}
+                  type="text"
+                  id="therapist"
+                  name="therapist"
+                  value={formData.therapist}
                   onChange={handleChange}
-                  min="1"
-                  max="50"
                   required
-                  className={styles.input}
+                  className={`w-full px-4 py-2 border rounded-lg ${theme === 'dark' ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'}`}
+                  placeholder="Enter therapist name"
                 />
               </div>
             </div>
-            
-            <div className={styles.formGroup}>
-              <label htmlFor="therapist">Host/Therapist *</label>
-              <input
-                type="text"
-                id="therapist"
-                name="therapist"
-                value={formData.therapist}
-                onChange={handleChange}
-                required
-                className={styles.input}
-                placeholder="Enter therapist name"
-              />
-            </div>
           </div>
-        </div>
-        
-        <div className={styles.formActions}>
-          <button
-            type="button"
-            className={styles.secondaryButton}
-            onClick={() => router.push('/client/meetings')}
-          >
-            Cancel
-          </button>
-          <button
-            type="submit"
-            className={styles.primaryButton}
-            disabled={isSubmitting}
-          >
-            {isSubmitting ? 'Creating...' : 'Create Meeting'}
-          </button>
-        </div>
-      </form>
+          
+          {/* Form Actions */}
+          <div className="flex justify-end gap-3 pt-4">
+            <button
+              type="button"
+              onClick={() => router.push('/client/meetings')}
+              className="px-6 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors disabled:opacity-50"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? 'Creating...' : 'Create Meeting'}
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

@@ -1,3 +1,4 @@
+// app/api/auth/login/route.js
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import dbConnect from "@/lib/dbConnect";
@@ -22,10 +23,14 @@ export async function POST(request) {
       return NextResponse.json({ message: "Invalid credentials" }, { status: 401 });
     }
 
+    // Return all user data except password
+    const userData = user.toObject();
+    delete userData.password;
+
     return NextResponse.json({ 
       message: "Login successful!", 
       token: "fake-jwt-token",
-      userType: user.userType // Include the userType in the response
+      user: userData
     }, { status: 200 });
 
   } catch (error) {

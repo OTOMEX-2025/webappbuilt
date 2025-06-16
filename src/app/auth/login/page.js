@@ -1,9 +1,10 @@
+// app/auth/login/page.js
 "use client";
-
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import { useUser } from "@/context/UserContext";
 import styles from '../../../styles/Login.module.css';
 
 export default function LoginPage() {
@@ -12,49 +13,20 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const { login } = useUser();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     setError("");
 
-    try {
-      const response = await fetch('/api/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Login failed');
-      }
-
-      // Store the token in localStorage
-      localStorage.setItem("token", data.token);
-      
-      // Redirect based on user type
-      switch(data.userType) {
-        case 'client':
-          router.push('/client/dashboard');
-          break;
-        case 'professional':
-          router.push('/prof/dashboard');
-          break;
-        case 'admin':
-          router.push('/admin/dashboard');
-          break;
-        default:
-          router.push('/client/dashboard');
-      }
-    } catch (error) {
-      setError(error.message || "Login failed. Please try again.");
-    } finally {
-      setIsLoading(false);
+    const result = await login({ email, password });
+    
+    if (!result.success) {
+      setError(result.message);
     }
+    
+    setIsLoading(false);
   };
 
   return (
@@ -62,8 +34,8 @@ export default function LoginPage() {
       <div className={styles.loginBox}>
         <div className={styles.logo}>
           <Image
-            src="/WhatsApp_Image_2025-03-18_at_12.19.57-removebg-preview.png"
-            alt="Your Logo"
+            src="/MindPalLogo-removebg-preview.png"
+            alt="Mind-Pal"
             width={150}
             height={150}
             priority

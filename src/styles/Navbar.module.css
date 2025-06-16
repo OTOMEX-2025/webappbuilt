@@ -3,7 +3,7 @@
 .navbar {
   position: fixed;
   top: 0;
-  left: 220px;      /* offset for sidebar on desktop */
+  left: 220px; /* Default sidebar width */
   right: 0;
   height: 60px;
   background-color: var(--bg-primary);
@@ -16,8 +16,12 @@
   transition: left 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
 }
 
+.navbar.sidebarClosed {
+  left: 0;
+  transition: left 0.3s ease;
+}
 .navbar.dark {
-  --bg-primary: #1a1a1a;
+  --bg-primary: #000000;
   --text-primary: #ffffff;
   --border-color: #333;
   --hover-bg: rgba(255, 255, 255, 0.1);
@@ -89,6 +93,99 @@
   align-items: center;
   justify-content: center;
 }
+/* Page Title Center */
+.pageTitleCenter {
+  flex: 1;
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  padding: 0 1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Profile Section */
+.profileSection {
+  display: flex;
+  align-items: center;
+  margin-left: 1rem;
+  gap: 0.5rem;
+}
+
+.profileIcon {
+  color: var(--text-primary);
+}
+
+.profileText {
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 120px;
+}
+
+/* Add these to your existing styles */
+
+.profileTrigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.profileTrigger:hover {
+  background-color: var(--hover-bg-color);
+}
+
+.profileDropdown {
+  position: absolute;
+  right: 20px;
+  top: 50px;
+  min-width: 180px;
+  padding: 8px 0;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+}
+
+.dropdownDark {
+  background-color: #2d3748;
+  border: 1px solid #4a5568;
+}
+
+.dropdownLight {
+  background-color: white;
+  border: 1px solid #e2e8f0;
+}
+
+.dropdownItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 16px;
+  text-decoration: none;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font-size: 14px;
+}
+
+.dropdownItem:hover {
+  background-color: var(--hover-bg-color);
+}
+
+.dropdownIcon {
+  opacity: 0.8;
+}
 
 /* Mobile view adjustments */
 @media (max-width: 768px) {
@@ -105,5 +202,12 @@
 
   .navRight {
     gap: 1rem;
+  }
+  .pageTitleCenter {
+    display: none;
+  }
+  
+  .profileText {
+    display: none;
   }
 }

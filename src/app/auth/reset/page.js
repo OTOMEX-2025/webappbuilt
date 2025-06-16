@@ -1,8 +1,9 @@
+// app/auth/reset/page.js
 "use client";
-
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import axios from 'axios';
 import styles from '../../../styles/ResetPassword.module.css';
 
 export default function ResetPassword() {
@@ -15,9 +16,11 @@ export default function ResetPassword() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [generatedCode, setGeneratedCode] = useState("");
 
-  // Dummy verification code for demo purposes
-  const DUMMY_CODE = "123456";
+  const generateRandomCode = () => {
+    return Math.floor(100000 + Math.random() * 900000).toString();
+  };
 
   const handleSubmitEmail = async (e) => {
     e.preventDefault();
@@ -25,22 +28,22 @@ export default function ResetPassword() {
     setError("");
     
     try {
-      // In a real app, you would send this email to your backend
-      // For demo, we'll just simulate this
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Check if email exists in database
+      const response = await axios.post('/api/auth/check-email', { email });
       
-      // Validate email format
-      if (!email.includes("@") || !email.includes(".")) {
-        throw new Error("Please enter a valid email address");
+      if (!response.data.exists) {
+        throw new Error("No account found with this email address");
       }
       
-      // Simulate sending code to email
-      console.log(`Sending verification code ${DUMMY_CODE} to ${email}`);
+      // Generate and "send" code (in production, you would actually send it via email)
+      const verificationCode = generateRandomCode();
+      setGeneratedCode(verificationCode);
+      console.log(`Verification code for ${email}: ${verificationCode}`);
       
       setStep(2);
       setSuccess(`A verification code has been sent to ${email}`);
     } catch (err) {
-      setError(err.message);
+      setError(err.response?.data?.message || err.message);
     } finally {
       setIsLoading(false);
     }
@@ -53,7 +56,7 @@ export default function ResetPassword() {
     
     try {
       // Validate code
-      if (code !== DUMMY_CODE) {
+      if (code !== generatedCode) {
         throw new Error("Invalid verification code");
       }
       
@@ -81,8 +84,11 @@ export default function ResetPassword() {
         throw new Error("Passwords do not match");
       }
       
-      // In a real app, you would send this to your backend to update
-      console.log(`Password updated for ${email}`);
+      // Update password in database
+      await axios.post('/api/auth/reset-password', { 
+        email, 
+        newPassword 
+      });
       
       setSuccess("Password updated successfully! Redirecting to login...");
       
@@ -91,7 +97,7 @@ export default function ResetPassword() {
         router.push("/auth/login");
       }, 2000);
     } catch (err) {
-      setError(err.message);
+      setError(err.response?.data?.message || err.message);
     } finally {
       setIsLoading(false);
     }

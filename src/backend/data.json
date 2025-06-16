@@ -354,7 +354,7 @@
         "duration": 45,
         "therapist": "Michael Chen",
         "description": "Guided meditation session to help reduce stress and improve focus.",
-        "participants": 10,
+        "participants": 13,
         "maxParticipants": 15,
         "image": "https://images.unsplash.com/photo-1545205597-3d9d02c29597",
         "status": "scheduled"
@@ -362,7 +362,7 @@
       {
         "id": "m1749942638573",
         "status": "scheduled",
-        "participants": 2,
+        "participants": 4,
         "title": "Mpho's Mental Issues",
         "description": "I Have a very bad headache and I can't sleep due to working too much",
         "date": "2025-06-17T11:48:00.000Z",
