@@ -3,9 +3,11 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { Video, Calendar, Users, Clock, ArrowLeft, Edit, Trash2, Phone } from 'lucide-react';
 import Link from 'next/link';
-import styles from './detail.module.css';
+import { useTheme } from '../../../../context/ThemeContext';
+import Loader from "../../../../components/Loader";
 
 const MeetingDetail = () => {
+  const { theme } = useTheme();
   const { id } = useParams();
   const router = useRouter();
   const [meeting, setMeeting] = useState(null);
@@ -107,21 +109,20 @@ const MeetingDetail = () => {
   };
 
   if (isLoading) {
-    return (
-      <div className={styles.container}>
-        <div className={styles.loading}>Loading meeting details...</div>
-      </div>
-    );
+    return <Loader theme={theme}/>;
   }
 
   if (error) {
     return (
-      <div className={styles.container}>
-        <div className={styles.error}>
-          <h2>Error</h2>
-          <p>{error}</p>
-          <Link href="/client/meetings" className={styles.backButton}>
-            <ArrowLeft size={16} /> Back to Meetings
+      <div className={`min-h-screen w-screen ${theme === 'dark' ? 'bg-black text-white' : 'bg-gray-100 text-gray-900'} p-6`}>
+        <div className="max-w-4xl mx-auto bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md">
+          <h2 className="text-2xl font-bold mb-4">Error</h2>
+          <p className="mb-4">{error}</p>
+          <Link 
+            href="/client/meetings" 
+            className="flex items-center text-blue-600 dark:text-blue-400 hover:underline"
+          >
+            <ArrowLeft size={16} className="mr-2" /> Back to Meetings
           </Link>
         </div>
       </div>
@@ -130,11 +131,14 @@ const MeetingDetail = () => {
 
   if (!meeting) {
     return (
-      <div className={styles.container}>
-        <div className={styles.error}>
-          <h2>Meeting Not Found</h2>
-          <Link href="/client/meetings" className={styles.backButton}>
-            <ArrowLeft size={16} /> Back to Meetings
+      <div className={`min-h-screen w-screen ${theme === 'dark' ? 'bg-black text-white' : 'bg-gray-100 text-gray-900'} p-6`}>
+        <div className="max-w-4xl mx-auto bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md">
+          <h2 className="text-2xl font-bold mb-4">Meeting Not Found</h2>
+          <Link 
+            href="/client/meetings" 
+            className="flex items-center text-blue-600 dark:text-blue-400 hover:underline"
+          >
+            <ArrowLeft size={16} className="mr-2" /> Back to Meetings
           </Link>
         </div>
       </div>
@@ -142,93 +146,102 @@ const MeetingDetail = () => {
   }
 
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <Link href="/client/meetings" className={styles.backButton}>
-          <ArrowLeft size={16} /> Back to Meetings
-        </Link>
-        <h1 className={styles.title}>{meeting.title}</h1>
-        {meeting.status === 'canceled' && (
-          <span className={styles.canceledBadge}>Canceled</span>
-        )}
-      </div>
-
-      <div className={styles.content}>
-        <div className={styles.details}>
-          <div className={styles.detailItem}>
-            <Clock className={styles.detailIcon} />
-            <div>
-              <h3>Date & Time</h3>
-              <p>{formatDate(meeting.date)}</p>
-            </div>
+    <div className={`min-h-screen w-screen ${theme === 'dark' ? 'bg-black text-white' : 'bg-gray-100 text-gray-900'} p-6`}>
+      <div className="max-w-4xl mx-auto">
+        <div className="mb-8">
+          <Link 
+            href="/client/meetings" 
+            className="flex items-center text-blue-600 dark:text-blue-400 hover:underline mb-4"
+          >
+            <ArrowLeft size={16} className="mr-2" /> Back to Meetings
+          </Link>
+          <div className="flex items-center justify-between">
+            <h1 className="text-3xl font-bold">{meeting.title}</h1>
+            {meeting.status === 'canceled' && (
+              <span className="bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200 px-3 py-1 rounded-full text-sm font-medium">
+                Canceled
+              </span>
+            )}
           </div>
-          
-          <div className={styles.detailItem}>
-            <Users className={styles.detailIcon} />
-            <div>
-              <h3>Participants</h3>
-              <p>
-                {meeting.participants || 0}
-                {meeting.maxParticipants ? `/${meeting.maxParticipants}` : ''} joined
-              </p>
-            </div>
-          </div>
-          
-          <div className={styles.detailItem}>
-            <Calendar className={styles.detailIcon} />
-            <div>
-              <h3>Host</h3>
-              <p>{meeting.therapist}</p>
-            </div>
-          </div>
-          
-          {meeting.description && (
-            <div className={styles.description}>
-              <h3>Description</h3>
-              <p>{meeting.description}</p>
-            </div>
-          )}
-          
-          {meeting.status === 'canceled' && meeting.cancelReason && (
-            <div className={styles.cancelReason}>
-              <h3>Cancellation Reason</h3>
-              <p>{meeting.cancelReason}</p>
-            </div>
-          )}
         </div>
 
-        <div className={styles.actions}>
+        <div className="bg-white dark:bg-gray-900 rounded-lg shadow-md p-6 mb-6">
+          <div className="space-y-6">
+            <div className="flex items-start">
+              <Clock className="text-blue-500 mr-4 mt-1 flex-shrink-0" size={20} />
+              <div>
+                <h3 className="font-semibold text-lg">Date & Time</h3>
+                <p>{formatDate(meeting.date)}</p>
+              </div>
+            </div>
+            
+            <div className="flex items-start">
+              <Users className="text-blue-500 mr-4 mt-1 flex-shrink-0" size={20} />
+              <div>
+                <h3 className="font-semibold text-lg">Participants</h3>
+                <p>
+                  {meeting.participants || 0}
+                  {meeting.maxParticipants ? `/${meeting.maxParticipants}` : ''} joined
+                </p>
+              </div>
+            </div>
+            
+            <div className="flex items-start">
+              <Calendar className="text-blue-500 mr-4 mt-1 flex-shrink-0" size={20} />
+              <div>
+                <h3 className="font-semibold text-lg">Host</h3>
+                <p>{meeting.therapist}</p>
+              </div>
+            </div>
+            
+            {meeting.description && (
+              <div className="mt-6">
+                <h3 className="font-semibold text-lg mb-2">Description</h3>
+                <p className="text-gray-700 dark:text-gray-300">{meeting.description}</p>
+              </div>
+            )}
+            
+            {meeting.status === 'canceled' && meeting.cancelReason && (
+              <div className="mt-6">
+                <h3 className="font-semibold text-lg mb-2">Cancellation Reason</h3>
+                <p className="text-gray-700 dark:text-gray-300">{meeting.cancelReason}</p>
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div className="flex flex-wrap gap-4">
           {meeting.status === 'scheduled' && (
             <>
               <Link 
                 href={`/client/meetings/join/${meeting.id}`} 
-                className={styles.primaryButton}
+                className="flex items-center bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors"
               >
-                <Phone size={16} /> Join Meeting
+                <Phone size={16} className="mr-2" /> Join Meeting
               </Link>
               
               <button 
-                className={styles.secondaryButton}
+                className="flex items-center bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 px-4 py-2 rounded-lg transition-colors"
                 onClick={() => setShowRescheduleModal(true)}
               >
-                <Edit size={16} /> Reschedule
+                <Edit size={16} className="mr-2" /> Reschedule
               </button>
               
               <button 
-                className={styles.dangerButton}
+                className="flex items-center bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors"
                 onClick={() => setShowCancelModal(true)}
               >
-                <Trash2 size={16} /> Cancel Meeting
+                <Trash2 size={16} className="mr-2" /> Cancel Meeting
               </button>
             </>
           )}
           
           {(meeting.status === 'canceled' || meeting.status === 'completed') && (
             <button 
-              className={styles.dangerButton}
+              className="flex items-center bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors"
               onClick={handleDeleteMeeting}
             >
-              <Trash2 size={16} /> Delete Meeting
+              <Trash2 size={16} className="mr-2" /> Delete Meeting
             </button>
           )}
         </div>
@@ -236,30 +249,31 @@ const MeetingDetail = () => {
 
       {/* Cancel Meeting Modal */}
       {showCancelModal && (
-        <div className={styles.modalOverlay}>
-          <div className={styles.modal}>
-            <h3>Cancel Meeting</h3>
-            <p>Are you sure you want to cancel &quot;{meeting.title}&quot;?</p>
-            <div className={styles.formGroup}>
-              <label htmlFor="cancelReason">Reason for cancellation:</label>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className={`w-full max-w-md ${theme === 'dark' ? 'bg-gray-900' : 'bg-white'} rounded-lg shadow-xl p-6`}>
+            <h3 className="text-xl font-bold mb-4">Cancel Meeting</h3>
+            <p className="mb-4">Are you sure you want to cancel &quot;{meeting.title}&quot;?</p>
+            <div className="mb-4">
+              <label htmlFor="cancelReason" className="block mb-2 font-medium">Reason for cancellation:</label>
               <textarea
                 id="cancelReason"
                 value={cancelReason}
                 onChange={(e) => setCancelReason(e.target.value)}
                 placeholder="Please provide a reason for cancellation"
-                className={styles.textarea}
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white"
+                rows={4}
                 required
               />
             </div>
-            <div className={styles.modalActions}>
+            <div className="flex justify-end gap-3">
               <button 
-                className={styles.secondaryButton}
+                className="px-4 py-2 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 rounded-md transition-colors"
                 onClick={() => setShowCancelModal(false)}
               >
                 Back
               </button>
               <button 
-                className={styles.dangerButton}
+                className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md transition-colors disabled:opacity-50"
                 onClick={handleCancelMeeting}
                 disabled={!cancelReason}
               >
@@ -269,40 +283,34 @@ const MeetingDetail = () => {
           </div>
         </div>
       )}
-      <Link 
-  href={`/client/meetings/create/${meeting.id}`}
-  className={styles.secondaryButton}
->
-  <Edit size={16} /> Edit Meeting
-</Link>
 
       {/* Reschedule Meeting Modal */}
       {showRescheduleModal && (
-        <div className={styles.modalOverlay}>
-          <div className={styles.modal}>
-            <h3>Reschedule Meeting</h3>
-            <p>Select a new date and time for &quot;{meeting.title}&quot;</p>
-            <div className={styles.formGroup}>
-              <label htmlFor="newDate">New Date & Time:</label>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className={`w-full max-w-md ${theme === 'dark' ? 'bg-gray-900' : 'bg-white'} rounded-lg shadow-xl p-6`}>
+            <h3 className="text-xl font-bold mb-4">Reschedule Meeting</h3>
+            <p className="mb-4">Select a new date and time for &quot;{meeting.title}&quot;</p>
+            <div className="mb-4">
+              <label htmlFor="newDate" className="block mb-2 font-medium">New Date & Time:</label>
               <input
                 type="datetime-local"
                 id="newDate"
                 value={newDate}
                 onChange={(e) => setNewDate(e.target.value)}
-                className={styles.input}
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white"
                 min={new Date().toISOString().slice(0, 16)}
                 required
               />
             </div>
-            <div className={styles.modalActions}>
+            <div className="flex justify-end gap-3">
               <button 
-                className={styles.secondaryButton}
+                className="px-4 py-2 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 rounded-md transition-colors"
                 onClick={() => setShowRescheduleModal(false)}
               >
                 Back
               </button>
               <button 
-                className={styles.primaryButton}
+                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors disabled:opacity-50"
                 onClick={handleRescheduleMeeting}
                 disabled={!newDate}
               >

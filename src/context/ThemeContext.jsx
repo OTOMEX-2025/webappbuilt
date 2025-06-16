@@ -8,7 +8,6 @@ const ThemeContext = createContext();
 export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState("light");
 
-  // Check for user's preferred color scheme or saved theme
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme") || 
                       (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
@@ -30,6 +29,4 @@ export function ThemeProvider({ children }) {
   );
 }
 
-export function useTheme() {
-  return useContext(ThemeContext);
-}
+export const useTheme = () => useContext(ThemeContext);

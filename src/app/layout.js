@@ -3,17 +3,9 @@
 import "./globals.css";
 import { ThemeProvider } from "../context/ThemeContext";
 import { MusicProvider } from "../context/MusicContext";
-import Navbar from "../components/Navbar";
+import { UserProvider } from "../context/UserContext"
 
-// const geistSans = Geist({
-//   variable: "--font-geist-sans",
-//   subsets: ["latin"],
-// });
 
-// const geistMono = Geist_Mono({
-//   variable: "--font-geist-mono",
-//   subsets: ["latin"],
-// });
 
 export const metadata = {
   title: "Mind-Pal",
@@ -24,11 +16,15 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={``}>
-        <ThemeProvider>
+
+        <ThemeProvider> 
+          <UserProvider>
           <MusicProvider>
             <div className="main-content">{children}</div>
-          </MusicProvider>
+          </MusicProvider> 
+          </UserProvider>
         </ThemeProvider>
+
       </body>
     </html>
   );

@@ -2,14 +2,16 @@
 import React, { useState, useEffect } from 'react';
 import { Video, Calendar, Users, Clock, X, Check, RefreshCw } from 'lucide-react';
 import Link from 'next/link';
-import styles from './Meetings.module.css';
-
+import { useTheme } from '@/context/ThemeContext';
+import Loader from "../../../components/Loader"
 const Meetings = () => {
+  const { theme } = useTheme();
   const [meetings, setMeetings] = useState({
     upcoming: [],
     past: [],
     canceled: []
   });
+  const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('upcoming');
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [showRescheduleModal, setShowRescheduleModal] = useState(false);
@@ -22,6 +24,7 @@ const Meetings = () => {
       const response = await fetch('/api/clt/meetings');
       const data = await response.json();
       setMeetings(data);
+      setIsLoading(false);
     };
     fetchMeetings();
   }, []);
@@ -103,168 +106,198 @@ const Meetings = () => {
     const mins = minutes % 60;
     return `${hours > 0 ? `${hours}h ` : ''}${mins}m`;
   };
+  if(isLoading){
+    return(
+      <Loader theme={theme}/>
+    )
+  }
 
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <div className={styles.headerContent}>
-          <h1 className={styles.heading}>Virtual Meetings</h1>
-          <p className={styles.subheading}>Manage your upcoming and past therapy sessions</p>
-        </div>
-        <Link href="/client/meetings/create" className={styles.createButton}>
-          <Video size={16} />
-          Create Meeting
-        </Link>
-      </div>
-
-      <div className={styles.tabsContainer}>
-        <div className={styles.tabs}>
-          <button
-            className={`${styles.tab} ${activeTab === 'upcoming' ? styles.activeTab : ''}`}
-            onClick={() => setActiveTab('upcoming')}
-          >
-            Upcoming
-          </button>
-          <button
-            className={`${styles.tab} ${activeTab === 'past' ? styles.activeTab : ''}`}
-            onClick={() => setActiveTab('past')}
-          >
-            Past
-          </button>
-          <button
-            className={`${styles.tab} ${activeTab === 'canceled' ? styles.activeTab : ''}`}
-            onClick={() => setActiveTab('canceled')}
-          >
-            Canceled
-          </button>
-        </div>
-      </div>
-
-      <div className={styles.content}>
-        {meetings[activeTab]?.length === 0 ? (
-          <div className={styles.emptyState}>
-            <div className={styles.emptyIllustration}>
-              <Calendar size={48} />
-            </div>
-            <h3>No {activeTab} meetings</h3>
-            <p>You don&quot;t have any {activeTab} meetings scheduled</p>
-            {activeTab === 'upcoming' && (
-              <Link href="/client/meetings/create" className={styles.createButton}>
-                Schedule a Meeting
-              </Link>
-            )}
+    <div className={`min-h-screen w-screen ${theme === 'dark' ? 'bg-black text-gray-100' : 'bg-gray-50 text-gray-900'}`}>
+      <div className="container mx-auto px-4 py-8">
+        {/* Header */}
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+          <div>
+            <h1 className="text-3xl font-bold">Virtual Meetings</h1>
+            <p className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>
+              Manage your upcoming and past therapy sessions
+            </p>
           </div>
-        ) : (
-          <div className={styles.meetingsGrid}>
-            {meetings[activeTab]?.map((meeting) => (
-              <div key={meeting.id} className={styles.meetingCard}>
-                <div className={styles.cardHeader}>
-                  <div className={styles.meetingStatus}>
-                    {meeting.status === 'canceled' && (
-                      <span className={styles.canceledBadge}>Canceled</span>
-                    )}
-                    <span className={styles.meetingDate}>
-                      {formatDate(meeting.date)}
-                    </span>
-                  </div>
-                  <h3 className={styles.meetingTitle}>{meeting.title}</h3>
-                  <p className={styles.meetingHost}>With {meeting.therapist}</p>
-                </div>
-                
-                <div className={styles.meetingDetails}>
-                  <div className={styles.detailItem}>
-                    <Clock className={styles.detailIcon} />
-                    <span>{formatTime(meeting.date)} ({getDuration(meeting.duration)})</span>
-                  </div>
-                  <div className={styles.detailItem}>
-                    <Users className={styles.detailIcon} />
-                    <span>
-                      {activeTab === 'upcoming' 
-                        ? `${meeting.participants || 0}/${meeting.maxParticipants} participants`
-                        : `${meeting.participants} participants`}
-                    </span>
-                  </div>
-                </div>
+          <Link 
+            href="/client/meetings/create" 
+            className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors"
+          >
+            <Video size={16} />
+            Create Meeting
+          </Link>
+        </div>
 
-                {meeting.description && (
-                  <div className={styles.descriptionContainer}>
-                    <p className={styles.meetingDescription}>{meeting.description}</p>
-                  </div>
-                )}
-
-                {meeting.status === 'canceled' && meeting.cancelReason && (
-                  <div className={styles.cancelReason}>
-                    <strong>Reason:</strong> {meeting.cancelReason}
-                  </div>
-                )}
-
-                {activeTab === 'upcoming' && (
-                  <div className={styles.actionButtons}>
-                    <Link 
-                      href={`/client/meetings/join/${meeting.id}`} 
-                      className={styles.primaryButton}
-                    >
-                      Join Meeting
-                    </Link>
-                    <div className={styles.secondaryActions}>
-                      <button 
-                        className={styles.secondaryButton}
-                        onClick={() => {
-                          setCurrentMeeting(meeting);
-                          setShowRescheduleModal(true);
-                        }}
-                      >
-                        <RefreshCw size={16} /> Reschedule
-                      </button>
-                      <button 
-                        className={styles.dangerButton}
-                        onClick={() => {
-                          setCurrentMeeting(meeting);
-                          setShowCancelModal(true);
-                        }}
-                      >
-                        <X size={16} /> Cancel
-                      </button>
-                    </div>
-                  </div>
-                )}
-
-                {activeTab === 'past' && meeting.recordingAvailable && (
-                  <button className={styles.secondaryButton}>
-                    View Recording
-                  </button>
-                )}
-              </div>
+        {/* Tabs */}
+        <div className="border-b border-gray-200 dark:border-gray-700 mb-6">
+          <div className="flex space-x-4">
+            {['upcoming', 'past', 'canceled'].map((tab) => (
+              <button
+                key={tab}
+                className={`py-2 px-4 font-medium text-sm capitalize ${activeTab === tab 
+                  ? 'border-b-2 border-blue-500 text-blue-600 dark:text-blue-400' 
+                  : `${theme === 'dark' ? 'text-gray-400 hover:text-gray-300' : 'text-gray-500 hover:text-gray-700'}`}`}
+                onClick={() => setActiveTab(tab)}
+              >
+                {tab}
+              </button>
             ))}
           </div>
-        )}
+        </div>
+
+        {/* Content */}
+        <div>
+          {meetings[activeTab]?.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-16 text-center">
+              <div className={`p-6 rounded-full ${theme === 'dark' ? 'bg-gray-800' : 'bg-gray-100'} mb-4`}>
+                <Calendar size={48} className={theme === 'dark' ? 'text-blue-400' : 'text-blue-600'} />
+              </div>
+              <h3 className="text-xl font-semibold mb-2">No {activeTab} meetings</h3>
+              <p className={`mb-4 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+                You don't have any {activeTab} meetings scheduled
+              </p>
+              {activeTab === 'upcoming' && (
+                <Link 
+                  href="/client/meetings/create" 
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors"
+                >
+                  Schedule a Meeting
+                </Link>
+              )}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {meetings[activeTab]?.map((meeting) => (
+                <div 
+                  key={meeting.id} 
+                  className={`rounded-lg overflow-hidden shadow-md ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}
+                >
+                  <div className="p-6">
+                    {/* Card Header */}
+                    <div className="mb-4">
+                      <div className="flex justify-between items-start mb-2">
+                        {meeting.status === 'canceled' && (
+                          <span className="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-200">
+                            Canceled
+                          </span>
+                        )}
+                        <span className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>
+                          {formatDate(meeting.date)}
+                        </span>
+                      </div>
+                      <h3 className="text-xl font-semibold mb-1">{meeting.title}</h3>
+                      <p className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
+                        With {meeting.therapist}
+                      </p>
+                    </div>
+                    
+                    {/* Meeting Details */}
+                    <div className="space-y-3 mb-4">
+                      <div className="flex items-center gap-2">
+                        <Clock size={16} className={theme === 'dark' ? 'text-blue-400' : 'text-blue-600'} />
+                        <span>{formatTime(meeting.date)} ({getDuration(meeting.duration)})</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Users size={16} className={theme === 'dark' ? 'text-blue-400' : 'text-blue-600'} />
+                        <span>
+                          {activeTab === 'upcoming' 
+                            ? `${meeting.participants || 0}/${meeting.maxParticipants} participants`
+                            : `${meeting.participants} participants`}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Description */}
+                    {meeting.description && (
+                      <div className={`mb-4 p-3 rounded ${theme === 'dark' ? 'bg-gray-700' : 'bg-gray-50'}`}>
+                        <p className="text-sm">{meeting.description}</p>
+                      </div>
+                    )}
+
+                    {/* Cancel Reason */}
+                    {meeting.status === 'canceled' && meeting.cancelReason && (
+                      <div className={`text-sm p-3 rounded ${theme === 'dark' ? 'bg-gray-700 text-gray-300' : 'bg-gray-50 text-gray-700'}`}>
+                        <strong>Reason:</strong> {meeting.cancelReason}
+                      </div>
+                    )}
+
+                    {/* Action Buttons */}
+                    {activeTab === 'upcoming' && (
+                      <div className="mt-6 space-y-3">
+                        <Link 
+                          href={`/client/meetings/join/${meeting.id}`} 
+                          className="block w-full text-center bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition-colors"
+                        >
+                          Join Meeting
+                        </Link>
+                        <div className="flex gap-2">
+                          <button 
+                            className="flex items-center justify-center gap-1 w-full py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                            onClick={() => {
+                              setCurrentMeeting(meeting);
+                              setShowRescheduleModal(true);
+                            }}
+                          >
+                            <RefreshCw size={16} /> Reschedule
+                          </button>
+                          <button 
+                            className="flex items-center justify-center gap-1 w-full py-2 px-4 border border-red-300 dark:border-red-700 text-red-600 dark:text-red-400 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors"
+                            onClick={() => {
+                              setCurrentMeeting(meeting);
+                              setShowCancelModal(true);
+                            }}
+                          >
+                            <X size={16} /> Cancel
+                          </button>
+                        </div>
+                      </div>
+                    )}
+
+                    {activeTab === 'past' && meeting.recordingAvailable && (
+                      <button className="w-full py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                        View Recording
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Cancel Meeting Modal */}
       {showCancelModal && (
-        <div className={styles.modalOverlay}>
-          <div className={styles.modal}>
-            <h3>Cancel Meeting</h3>
-            <p>Are you sure you want to cancel &apos;{currentMeeting?.title}&apos;?</p>
-            <div className={styles.formGroup}>
-              <label htmlFor="cancelReason">Reason for cancellation:</label>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className={`w-full max-w-md rounded-lg shadow-lg p-6 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
+            <h3 className="text-xl font-semibold mb-4">Cancel Meeting</h3>
+            <p className="mb-4">Are you sure you want to cancel '{currentMeeting?.title}'?</p>
+            <div className="mb-4">
+              <label htmlFor="cancelReason" className="block text-sm font-medium mb-2">
+                Reason for cancellation:
+              </label>
               <textarea
                 id="cancelReason"
                 value={cancelReason}
                 onChange={(e) => setCancelReason(e.target.value)}
                 placeholder="Please provide a reason for cancellation"
-                className={styles.textarea}
+                className={`w-full px-3 py-2 border rounded-lg ${theme === 'dark' ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'}`}
+                rows={3}
               />
             </div>
-            <div className={styles.modalActions}>
+            <div className="flex justify-end gap-3">
               <button 
-                className={styles.secondaryButton}
+                className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                 onClick={() => setShowCancelModal(false)}
               >
                 Back
               </button>
               <button 
-                className={styles.dangerButton}
+                className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors"
                 onClick={handleCancelMeeting}
               >
                 Confirm Cancellation
@@ -276,30 +309,32 @@ const Meetings = () => {
 
       {/* Reschedule Meeting Modal */}
       {showRescheduleModal && (
-        <div className={styles.modalOverlay}>
-          <div className={styles.modal}>
-            <h3>Reschedule Meeting</h3>
-            <p>Select a new date and time for &apos;{currentMeeting?.title}&apos;</p>
-            <div className={styles.formGroup}>
-              <label htmlFor="newDate">New Date & Time:</label>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className={`w-full max-w-md rounded-lg shadow-lg p-6 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
+            <h3 className="text-xl font-semibold mb-4">Reschedule Meeting</h3>
+            <p className="mb-4">Select a new date and time for '{currentMeeting?.title}'</p>
+            <div className="mb-4">
+              <label htmlFor="newDate" className="block text-sm font-medium mb-2">
+                New Date & Time:
+              </label>
               <input
                 type="datetime-local"
                 id="newDate"
                 value={newDate}
                 onChange={(e) => setNewDate(e.target.value)}
-                className={styles.input}
+                className={`w-full px-3 py-2 border rounded-lg ${theme === 'dark' ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'}`}
                 min={new Date().toISOString().slice(0, 16)}
               />
             </div>
-            <div className={styles.modalActions}>
+            <div className="flex justify-end gap-3">
               <button 
-                className={styles.secondaryButton}
+                className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                 onClick={() => setShowRescheduleModal(false)}
               >
                 Back
               </button>
               <button 
-                className={styles.primaryButton}
+                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors disabled:opacity-50"
                 onClick={handleRescheduleMeeting}
                 disabled={!newDate}
               >
