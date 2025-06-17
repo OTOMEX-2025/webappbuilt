@@ -1,4 +1,3 @@
-// app/auth/register/page.js
 "use client";
 import { useState } from "react";
 import styles from "../../../styles/Register.module.css";
@@ -10,7 +9,7 @@ export default function Register() {
   const { register } = useUser();
   const [userType, setUserType] = useState("");
   const [formData, setFormData] = useState({
-    fullName: "",
+    name: "",
     email: "",
     password: "",
     licenseNumber: "",
@@ -35,7 +34,24 @@ export default function Register() {
     setError("");
   
     try {
-      const result = await register({ ...formData, userType });
+      // Prepare registration data based on user type
+      const registrationData = {
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+        userType
+      };
+
+      // Add type-specific fields
+      if (userType === "professional") {
+        registrationData.licenseNumber = formData.licenseNumber;
+        registrationData.specialization = formData.specialization;
+        registrationData.organizationName = formData.organizationName;
+      } else if (userType === "client") {
+        registrationData.strugglingWith = formData.strugglingWith;
+      }
+
+      const result = await register(registrationData);
       
       if (result.success) {
         router.push("/auth/login");
@@ -44,7 +60,7 @@ export default function Register() {
       }
     } catch (error) {
       console.error("Registration error:", error);
-      setError("An error occurred while registering");
+      setError(error.message || "An error occurred while registering");
     } finally {
       setLoading(false);
     }
@@ -61,8 +77,8 @@ export default function Register() {
               placeholder="Full Name"
               className={styles.input}
               required
-              name="fullName"
-              value={formData.fullName}
+              name="name"
+              value={formData.name}
               onChange={handleInputChange}
             />
             <input
@@ -106,8 +122,8 @@ export default function Register() {
               placeholder="Full Name"
               className={styles.input}
               required
-              name="fullName"
-              value={formData.fullName}
+              name="name"
+              value={formData.name}
               onChange={handleInputChange}
             />
             <input

@@ -1,8 +1,7 @@
-// context/UserContext.js
 "use client";
 import { createContext, useContext, useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
-import axios from 'axios';
+import apiHelper from '@/lib/apiHelper';
 
 const UserContext = createContext();
 
@@ -63,69 +62,59 @@ export const UserProvider = ({ children }) => {
     }
   }, [user, loading, pathname, router]);
 
-const login = async (credentials) => {
-  try {
-    const response = await axios.post('/api/login', credentials);
-    
-    // Debug: log the full response
-    console.log('Login response:', response);
-    
-    if (!response.data) {
-      throw new Error('No data received from server');
-    }
+  const login = async (credentials) => {
+    try {
+      const { success, data, message } = await apiHelper.login(credentials.email, credentials.password);
+      
+      if (!success) {
+        throw new Error(message || 'Login failed');
+      }
 
-    // Make the response data handling more flexible
-    const token = response.data.token || response.data.accessToken;
-    const userData = response.data.user || response.data;
-    
-    if (!token) {
-      throw new Error('No token received');
+      const authData = {
+        token: data.token,
+        ...data.user
+      };
+      
+      localStorage.setItem('user', JSON.stringify(authData));
+      setUser(authData);
+      
+      // Redirect based on user type
+      const redirectPath = authData.userType === 'professional' ? '/prof/dashboard' :
+                          authData.userType === 'admin' ? '/admin/dashboard' :
+                          '/client/dashboard';
+      
+      router.push(redirectPath);
+      
+      return { success: true };
+    } catch (error) {
+      console.error('Login error:', error);
+      return { 
+        success: false, 
+        message: error.message || 'Login failed. Please try again.' 
+      };
     }
+  };
 
-    // Combine token with user data for storage
-    const authData = {
-      token,
-      ...userData
-    };
-    
-    // Debug: log what we're storing
-    console.log('Storing auth data:', authData);
-    
-    localStorage.setItem('user', JSON.stringify(authData));
-    setUser(authData);
-    
-    // Debug: verify storage
-    console.log('Stored user:', localStorage.getItem('user'));
-    
-    // Redirect based on user type after successful login
-    const redirectPath = userData.userType === 'professional' ? '/prof/dashboard' :
-                        userData.userType === 'admin' ? '/admin/dashboard' :
-                        '/client/dashboard';
-    
-    router.push(redirectPath);
-    
-    return { success: true };
-  } catch (error) {
-    console.error('Login error:', error);
-    const errorMessage = error.response?.data?.message || 
-                         error.message || 
-                         'Login failed. Please try again.';
-    return { 
-      success: false, 
-      message: errorMessage 
-    };
-  }
-};
   const register = async (userData) => {
     try {
-      const response = await axios.post('/api/register', userData);
+      const { success, message } = await apiHelper.register(
+        userData.name,
+        userData.email,
+        userData.password,
+        userData.userType
+      );
+      
+      if (!success) {
+        throw new Error(message || 'Registration failed');
+      }
+      
       router.push('/auth/login');
       return { success: true };
     } catch (error) {
       console.error('Registration error:', error);
       return { 
         success: false, 
-        message: error.response?.data?.message || 'Registration failed' 
+        message: error.message || 'Registration failed' 
       };
     }
   };
@@ -138,17 +127,20 @@ const login = async (credentials) => {
 
   const updateProfile = async (formData) => {
     try {
-      const response = await axios.put('/api/profile', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      const updatedUser = response.data;
+      if (!user?.token) {
+        throw new Error('Not authenticated');
+      }
+      
+      const { success, data, message } = await apiHelper.updateProfile(formData, user.token);
+      
+      if (!success) {
+        throw new Error(message || 'Profile update failed');
+      }
       
       // Preserve the token when updating user data
       const updatedData = {
         ...user,
-        ...updatedUser
+        ...data
       };
       
       localStorage.setItem('user', JSON.stringify(updatedData));
@@ -158,33 +150,45 @@ const login = async (credentials) => {
       console.error('Profile update error:', error);
       return { 
         success: false, 
-        message: error.response?.data?.message || 'Profile update failed' 
+        message: error.message || 'Profile update failed' 
       };
     }
   };
 
   const resetPassword = async (email) => {
     try {
-      await axios.post('/api/reset-password', { email });
+      const { success, message } = await apiHelper.resetPassword(email);
+      
+      if (!success) {
+        throw new Error(message || 'Password reset failed');
+      }
+      
       return { success: true };
     } catch (error) {
       console.error('Password reset error:', error);
       return { 
         success: false, 
-        message: error.response?.data?.message || 'Password reset failed' 
+        message: error.message || 'Password reset failed' 
       };
     }
   };
 
   const fetchUserDetails = async () => {
     try {
-      const response = await axios.get('/api/profile');
-      const userDetails = response.data;
+      if (!user?.token) {
+        throw new Error('Not authenticated');
+      }
+      
+      const { success, data, message } = await apiHelper.getProfile(user.token);
+      
+      if (!success) {
+        throw new Error(message || 'Failed to fetch user details');
+      }
       
       // Preserve the token when updating user data
       const updatedUser = {
         ...user,
-        ...userDetails
+        ...data
       };
       
       localStorage.setItem('user', JSON.stringify(updatedUser));
@@ -194,13 +198,12 @@ const login = async (credentials) => {
       console.error('Fetch user details error:', error);
       return { 
         success: false, 
-        message: error.response?.data?.message || 'Failed to fetch user details' 
+        message: error.message || 'Failed to fetch user details' 
       };
     }
   };
 
   const updateUser = (updatedData) => {
-    // Preserve the token when updating user data
     const updatedUser = { 
       ...user, 
       ...updatedData 
