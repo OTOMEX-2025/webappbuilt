@@ -23,42 +23,12 @@ export const UserProvider = ({ children }) => {
   useEffect(() => {
     if (loading) return;
 
-    const publicPaths = ['/', '/auth/login', '/auth/register', '/auth/reset', '/profile/settings'];
-    const isPublicPath = publicPaths.includes(pathname) || pathname.startsWith('/profile');
+    const publicPaths = ['/', '/auth/login', '/auth/register', '/auth/reset'];
+    const isPublicPath = publicPaths.includes(pathname);
 
     // If user is not logged in and trying to access protected page
     if (!user && !isPublicPath) {
       router.push('/auth/login');
-      return;
-    }
-
-    // Check user type restrictions (only for non-auth pages)
-    if (user && !isPublicPath) {
-      switch(user.userType) {
-        case 'client':
-          if (pathname.startsWith('/prof') || pathname.startsWith('/admin')) {
-            router.push('/client/dashboard');
-            return;
-          }
-          break;
-        case 'professional':
-          if (pathname.startsWith('/client') || pathname.startsWith('/admin')) {
-            router.push('/prof/dashboard');
-            return;
-          }
-          break;
-        case 'admin':
-          if (pathname.startsWith('/client') || pathname.startsWith('/prof')) {
-            router.push('/admin/dashboard');
-            return;
-          }
-          break;
-        default:
-          if (!pathname.startsWith('/client')) {
-            router.push('/client/dashboard');
-            return;
-          }
-      }
     }
   }, [user, loading, pathname, router]);
 
@@ -69,18 +39,13 @@ export const UserProvider = ({ children }) => {
       if (!success) {
         throw new Error(message || 'Login failed');
       }
-
-      const authData = {
-        token: data.token,
-        ...data.user
-      };
       
-      localStorage.setItem('user', JSON.stringify(authData));
-      setUser(authData);
+      localStorage.setItem('user', JSON.stringify(data));
+      setUser(data);
       
       // Redirect based on user type
-      const redirectPath = authData.userType === 'professional' ? '/prof/dashboard' :
-                          authData.userType === 'admin' ? '/admin/dashboard' :
+      const redirectPath = data.userType === 'professional' ? '/prof/dashboard' :
+                          data.userType === 'admin' ? '/admin/dashboard' :
                           '/client/dashboard';
       
       router.push(redirectPath);
@@ -96,28 +61,29 @@ export const UserProvider = ({ children }) => {
   };
 
   const register = async (userData) => {
-    try {
-      const { success, message } = await apiHelper.register(
-        userData.name,
-        userData.email,
-        userData.password,
-        userData.userType
-      );
-      
-      if (!success) {
-        throw new Error(message || 'Registration failed');
-      }
-      
-      router.push('/auth/login');
-      return { success: true };
-    } catch (error) {
-      console.error('Registration error:', error);
-      return { 
-        success: false, 
-        message: error.message || 'Registration failed' 
-      };
+  try {
+    const { success, data, message } = await apiHelper.register(
+      userData.fullName,
+      userData.email,
+      userData.password,
+      userData.userType,
+      userData // Pass all additional fields
+    );
+    
+    if (!success) {
+      throw new Error(message || 'Registration failed');
     }
-  };
+    
+    router.push('/auth/login');
+    return { success: true };
+  } catch (error) {
+    console.error('Registration error:', error);
+    return { 
+      success: false, 
+      message: error.message || 'Registration failed' 
+    };
+  }
+};
 
   const logout = () => {
     localStorage.removeItem('user');
@@ -127,17 +93,19 @@ export const UserProvider = ({ children }) => {
 
   const updateProfile = async (formData) => {
     try {
-      if (!user?.token) {
+      if (!user?.email) {
         throw new Error('Not authenticated');
       }
       
-      const { success, data, message } = await apiHelper.updateProfile(formData, user.token);
+      const { success, data, message } = await apiHelper.updateProfile({
+        ...formData,
+        email: user.email // Ensure we're updating the correct user
+      });
       
       if (!success) {
         throw new Error(message || 'Profile update failed');
       }
       
-      // Preserve the token when updating user data
       const updatedData = {
         ...user,
         ...data
@@ -173,26 +141,16 @@ export const UserProvider = ({ children }) => {
     }
   };
 
-  const fetchUserDetails = async () => {
+  const fetchUserDetails = async (email) => {
     try {
-      if (!user?.token) {
-        throw new Error('Not authenticated');
-      }
-      
-      const { success, data, message } = await apiHelper.getProfile(user.token);
+      const { success, data, message } = await apiHelper.getProfile(email);
       
       if (!success) {
         throw new Error(message || 'Failed to fetch user details');
       }
       
-      // Preserve the token when updating user data
-      const updatedUser = {
-        ...user,
-        ...data
-      };
-      
-      localStorage.setItem('user', JSON.stringify(updatedUser));
-      setUser(updatedUser);
+      localStorage.setItem('user', JSON.stringify(data));
+      setUser(data);
       return { success: true };
     } catch (error) {
       console.error('Fetch user details error:', error);

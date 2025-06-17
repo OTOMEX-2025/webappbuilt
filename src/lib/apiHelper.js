@@ -1,23 +1,13 @@
 import axios from 'axios';
 
 const apiHelper = {
-  request: async (method, data = {}, token = null) => {
+  request: async (method, endpoint, data = {}) => {
     try {
       const config = {
         method,
-        url: '/api/profile',
-        headers: {}
+        url: `/api/profile${endpoint || ''}`,
+        data
       };
-
-      if (token) {
-        config.headers['Authorization'] = `Bearer ${token}`;
-      }
-
-      if (method === 'GET') {
-        config.params = data;
-      } else {
-        config.data = data;
-      }
 
       const response = await axios(config);
       return { success: true, data: response.data };
@@ -32,33 +22,34 @@ const apiHelper = {
 
   // Specific methods for common operations
   login: async (email, password) => {
-    return apiHelper.request('POST', {
+    return apiHelper.request('POST', '', {
       operation: 'login',
       email,
       password
     });
   },
 
-  register: async (name, email, password, userType) => {
-    return apiHelper.request('POST', {
-      operation: 'register',
-      name,
-      email,
-      password,
-      userType
-    });
+  register: async (fullName, email, password, userType = 'client', additionalData = {}) => {
+  return apiHelper.request('POST', '', {
+    operation: 'register',
+    fullName,
+    email,
+    password,
+    userType,
+    ...additionalData // Include all additional fields
+  });
+},
+
+  getProfile: async (email) => {
+    return apiHelper.request('GET', `?email=${email}`);
   },
 
-  getProfile: async (token) => {
-    return apiHelper.request('GET', {}, token);
-  },
-
-  updateProfile: async (data, token) => {
-    return apiHelper.request('PUT', data, token);
+  updateProfile: async (data) => {
+    return apiHelper.request('PUT', '', data);
   },
 
   resetPassword: async (email) => {
-    return apiHelper.request('POST', {
+    return apiHelper.request('POST', '', {
       operation: 'reset-password',
       email
     });

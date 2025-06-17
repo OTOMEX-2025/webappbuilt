@@ -28,12 +28,12 @@ export default function ResetPassword() {
     setError("");
     
     try {
-      // In a real app, you would call the API to send a reset email
-      // For now, we'll just generate a code locally
+      // In a real implementation, this would call your API to send an email
       const verificationCode = generateRandomCode();
       setGeneratedCode(verificationCode);
       console.log(`Verification code for ${email}: ${verificationCode}`);
       
+      // For demo purposes, we'll proceed to the next step
       setStep(2);
       setSuccess(`A verification code has been sent to ${email}`);
     } catch (err) {
@@ -49,7 +49,6 @@ export default function ResetPassword() {
     setError("");
     
     try {
-      // Validate code
       if (code !== generatedCode) {
         throw new Error("Invalid verification code");
       }
@@ -69,7 +68,6 @@ export default function ResetPassword() {
     setError("");
     
     try {
-      // Validate passwords
       if (newPassword.length < 6) {
         throw new Error("Password must be at least 6 characters");
       }
@@ -87,7 +85,6 @@ export default function ResetPassword() {
       
       setSuccess("Password updated successfully! Redirecting to login...");
       
-      // Redirect to login after 2 seconds
       setTimeout(() => {
         router.push("/auth/login");
       }, 2000);
