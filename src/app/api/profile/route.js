@@ -4,13 +4,12 @@ import User from "@/models/User";
 import bcrypt from "bcryptjs";
 
 export async function GET(request) {
-  await dbConnect();
   try {
     await dbConnect();
     
     const { searchParams } = new URL(request.url);
     const email = searchParams.get('email');
-
+    
     if (!email) {
       return NextResponse.json(
         { message: 'Email is required' },
@@ -19,7 +18,15 @@ export async function GET(request) {
     }
 
     const user = await User.findOne({ email }).select('-password');
-    return NextResponse.json(user || { message: 'User not found' });
+    
+    if (!user) {
+      return NextResponse.json(
+        { message: 'User not found' },
+        { status: 404 }
+      );
+    }
+    
+    return NextResponse.json(user, { status: 200 });
   } catch (error) {
     return NextResponse.json(
       { message: 'Server error', error: error.message },
@@ -37,11 +44,11 @@ export async function POST(request) {
     
     switch (operation) {
       case 'login':
-        return await handleLogin(data.email, data.password);
+        return handleLogin(payload);
       case 'register':
-        return await handleRegister(data);
+        return handleRegister(payload);
       case 'reset-password':
-        return await handleResetPassword(data.email);
+        return handleResetPassword(payload);
       default:
         return NextResponse.json(
           { message: 'Invalid operation' },
@@ -57,13 +64,13 @@ export async function POST(request) {
 }
 
 export async function PUT(request) {
-  await dbConnect();
   try {
-    const { operation, ...data } = await request.json();
+    await dbConnect();
+    const data = await request.json();
     
-    if (operation !== 'update-profile' || !data.email) {
+    if (!data.email) {
       return NextResponse.json(
-        { message: 'Invalid request' },
+        { message: 'Email is required' },
         { status: 400 }
       );
     }
@@ -73,7 +80,14 @@ export async function PUT(request) {
       { $set: data },
       { new: true }
     ).select('-password');
-
+    
+    if (!updatedUser) {
+      return NextResponse.json(
+        { message: 'User not found' },
+        { status: 404 }
+      );
+    }
+    
     return NextResponse.json(updatedUser);
   } catch (error) {
     return NextResponse.json(
@@ -86,13 +100,14 @@ export async function PUT(request) {
 // Helper functions
 async function handleLogin({ email, password }) {
   const user = await User.findOne({ email });
+  
   if (!user) {
     return NextResponse.json(
       { message: 'Invalid credentials' },
       { status: 401 }
     );
   }
-
+  
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) {
     return NextResponse.json(
@@ -125,7 +140,8 @@ async function handleRegister({
       { status: 400 }
     );
   }
-
+  
+  // Hash password
   const hashedPassword = await bcrypt.hash(password, 10);
   
   // Create user with all provided data
@@ -154,25 +170,23 @@ async function handleRegister({
   const { password: _, ...userData } = newUser.toObject();
   
   return NextResponse.json(
-    { 
-      message: 'User created successfully',
-      user: { _id: newUser._id, name, email, userType }
-    },
+    { message: 'User created successfully', user: userData },
     { status: 201 }
   );
 }
 
-async function handleResetPassword(email) {
+async function handleResetPassword({ email }) {
   const user = await User.findOne({ email });
+  
   if (!user) {
     return NextResponse.json(
-      { message: 'If an account exists, a reset link has been sent' },
+      { message: 'If an account exists with this email, a reset link has been sent' },
       { status: 200 }
     );
   }
   
   return NextResponse.json(
-    { message: 'Reset instructions sent to your email' },
+    { message: 'If an account exists with this email, a reset link has been sent' },
     { status: 200 }
   );
 }

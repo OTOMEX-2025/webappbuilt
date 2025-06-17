@@ -1,22 +1,27 @@
 "use client";
 import { useState } from "react";
+import styles from "../../../styles/Register.module.css";
+import { useRouter } from "next/navigation";
 import { useUser } from "@/context/UserContext";
-import styles from '../../../styles/Register.module.css';
 
-export default function RegisterPage() {
-  const [userType, setUserType] = useState("client");
+export default function Register() {
+  const router = useRouter();
+  const { register } = useUser();
+  const [userType, setUserType] = useState("");
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
     password: "",
     licenseNumber: "",
-    specialization: ""
+    specialization: "",
+    organizationName: "",
+    strugglingWith: "",
   });
-  const [isLoading, setIsLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;  // Changed from fullName to name
+    const { name, value } = e.target; // Changed from fullName to name
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
@@ -25,9 +30,9 @@ export default function RegisterPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
+    setLoading(true);
     setError("");
-
+  
     try {
       if (!userType) {
         throw new Error("Please select a user type");
@@ -48,12 +53,16 @@ export default function RegisterPage() {
       });
       
       if (!result.success) {
-        throw new Error(result.message);
+        throw new Error(result.message || "Registration failed");
       }
+
+      // On successful registration, redirect to login
+      router.push("/auth/login");
     } catch (error) {
-      setError(error.message || "Registration failed");
+      console.error("Registration error:", error);
+      setError(error.message || "An error occurred while registering");
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
   
@@ -68,7 +77,7 @@ export default function RegisterPage() {
               placeholder="Full Name *"
               className={styles.input}
               required
-              name="fullName"  // Changed to name="fullName"
+              name="fullName" // Changed from fullName="name" to name="fullName"
               value={formData.fullName}
               onChange={handleInputChange}
             />
@@ -114,7 +123,7 @@ export default function RegisterPage() {
               placeholder="Full Name *"
               className={styles.input}
               required
-              name="fullName"  // Changed from name="name" to name="fullName"
+              name="fullName" // Changed from name="name" to name="fullName"
               value={formData.fullName}
               onChange={handleInputChange}
             />
