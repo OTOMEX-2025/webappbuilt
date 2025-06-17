@@ -52,7 +52,7 @@ const ProfLayout = ({ children }) => {
                userName="Therapist Profile"
               pageTitle={formattedPageName} 
             />
-              <main className={styles.content}>{children}</main>
+              <main className={`${styles.content} pt-16`}>{children}</main>
             </div>
           </div>
         </div>
