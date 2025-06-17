@@ -1,23 +1,18 @@
 "use client";
 import { useState } from "react";
-import styles from "../../../styles/Register.module.css";
-import { useRouter } from "next/navigation";
 import { useUser } from "@/context/UserContext";
+import styles from '../../../styles/Register.module.css';
 
-export default function Register() {
-  const router = useRouter();
-  const { register } = useUser();
-  const [userType, setUserType] = useState("");
+export default function RegisterPage() {
+  const [userType, setUserType] = useState("client");
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
     password: "",
     licenseNumber: "",
-    specialization: "",
-    organizationName: "",
-    strugglingWith: "",
+    specialization: ""
   });
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
   const handleInputChange = (e) => {
@@ -30,9 +25,9 @@ export default function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
+    setIsLoading(true);
     setError("");
-  
+
     try {
       if (!userType) {
         throw new Error("Please select a user type");
@@ -53,16 +48,12 @@ export default function Register() {
       });
       
       if (!result.success) {
-        throw new Error(result.message || "Registration failed");
+        throw new Error(result.message);
       }
-
-      // On successful registration, redirect to login
-      router.push("/auth/login");
     } catch (error) {
-      console.error("Registration error:", error);
-      setError(error.message || "An error occurred while registering");
+      setError(error.message || "Registration failed");
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
   
