@@ -2,46 +2,48 @@
 import { NextResponse } from "next/server";
 import dbConnect from "@/lib/dbConnect";
 import User from "@/models/User";
-import { getToken } from "next-auth/jwt";
 
-export async function GET(req) {
+export async function GET() {
   try {
     await dbConnect();
     
-    const token = await getToken({ req });
-    if (!token) {
-      return new Response(JSON.stringify({ message: 'Not authenticated' }), { status: 401 });
-    }
-
-    const user = await User.findById(token.userId).select('-password');
-    if (!user) {
-      return new Response(JSON.stringify({ message: 'User not found' }), { status: 404 });
-    }
-
-    return new Response(JSON.stringify(user), { status: 200 });
+    // Get all users (or modify this to get a specific user if needed)
+    const users = await User.find().select('-password');
+    
+    return NextResponse.json(users, { status: 200 });
   } catch (error) {
-    return new Response(JSON.stringify({ message: 'Server error' }), { status: 500 });
+    return NextResponse.json(
+      { message: 'Server error', error: error.message },
+      { status: 500 }
+    );
   }
 }
 
 export async function PUT(request) {
   try {
     await dbConnect();
-    const token = await getToken({ req: request });
     const data = await request.json();
-
-    if (!token) {
-      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    
+    // You'll need to decide how to identify which user to update
+    // For example, you could pass an ID in the request body
+    if (!data._id) {
+      return NextResponse.json(
+        { message: "User ID is required" },
+        { status: 400 }
+      );
     }
 
     const updatedUser = await User.findByIdAndUpdate(
-      token.userId,
+      data._id,
       { $set: data },
       { new: true }
     ).select('-password');
 
     return NextResponse.json(updatedUser);
   } catch (error) {
-    return NextResponse.json({ message: "Server error", error: error.message }, { status: 500 });
+    return NextResponse.json(
+      { message: "Server error", error: error.message },
+      { status: 500 }
+    );
   }
 }
