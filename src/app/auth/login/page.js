@@ -23,8 +23,11 @@ export default function LoginPage() {
       const result = await login({ email, password });
       
       if (!result.success) {
-        setError(result.message);
+        setError(result.message || "Invalid credentials");
+        return;
       }
+
+      // On successful login, the user will be redirected by the UserProvider
     } catch (error) {
       setError("An unexpected error occurred. Please try again.");
       console.error("Login error:", error);

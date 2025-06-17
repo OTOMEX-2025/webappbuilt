@@ -34,7 +34,10 @@ export default function Register() {
     setError("");
   
     try {
-      // Prepare registration data based on user type
+      if (!userType) {
+        throw new Error("Please select a user type");
+      }
+
       const registrationData = {
         name: formData.name,
         email: formData.email,
@@ -53,11 +56,12 @@ export default function Register() {
 
       const result = await register(registrationData);
       
-      if (result.success) {
-        router.push("/auth/login");
-      } else {
-        setError(result.message);
+      if (!result.success) {
+        throw new Error(result.message || "Registration failed");
       }
+
+      // On successful registration, redirect to login
+      router.push("/auth/login");
     } catch (error) {
       console.error("Registration error:", error);
       setError(error.message || "An error occurred while registering");
