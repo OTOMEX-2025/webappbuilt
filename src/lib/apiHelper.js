@@ -1,58 +1,42 @@
 import axios from 'axios';
 
 const apiHelper = {
-  request: async (method, endpoint, data = {}) => {
+  request: async (method, data = {}, query = '') => {
     try {
       const config = {
         method,
-        url: `/api/profile${endpoint || ''}`,
-        data
+        url: `/api/profile${query}`,
+        data,
+        headers: { 'Content-Type': 'application/json' },
       };
 
       const response = await axios(config);
       return { success: true, data: response.data };
     } catch (error) {
-      console.error('API request error:', error);
+      console.error('API error:', error);
       return {
         success: false,
-        message: error.response?.data?.message || error.message || 'Request failed'
+        message: error.response?.data?.message || error.message || 'Request failed',
       };
     }
   },
 
-  // Specific methods for common operations
-  login: async (email, password) => {
-    return apiHelper.request('POST', '', {
-      operation: 'login',
-      email,
-      password
-    });
-  },
+  // Auth Operations
+  login: (email, password) => 
+    apiHelper.request('POST', { operation: 'login', email, password }),
 
-  register: async (name, email, password, userType = 'client') => {
-    return apiHelper.request('POST', '', {
-      operation: 'register',
-      name,
-      email,
-      password,
-      userType
-    });
-  },
+  register: (userData) => 
+    apiHelper.request('POST', { operation: 'register', ...userData }),
 
-  getProfile: async (email) => {
-    return apiHelper.request('GET', `?email=${email}`);
-  },
+  resetPassword: (email) => 
+    apiHelper.request('POST', { operation: 'reset-password', email }),
 
-  updateProfile: async (data) => {
-    return apiHelper.request('PUT', '', data);
-  },
+  // Profile Operations
+  getProfile: (email) => 
+    apiHelper.request('GET', {}, `?email=${email}`),
 
-  resetPassword: async (email) => {
-    return apiHelper.request('POST', '', {
-      operation: 'reset-password',
-      email
-    });
-  }
+  updateProfile: (data) => 
+    apiHelper.request('PUT', { operation: 'update-profile', ...data }),
 };
 
 export default apiHelper;

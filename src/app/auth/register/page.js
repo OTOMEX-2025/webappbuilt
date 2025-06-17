@@ -1,253 +1,111 @@
 "use client";
 import { useState } from "react";
-import styles from "../../../styles/Register.module.css";
-import { useRouter } from "next/navigation";
 import { useUser } from "@/context/UserContext";
+import styles from '../../../styles/Register.module.css';
 
-export default function Register() {
-  const router = useRouter();
-  const { register } = useUser();
-  const [userType, setUserType] = useState("");
+export default function RegisterPage() {
+  const [userType, setUserType] = useState("client");
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
     licenseNumber: "",
-    specialization: "",
-    organizationName: "",
-    strugglingWith: "",
+    specialization: ""
   });
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
+  const { register } = useUser();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
+    setIsLoading(true);
     setError("");
-  
+
     try {
-      if (!userType) {
-        throw new Error("Please select a user type");
-      }
-
-      const registrationData = {
-        name: formData.name,
-        email: formData.email,
-        password: formData.password,
+      const result = await register({
+        ...formData,
         userType
-      };
-
-      // Add type-specific fields
-      if (userType === "professional") {
-        registrationData.licenseNumber = formData.licenseNumber;
-        registrationData.specialization = formData.specialization;
-        registrationData.organizationName = formData.organizationName;
-      } else if (userType === "client") {
-        registrationData.strugglingWith = formData.strugglingWith;
-      }
-
-      const result = await register(registrationData);
+      });
       
       if (!result.success) {
-        throw new Error(result.message || "Registration failed");
+        throw new Error(result.message);
       }
-
-      // On successful registration, redirect to login
-      router.push("/auth/login");
     } catch (error) {
-      console.error("Registration error:", error);
-      setError(error.message || "An error occurred while registering");
+      setError(error.message || "Registration failed");
     } finally {
-      setLoading(false);
-    }
-  };
-  
-  const renderForm = () => {
-    switch (userType) {
-      case "client":
-        return (
-          <form onSubmit={handleSubmit} className={styles.form}>
-            <h2 className={styles.formTitle}>Client Registration</h2>
-            <input
-              type="text"
-              placeholder="Full Name"
-              className={styles.input}
-              required
-              name="name"
-              value={formData.name}
-              onChange={handleInputChange}
-            />
-            <input
-              type="email"
-              placeholder="Email"
-              className={styles.input}
-              required
-              name="email"
-              value={formData.email}
-              onChange={handleInputChange}
-            />
-            <input
-              type="password"
-              placeholder="Password"
-              className={styles.input}
-              required
-              name="password"
-              value={formData.password}
-              onChange={handleInputChange}
-            />
-            <textarea
-              placeholder="What are you struggling with?"
-              className={styles.textarea}
-              required
-              name="strugglingWith"
-              value={formData.strugglingWith}
-              onChange={handleInputChange}
-              rows={3}
-            />
-            <button type="submit" className={styles.button} disabled={loading}>
-              {loading ? "Submitting..." : "Register as Client"}
-            </button>
-          </form>
-        );
-      case "professional":
-        return (
-          <form onSubmit={handleSubmit} className={styles.form}>
-            <h2 className={styles.formTitle}>Professional Registration</h2>
-            <input
-              type="text"
-              placeholder="Full Name"
-              className={styles.input}
-              required
-              name="name"
-              value={formData.name}
-              onChange={handleInputChange}
-            />
-            <input
-              type="email"
-              placeholder="Email"
-              className={styles.input}
-              required
-              name="email"
-              value={formData.email}
-              onChange={handleInputChange}
-            />
-            <input
-              type="password"
-              placeholder="Password"
-              className={styles.input}
-              required
-              name="password"
-              value={formData.password}
-              onChange={handleInputChange}
-            />
-            <input
-              type="text"
-              placeholder="License Number"
-              className={styles.input}
-              required
-              name="licenseNumber"
-              value={formData.licenseNumber}
-              onChange={handleInputChange}
-            />
-            <input
-              type="text"
-              placeholder="Specialization"
-              className={styles.input}
-              required
-              name="specialization"
-              value={formData.specialization}
-              onChange={handleInputChange}
-            />
-            <input
-              type="text"
-              placeholder="Organization (Optional)"
-              className={styles.input}
-              name="organizationName"
-              value={formData.organizationName}
-              onChange={handleInputChange}
-            />
-            <button type="submit" className={styles.button} disabled={loading}>
-              {loading ? "Submitting..." : "Register as Professional"}
-            </button>
-          </form>
-        );
-      default:
-        return null;
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className={styles.pageContainer}>
-      <div className={styles.contentWrapper}>
-        {userType === "professional" && (
-          <div className={styles.imageContainer}>
-            <div className={styles.imageOverlay}></div>
-            <div className={styles.imageContent}>
-              <h2>Join Our Network of Professionals</h2>
-              <p>
-                Connect with clients seeking your expertise and grow your
-                practice with our platform.
-              </p>
-            </div>
-          </div>
-        )}
-
-        <div
-          className={`${styles.formContainer} ${
-            userType === "professional" ? styles.professionalActive : ""
-          }`}
-        >
-          <div className={styles.header}>
-            <h1 className={styles.title}>Create an Account</h1>
-            <div className={styles.selector}>
-              <div className={styles.options}>
-                <button
-                  onClick={() => setUserType("client")}
-                  className={`${styles.optionButton} ${
-                    userType === "client" ? styles.active : ""
-                  }`}
-                >
-                  I&apos;m a Client
-                </button>
-                <button
-                  onClick={() => setUserType("professional")}
-                  className={`${styles.optionButton} ${
-                    userType === "professional" ? styles.active : ""
-                  }`}
-                >
-                  I&apos;m a Professional
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {renderForm()}
-          {error && <p className={styles.error}>{error}</p>}
-          <p className={styles.link}>
-            Already have an account? <a href="/auth/login">Login</a>
-          </p>
+    <div className={styles.container}>
+      <div className={styles.registerBox}>
+        <h1>Create Account</h1>
+        {error && <p className={styles.error}>{error}</p>}
+        
+        <div className={styles.tabs}>
+          <button 
+            onClick={() => setUserType("client")}
+            className={userType === "client" ? styles.active : ""}
+          >
+            Client
+          </button>
+          <button 
+            onClick={() => setUserType("professional")}
+            className={userType === "professional" ? styles.active : ""}
+          >
+            Professional
+          </button>
         </div>
 
-        {userType !== "professional" && (
-          <div className={styles.imageContainer}>
-            <div className={styles.imageOverlay}></div>
-            <div className={styles.imageContent}>
-              <h2>Find the Right Professional for You</h2>
-              <p>
-                Get matched with qualified professionals who can help you with
-                your specific needs.
-              </p>
-            </div>
-          </div>
-        )}
+        <form onSubmit={handleSubmit}>
+          <input
+            name="name"
+            placeholder="Full Name"
+            value={formData.name}
+            onChange={(e) => setFormData({...formData, name: e.target.value})}
+            required
+          />
+          <input
+            name="email"
+            type="email"
+            placeholder="Email"
+            value={formData.email}
+            onChange={(e) => setFormData({...formData, email: e.target.value})}
+            required
+          />
+          <input
+            name="password"
+            type="password"
+            placeholder="Password"
+            value={formData.password}
+            onChange={(e) => setFormData({...formData, password: e.target.value})}
+            required
+          />
+
+          {userType === "professional" && (
+            <>
+              <input
+                name="licenseNumber"
+                placeholder="License Number"
+                value={formData.licenseNumber}
+                onChange={(e) => setFormData({...formData, licenseNumber: e.target.value})}
+                required
+              />
+              <input
+                name="specialization"
+                placeholder="Specialization"
+                value={formData.specialization}
+                onChange={(e) => setFormData({...formData, specialization: e.target.value})}
+                required
+              />
+            </>
+          )}
+
+          <button type="submit" disabled={isLoading}>
+            {isLoading ? "Registering..." : "Register"}
+          </button>
+        </form>
       </div>
     </div>
   );

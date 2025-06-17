@@ -11,22 +11,40 @@ export const UserProvider = ({ children }) => {
   const router = useRouter();
   const pathname = usePathname();
 
+  // Auth check on initial load
   useEffect(() => {
-    // Check for user in localStorage on initial load
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
-    setLoading(false);
+    const checkAuth = async () => {
+      try {
+        const storedUser = localStorage.getItem('user');
+        if (storedUser) {
+          const parsedUser = JSON.parse(storedUser);
+          const { success, data } = await apiHelper.getProfile(parsedUser.email);
+          
+          if (success) {
+            setUser(data);
+            localStorage.setItem('user', JSON.stringify(data));
+          } else {
+            localStorage.removeItem('user');
+          }
+        }
+      } catch (error) {
+        console.error('Auth check error:', error);
+        localStorage.removeItem('user');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    checkAuth();
   }, []);
 
+  // Route protection
   useEffect(() => {
     if (loading) return;
 
     const publicPaths = ['/', '/auth/login', '/auth/register', '/auth/reset'];
     const isPublicPath = publicPaths.includes(pathname);
 
-    // If user is not logged in and trying to access protected page
     if (!user && !isPublicPath) {
       router.push('/auth/login');
     }
@@ -34,11 +52,12 @@ export const UserProvider = ({ children }) => {
 
   const login = async (credentials) => {
     try {
-      const { success, data, message } = await apiHelper.login(credentials.email, credentials.password);
+      const { success, data, message } = await apiHelper.login(
+        credentials.email, 
+        credentials.password
+      );
       
-      if (!success) {
-        throw new Error(message || 'Login failed');
-      }
+      if (!success) throw new Error(message || 'Login failed');
       
       localStorage.setItem('user', JSON.stringify(data));
       setUser(data);
@@ -49,7 +68,6 @@ export const UserProvider = ({ children }) => {
                           '/client/dashboard';
       
       router.push(redirectPath);
-      
       return { success: true };
     } catch (error) {
       console.error('Login error:', error);
@@ -62,16 +80,18 @@ export const UserProvider = ({ children }) => {
 
   const register = async (userData) => {
     try {
-      const { success, data, message } = await apiHelper.register(
-        userData.name,
-        userData.email,
-        userData.password,
-        userData.userType
-      );
+      const { success, data, message } = await apiHelper.register({
+        name: userData.name,
+        email: userData.email,
+        password: userData.password,
+        userType: userData.userType,
+        ...(userData.userType === 'professional' && {
+          licenseNumber: userData.licenseNumber,
+          specialization: userData.specialization
+        })
+      });
       
-      if (!success) {
-        throw new Error(message || 'Registration failed');
-      }
+      if (!success) throw new Error(message || 'Registration failed');
       
       router.push('/auth/login');
       return { success: true };
@@ -92,26 +112,18 @@ export const UserProvider = ({ children }) => {
 
   const updateProfile = async (formData) => {
     try {
-      if (!user?.email) {
-        throw new Error('Not authenticated');
-      }
+      if (!user?.email) throw new Error('Not authenticated');
       
       const { success, data, message } = await apiHelper.updateProfile({
         ...formData,
-        email: user.email // Ensure we're updating the correct user
+        email: user.email
       });
       
-      if (!success) {
-        throw new Error(message || 'Profile update failed');
-      }
+      if (!success) throw new Error(message || 'Profile update failed');
       
-      const updatedData = {
-        ...user,
-        ...data
-      };
-      
-      localStorage.setItem('user', JSON.stringify(updatedData));
-      setUser(updatedData);
+      const updatedUser = { ...user, ...data };
+      localStorage.setItem('user', JSON.stringify(updatedUser));
+      setUser(updatedUser);
       return { success: true };
     } catch (error) {
       console.error('Profile update error:', error);
@@ -125,11 +137,7 @@ export const UserProvider = ({ children }) => {
   const resetPassword = async (email) => {
     try {
       const { success, message } = await apiHelper.resetPassword(email);
-      
-      if (!success) {
-        throw new Error(message || 'Password reset failed');
-      }
-      
+      if (!success) throw new Error(message || 'Password reset failed');
       return { success: true };
     } catch (error) {
       console.error('Password reset error:', error);
@@ -140,31 +148,8 @@ export const UserProvider = ({ children }) => {
     }
   };
 
-  const fetchUserDetails = async (email) => {
-    try {
-      const { success, data, message } = await apiHelper.getProfile(email);
-      
-      if (!success) {
-        throw new Error(message || 'Failed to fetch user details');
-      }
-      
-      localStorage.setItem('user', JSON.stringify(data));
-      setUser(data);
-      return { success: true };
-    } catch (error) {
-      console.error('Fetch user details error:', error);
-      return { 
-        success: false, 
-        message: error.message || 'Failed to fetch user details' 
-      };
-    }
-  };
-
   const updateUser = (updatedData) => {
-    const updatedUser = { 
-      ...user, 
-      ...updatedData 
-    };
+    const updatedUser = { ...user, ...updatedData };
     localStorage.setItem('user', JSON.stringify(updatedUser));
     setUser(updatedUser);
   };
@@ -177,7 +162,6 @@ export const UserProvider = ({ children }) => {
       register,
       resetPassword,
       updateProfile,
-      fetchUserDetails,
       updateUser,
       loading 
     }}>
