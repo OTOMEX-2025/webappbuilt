@@ -75,7 +75,7 @@ const SessionsPage = () => {
   if (error) return <div className={styles.error}>Error: {error}</div>;
 
   return (
-    <div className={`${styles.sessionsContainer} ${darkMode ? styles.dark : ''}`}>
+    <div className={`w-screen min-h-screen center${styles.sessionsContainer} ${darkMode ? styles.dark : ''}`}>
       
       {error && <div className={styles.errorBanner}>{error}</div>}
       
