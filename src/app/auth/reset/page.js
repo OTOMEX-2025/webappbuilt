@@ -29,7 +29,7 @@ export default function ResetPassword() {
     
     try {
       // Check if email exists in database
-      const response = await axios.post('/api/auth/check-email', { email });
+      const response = await axios.post('/api/check-email', { email });
       
       if (!response.data.exists) {
         throw new Error("No account found with this email address");
@@ -85,7 +85,7 @@ export default function ResetPassword() {
       }
       
       // Update password in database
-      await axios.post('/api/auth/reset-password', { 
+      await axios.post('/api/reset-password', { 
         email, 
         newPassword 
       });

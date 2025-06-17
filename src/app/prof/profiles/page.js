@@ -1,6 +1,6 @@
 'use client';
 import { RiUserLine } from 'react-icons/ri';
-import { useTheme } from '../../context/ThemeContext';
+import { useTheme } from '@/context/ThemeContext';
 import data from '../../../backend/data.json';
 
 const ProfilesPage = () => {

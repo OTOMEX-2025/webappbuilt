@@ -6,6 +6,7 @@ import styles from "../styles/Sidebar.module.css";
 import Image from 'next/image';
 import { useTheme } from "../context/ThemeContext";
 
+
 const ReUsableSideBar = ({ 
   isOpen, 
   setIsOpen, 

@@ -1,3 +1,4 @@
+'use client';
 import { RiAlertLine } from 'react-icons/ri';
 import data from '../../../backend/data.json';
 import { useTheme } from '../../../context/ThemeContext';

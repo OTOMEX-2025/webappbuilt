@@ -3,6 +3,7 @@ import React from 'react';
 import { Trophy, Clock, Users, Star, Award } from 'lucide-react';
 import { useTheme } from '../../../context/ThemeContext';
 
+
 const Games = () => {
   const { theme } = useTheme();
   const games = [
