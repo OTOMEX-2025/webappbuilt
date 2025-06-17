@@ -1,4 +1,3 @@
-// app/auth/login/page.js
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -20,13 +19,18 @@ export default function LoginPage() {
     setIsLoading(true);
     setError("");
 
-    const result = await login({ email, password });
-    
-    if (!result.success) {
-      setError(result.message);
+    try {
+      const result = await login({ email, password });
+      
+      if (!result.success) {
+        setError(result.message);
+      }
+    } catch (error) {
+      setError("An unexpected error occurred. Please try again.");
+      console.error("Login error:", error);
+    } finally {
+      setIsLoading(false);
     }
-    
-    setIsLoading(false);
   };
 
   return (

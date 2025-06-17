@@ -1,13 +1,13 @@
-// app/auth/reset/page.js
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import axios from 'axios';
+import { useUser } from "@/context/UserContext";
 import styles from '../../../styles/ResetPassword.module.css';
 
 export default function ResetPassword() {
   const router = useRouter();
+  const { resetPassword } = useUser();
   const [step, setStep] = useState(1); // 1: email, 2: code, 3: new password
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
@@ -28,14 +28,8 @@ export default function ResetPassword() {
     setError("");
     
     try {
-      // Check if email exists in database
-      const response = await axios.post('/api/check-email', { email });
-      
-      if (!response.data.exists) {
-        throw new Error("No account found with this email address");
-      }
-      
-      // Generate and "send" code (in production, you would actually send it via email)
+      // In a real app, you would call the API to send a reset email
+      // For now, we'll just generate a code locally
       const verificationCode = generateRandomCode();
       setGeneratedCode(verificationCode);
       console.log(`Verification code for ${email}: ${verificationCode}`);
@@ -43,7 +37,7 @@ export default function ResetPassword() {
       setStep(2);
       setSuccess(`A verification code has been sent to ${email}`);
     } catch (err) {
-      setError(err.response?.data?.message || err.message);
+      setError(err.message || "Failed to send verification code");
     } finally {
       setIsLoading(false);
     }
@@ -84,11 +78,12 @@ export default function ResetPassword() {
         throw new Error("Passwords do not match");
       }
       
-      // Update password in database
-      await axios.post('/api/reset-password', { 
-        email, 
-        newPassword 
-      });
+      // Call the resetPassword function from UserContext
+      const result = await resetPassword(email);
+      
+      if (!result.success) {
+        throw new Error(result.message || "Failed to reset password");
+      }
       
       setSuccess("Password updated successfully! Redirecting to login...");
       
@@ -97,7 +92,7 @@ export default function ResetPassword() {
         router.push("/auth/login");
       }, 2000);
     } catch (err) {
-      setError(err.response?.data?.message || err.message);
+      setError(err.message || "Failed to update password");
     } finally {
       setIsLoading(false);
     }
