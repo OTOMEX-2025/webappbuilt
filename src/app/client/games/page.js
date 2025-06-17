@@ -101,7 +101,7 @@ const Games = () => {
                 Daily Challenge
               </h2>
               <p className={`mb-4 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>
-                Complete today's mindfulness exercise to earn 100 bonus points!
+                Complete today&apos;s mindfulness exercise to earn 100 bonus points!
               </p>
               <button className={`px-6 py-2 rounded-lg font-medium ${theme === 'dark' ? 'bg-yellow-600 hover:bg-yellow-700 text-white' : 'bg-yellow-500 hover:bg-yellow-600 text-white'}`}>
                 Start Challenge

@@ -158,7 +158,7 @@ const Meetings = () => {
               </div>
               <h3 className="text-xl font-semibold mb-2">No {activeTab} meetings</h3>
               <p className={`mb-4 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-                You don't have any {activeTab} meetings scheduled
+                You don&apos;t have any {activeTab} meetings scheduled
               </p>
               {activeTab === 'upcoming' && (
                 <Link 
@@ -275,7 +275,7 @@ const Meetings = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className={`w-full max-w-md rounded-lg shadow-lg p-6 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
             <h3 className="text-xl font-semibold mb-4">Cancel Meeting</h3>
-            <p className="mb-4">Are you sure you want to cancel '{currentMeeting?.title}'?</p>
+            <p className="mb-4">Are you sure you want to cancel &apos;{currentMeeting?.title}&apos;?</p>
             <div className="mb-4">
               <label htmlFor="cancelReason" className="block text-sm font-medium mb-2">
                 Reason for cancellation:
@@ -312,7 +312,7 @@ const Meetings = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className={`w-full max-w-md rounded-lg shadow-lg p-6 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
             <h3 className="text-xl font-semibold mb-4">Reschedule Meeting</h3>
-            <p className="mb-4">Select a new date and time for '{currentMeeting?.title}'</p>
+            <p className="mb-4">Select a new date and time for &apos;{currentMeeting?.title}&apos;</p>
             <div className="mb-4">
               <label htmlFor="newDate" className="block text-sm font-medium mb-2">
                 New Date & Time:
