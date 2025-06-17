@@ -207,13 +207,13 @@ export default function Register() {
                   onClick={() => setUserType("client")}
                   className={`${styles.optionButton} ${userType === "client" ? styles.active : ""}`}
                 >
-                  I'm a Client
+                  I&apos;m a Client
                 </button>
                 <button
                   onClick={() => setUserType("professional")}
                   className={`${styles.optionButton} ${userType === "professional" ? styles.active : ""}`}
                 >
-                  I'm a Professional
+                  I&apos;m a Professional
                 </button>
               </div>
             </div>
