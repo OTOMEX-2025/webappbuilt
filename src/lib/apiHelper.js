@@ -29,15 +29,16 @@ const apiHelper = {
     });
   },
 
-  register: async (name, email, password, userType = 'client') => {
-    return apiHelper.request('POST', '', {
-      operation: 'register',
-      name,
-      email,
-      password,
-      userType
-    });
-  },
+  register: async (fullName, email, password, userType = 'client', additionalData = {}) => {
+  return apiHelper.request('POST', '', {
+    operation: 'register',
+    fullName,
+    email,
+    password,
+    userType,
+    ...additionalData // Include all additional fields
+  });
+},
 
   getProfile: async (email) => {
     return apiHelper.request('GET', `?email=${email}`);

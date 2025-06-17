@@ -61,28 +61,29 @@ export const UserProvider = ({ children }) => {
   };
 
   const register = async (userData) => {
-    try {
-      const { success, data, message } = await apiHelper.register(
-        userData.name,
-        userData.email,
-        userData.password,
-        userData.userType
-      );
-      
-      if (!success) {
-        throw new Error(message || 'Registration failed');
-      }
-      
-      router.push('/auth/login');
-      return { success: true };
-    } catch (error) {
-      console.error('Registration error:', error);
-      return { 
-        success: false, 
-        message: error.message || 'Registration failed' 
-      };
+  try {
+    const { success, data, message } = await apiHelper.register(
+      userData.fullName,
+      userData.email,
+      userData.password,
+      userData.userType,
+      userData // Pass all additional fields
+    );
+    
+    if (!success) {
+      throw new Error(message || 'Registration failed');
     }
-  };
+    
+    router.push('/auth/login');
+    return { success: true };
+  } catch (error) {
+    console.error('Registration error:', error);
+    return { 
+      success: false, 
+      message: error.message || 'Registration failed' 
+    };
+  }
+};
 
   const logout = () => {
     localStorage.removeItem('user');

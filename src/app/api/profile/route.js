@@ -7,7 +7,6 @@ export async function GET(request) {
   try {
     await dbConnect();
     
-    // Get email from query parameters
     const { searchParams } = new URL(request.url);
     const email = searchParams.get('email');
     
@@ -41,7 +40,6 @@ export async function POST(request) {
     await dbConnect();
     const data = await request.json();
     
-    // Determine the operation type
     const { operation, ...payload } = data;
     
     switch (operation) {
@@ -77,7 +75,6 @@ export async function PUT(request) {
       );
     }
     
-    // Update user
     const updatedUser = await User.findOneAndUpdate(
       { email: data.email },
       { $set: data },
@@ -100,7 +97,7 @@ export async function PUT(request) {
   }
 }
 
-// Helper functions for specific operations
+// Helper functions
 async function handleLogin({ email, password }) {
   const user = await User.findOne({ email });
   
@@ -119,19 +116,22 @@ async function handleLogin({ email, password }) {
     );
   }
   
-  // Return user data without password
-  const userData = {
-    _id: user._id,
-    name: user.name,
-    email: user.email,
-    userType: user.userType,
-    // Add other user fields as needed
-  };
-  
+  // Return all user data except password
+  const { password: _, ...userData } = user.toObject();
   return NextResponse.json(userData);
 }
 
-async function handleRegister({ name, email, password, userType = 'client' }) {
+async function handleRegister({ 
+  fullName, 
+  email, 
+  password, 
+  userType = 'client',
+  licenseNumber,
+  specialization,
+  organizationName,
+  strugglingWith,
+  ...additionalData
+}) {
   // Check if user exists
   const existingUser = await User.findOne({ email });
   if (existingUser) {
@@ -144,23 +144,30 @@ async function handleRegister({ name, email, password, userType = 'client' }) {
   // Hash password
   const hashedPassword = await bcrypt.hash(password, 10);
   
-  // Create user
+  // Create user with all provided data
   const newUser = new User({
-    name,
+    fullName,
     email,
     password: hashedPassword,
-    userType
+    userType,
+    // Professional fields
+    ...(userType === 'professional' && { 
+      licenseNumber,
+      specialization,
+      organizationName
+    }),
+    // Client fields
+    ...(userType === 'client' && { 
+      strugglingWith 
+    }),
+    // Any additional fields
+    ...additionalData
   });
   
   await newUser.save();
   
   // Return the new user without password
-  const userData = {
-    _id: newUser._id,
-    name: newUser.name,
-    email: newUser.email,
-    userType: newUser.userType
-  };
+  const { password: _, ...userData } = newUser.toObject();
   
   return NextResponse.json(
     { message: 'User created successfully', user: userData },
@@ -178,7 +185,6 @@ async function handleResetPassword({ email }) {
     );
   }
   
-  // Simplified reset password response
   return NextResponse.json(
     { message: 'If an account exists with this email, a reset link has been sent' },
     { status: 200 }

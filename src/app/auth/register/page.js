@@ -9,7 +9,7 @@ export default function Register() {
   const { register } = useUser();
   const [userType, setUserType] = useState("");
   const [formData, setFormData] = useState({
-    name: "",
+    fullName: "",
     email: "",
     password: "",
     licenseNumber: "",
@@ -21,7 +21,7 @@ export default function Register() {
   const [error, setError] = useState("");
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target;  // Changed from fullName to name
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
@@ -38,23 +38,19 @@ export default function Register() {
         throw new Error("Please select a user type");
       }
 
-      const registrationData = {
-        name: formData.name,
-        email: formData.email,
-        password: formData.password,
-        userType
-      };
-
-      // Add type-specific fields
-      if (userType === "professional") {
-        registrationData.licenseNumber = formData.licenseNumber;
-        registrationData.specialization = formData.specialization;
-        registrationData.organizationName = formData.organizationName;
-      } else if (userType === "client") {
-        registrationData.strugglingWith = formData.strugglingWith;
+      // Basic validation
+      if (!formData.fullName || !formData.email || !formData.password) {
+        throw new Error("Full name, email, and password are required");
       }
 
-      const result = await register(registrationData);
+      if (userType === "professional" && (!formData.licenseNumber || !formData.specialization)) {
+        throw new Error("License number and specialization are required for professionals");
+      }
+
+      const result = await register({
+        ...formData,
+        userType
+      });
       
       if (!result.success) {
         throw new Error(result.message || "Registration failed");
@@ -78,16 +74,16 @@ export default function Register() {
             <h2 className={styles.formTitle}>Client Registration</h2>
             <input
               type="text"
-              placeholder="Full Name"
+              placeholder="Full Name *"
               className={styles.input}
               required
-              name="name"
-              value={formData.name}
+              name="fullName"  // Changed to name="fullName"
+              value={formData.fullName}
               onChange={handleInputChange}
             />
             <input
               type="email"
-              placeholder="Email"
+              placeholder="Email *"
               className={styles.input}
               required
               name="email"
@@ -96,15 +92,16 @@ export default function Register() {
             />
             <input
               type="password"
-              placeholder="Password"
+              placeholder="Password *"
               className={styles.input}
               required
               name="password"
               value={formData.password}
               onChange={handleInputChange}
+              minLength={6}
             />
             <textarea
-              placeholder="What are you struggling with?"
+              placeholder="What are you struggling with? *"
               className={styles.textarea}
               required
               name="strugglingWith"
@@ -123,16 +120,16 @@ export default function Register() {
             <h2 className={styles.formTitle}>Professional Registration</h2>
             <input
               type="text"
-              placeholder="Full Name"
+              placeholder="Full Name *"
               className={styles.input}
               required
-              name="name"
-              value={formData.name}
+              name="fullName"  // Changed from name="name" to name="fullName"
+              value={formData.fullName}
               onChange={handleInputChange}
             />
             <input
               type="email"
-              placeholder="Email"
+              placeholder="Email *"
               className={styles.input}
               required
               name="email"
@@ -141,16 +138,17 @@ export default function Register() {
             />
             <input
               type="password"
-              placeholder="Password"
+              placeholder="Password *"
               className={styles.input}
               required
               name="password"
               value={formData.password}
               onChange={handleInputChange}
+              minLength={6}
             />
             <input
               type="text"
-              placeholder="License Number"
+              placeholder="License Number *"
               className={styles.input}
               required
               name="licenseNumber"
@@ -159,7 +157,7 @@ export default function Register() {
             />
             <input
               type="text"
-              placeholder="Specialization"
+              placeholder="Specialization *"
               className={styles.input}
               required
               name="specialization"
@@ -200,30 +198,22 @@ export default function Register() {
           </div>
         )}
 
-        <div
-          className={`${styles.formContainer} ${
-            userType === "professional" ? styles.professionalActive : ""
-          }`}
-        >
+        <div className={`${styles.formContainer} ${userType === "professional" ? styles.professionalActive : ""}`}>
           <div className={styles.header}>
             <h1 className={styles.title}>Create an Account</h1>
             <div className={styles.selector}>
               <div className={styles.options}>
                 <button
                   onClick={() => setUserType("client")}
-                  className={`${styles.optionButton} ${
-                    userType === "client" ? styles.active : ""
-                  }`}
+                  className={`${styles.optionButton} ${userType === "client" ? styles.active : ""}`}
                 >
-                  I&apos;m a Client
+                  I'm a Client
                 </button>
                 <button
                   onClick={() => setUserType("professional")}
-                  className={`${styles.optionButton} ${
-                    userType === "professional" ? styles.active : ""
-                  }`}
+                  className={`${styles.optionButton} ${userType === "professional" ? styles.active : ""}`}
                 >
-                  I&apos;m a Professional
+                  I'm a Professional
                 </button>
               </div>
             </div>
