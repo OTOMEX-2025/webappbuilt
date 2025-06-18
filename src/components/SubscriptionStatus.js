@@ -82,7 +82,7 @@ const SubscriptionStatus = () => {
             ) : (
               <div className="text-center py-4">
                 <p className="text-gray-600 dark:text-gray-300 mb-6">
-                  You do&apos;t have an active subscription. Subscribe now to access all features.
+                  You don&apos;t have an active subscription. Subscribe now to access all features.
                 </p>
                 <button className="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition duration-200">
                   View Plans
