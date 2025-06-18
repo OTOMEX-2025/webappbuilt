@@ -30,5 +30,6 @@ const subscriptionSchema = new mongoose.Schema({
   endDate: Date
 }, { timestamps: true });
 
+subscriptionSchema.index({ userId: 1, plan: 1 }, { unique: true });
 export default mongoose.models.Subscription || 
        mongoose.model('Subscription', subscriptionSchema);
