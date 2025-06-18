@@ -19,7 +19,7 @@ export const sendSubscriptionEmail = async (email, plan) => {
           <h2 style="color: #4a6baf;">Welcome to MindPal!</h2>
           <p>Thank you for subscribing to our ${plan} plan.</p>
           <p>You now have access to all ${plan} features on MindPal.</p>
-          <p>If you have any questions, please contact our support team.</p>
+          <p>If you have any questions, please contact our support team at <br/> <strong>Otomexinnovations@gmail.com</strong></strong></p>
           <br/>
           <p>Best regards,</p>
           <p>The MindPal Team</p>
