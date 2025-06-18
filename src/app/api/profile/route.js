@@ -5,6 +5,7 @@ import Subscription from "@/models/Subscription";
 import bcrypt from "bcryptjs";
 import Patient from "../../../models/Patient";
 import Therapist from "../../../models/Therapist";
+import sendSubscriptionEmail from "../../../utils/email"
 
 export async function GET(request) {
   try {
@@ -293,10 +294,22 @@ async function handleSubscribe({ userId, plan, paymentMethod }) {
       { subscription: newSubscription._id }
     );
 
+    // Send email in background without waiting
+    sendSubscriptionEmail(user.email, plan)
+      .then(success => {
+        console.log(success ? 
+          `📧 Email sent successfully to ${user.email}` : 
+          `❌ Failed to send email to ${user.email}`);
+      })
+      .catch(error => {
+        console.error(`⚠️ Email error for ${user.email}:`, error.message);
+      });
+
     return NextResponse.json({
       success: true,
       subscription: newSubscription
     });
+
   } catch (error) {
     console.error('Subscription error:', error);
     return NextResponse.json(

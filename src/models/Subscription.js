@@ -11,12 +11,12 @@ const subscriptionSchema = new mongoose.Schema({
   plan: {
     type: String,
     required: [true, 'Plan is required'],
-    enum: ['basic', 'premium', 'enterprise']
+    enum: ['basic', 'standard', 'premium', 'enterprise']
   },
   paymentMethod: {
     type: String,
     required: [true, 'Payment method is required'],
-    enum: ['credit_card', 'paypal', 'bank_transfer']
+    enum: ['card', 'paypal', 'bank_transfer']
   },
   status: {
     type: String,
