@@ -269,6 +269,11 @@ async function handleResetPassword({ email }) {
 
 async function handleSubscribe({ userId, plan, paymentMethod }) {
   try {
+    // Validate userId exists
+    if (!userId) {
+      throw new Error('User ID is required');
+    }
+
     const user = await User.findById(userId);
     if (!user) {
       return NextResponse.json(
@@ -277,6 +282,21 @@ async function handleSubscribe({ userId, plan, paymentMethod }) {
       );
     }
 
+
+
+    // Check if THIS user has an existing subscription
+    const existingSubscription = await Subscription.findOne({ user: userId });
+    if (existingSubscription) {
+      return NextResponse.json(
+        { 
+          success: false,
+          message: 'You already have an active subscription' 
+        },
+        { status: 400 }
+      );
+    }
+
+    // Create new subscription
     const newSubscription = new Subscription({
       user: userId,
       plan,
@@ -287,33 +307,40 @@ async function handleSubscribe({ userId, plan, paymentMethod }) {
     });
 
     await newSubscription.save();
-
-    // Update user with subscription reference
+    
+    // Update user reference
     await User.findByIdAndUpdate(
       userId,
       { subscription: newSubscription._id }
     );
 
-    // Send email in background without waiting
+    // Send email (non-blocking)
     sendSubscriptionEmail(user.email, plan)
-      .then(success => {
-        console.log(success ? 
-          `📧 Email sent successfully to ${user.email}` : 
-          `❌ Failed to send email to ${user.email}`);
-      })
-      .catch(error => {
-        console.error(`⚠️ Email error for ${user.email}:`, error.message);
-      });
+      .then(success => console.log(success ? '📧 Email sent' : '❌ Email failed'))
+      .catch(err => console.error('⚠️ Email error:', err));
 
     return NextResponse.json({
       success: true,
-      subscription: newSubscription
+      subscription: newSubscription,
+      message: 'Subscription created successfully'
     });
 
   } catch (error) {
     console.error('Subscription error:', error);
+    
+    // More specific error messages
+    let errorMessage = error.message;
+    if (error.code === 11000) {
+      errorMessage = 'Subscription conflict detected. Please try again.';
+      // Consider automatic cleanup here if needed
+      await Subscription.deleteMany({ user: null });
+    }
+
     return NextResponse.json(
-      { success: false, message: error.message },
+      { 
+        success: false,
+        message: errorMessage 
+      },
       { status: 500 }
     );
   }
