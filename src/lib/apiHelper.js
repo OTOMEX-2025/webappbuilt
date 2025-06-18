@@ -53,7 +53,29 @@ const apiHelper = {
       operation: 'reset-password',
       email
     });
-  }
+  },
+
+
+// apiHelper.js
+subscribe: async (userId, plan, paymentMethod) => {
+  return apiHelper.request('PUT', '', {
+    operation: 'subscribe',
+    userId,  // Send userId instead of email
+    plan,
+    paymentMethod
+  });
+},
+
+unsubscribe: async (userId) => {
+  return apiHelper.request('PUT', '', {
+    operation: 'unsubscribe',
+    userId  // Send userId instead of email
+  });
+},
+
+  getSubscriptionStatus: async () => {
+    return apiHelper.request('GET', '');
+  },
 };
 
 export default apiHelper;

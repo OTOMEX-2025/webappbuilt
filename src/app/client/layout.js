@@ -13,6 +13,7 @@ import {
   Newspaper,
   Music,
   Gamepad2,
+  CreditCard, // Added for subscription icon
   X,
   Moon,
   Sun,
@@ -25,6 +26,12 @@ const menuItems = [
   { icon: <Newspaper size={20} />, label: 'News & Articles', path: '/client/news' },
   { icon: <Music size={20} />, label: '8D Music', path: '/client/music' },
   { icon: <Gamepad2 size={20} />, label: 'Games', path: '/client/games' },
+  { 
+    icon: <CreditCard size={20} />, 
+    label: 'Subscription', 
+    path: '/client/subscribe',
+    className: "mt-auto" // This will push the item to the bottom
+  },
 ];
 const logo = "/MindPalLogo-removebg-preview.png";
 
@@ -73,7 +80,7 @@ export default function ClientLayout({ children }) {
             pageTitle={formattedPageName}
             isSidebarOpen={sidebarOpen} // Pass the sidebar state
           />
-          <main className={`$styles.content} pt-16`}>{children}</main>
+          <main className={`${styles.content} pt-16`}>{children}</main>
         </div>
       </div>
     </div>

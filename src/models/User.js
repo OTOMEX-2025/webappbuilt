@@ -10,8 +10,25 @@ const userSchema = new mongoose.Schema({
   phoneNumber: { type: String },
   address: { type: String },
   bio: { type: String },
-  specialization: { type: String }, // For professionals
-}, { timestamps: true });
+  specialization: { type: String },
+  subscription: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Subscription',
+    default: null
+  }
+}, { 
+  timestamps: true,
+  strictPopulate: false
+
+});
+
+// Add method to check subscription status
+userSchema.methods.isSubscribed = async function() {
+  if (!this.subscription) return false;
+  
+  const sub = await mongoose.model('Subscription').findById(this.subscription);
+  return sub && sub.status === 'active';
+};
 
 const User = mongoose.models.User || mongoose.model('User', userSchema);
 export default User;
