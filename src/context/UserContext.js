@@ -6,18 +6,32 @@ import apiHelper from '@/lib/apiHelper';
 const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+const [user, setUser] = useState(null); 
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   const pathname = usePathname();
 
-  useEffect(() => {
-    // Check for user in localStorage on initial load
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
-    setLoading(false);
+   useEffect(() => {
+    const loadUser = () => {
+      const storedUser = localStorage.getItem('user');
+      
+      if (storedUser) {
+        try {
+          const parsedUser = JSON.parse(storedUser);
+          setUser(parsedUser);
+        } catch (error) {
+          console.error('Failed to parse user data:', error);
+          localStorage.removeItem('user');
+          setUser(null);
+        }
+      } else {
+        setUser(null);
+      }
+      
+      setLoading(false);
+    };
+
+    loadUser();
   }, []);
 
   useEffect(() => {
@@ -170,6 +184,93 @@ export const UserProvider = ({ children }) => {
     setUser(updatedUser);
   };
 
+// In your UserContext or wherever you call the subscription
+const subscribe = async (plan, paymentMethod) => {
+  try {
+    if (!user?._id) {
+      throw new Error('Not authenticated');
+    }
+    
+    // Include userId as first parameter
+    const { success, data, message } = await apiHelper.subscribe(
+      user._id,  // Send the user's ID
+      plan,
+      paymentMethod
+    );
+    
+    if (!success) {
+      throw new Error(message || 'Subscription failed');
+    }
+    
+    // Update user state
+    const updatedUser = {
+      ...user,
+      subscription: data.subscription
+    };
+    
+    localStorage.setItem('user', JSON.stringify(updatedUser));
+    setUser(updatedUser);
+    
+    return { success: true, subscription: data.subscription };
+  } catch (error) {
+    console.error('Subscription error:', error);
+    return { 
+      success: false, 
+      message: error.message || 'Subscription failed' 
+    };
+  }
+};
+
+const unsubscribe = async () => {
+  try {
+    if (!user?.email) {
+      throw new Error('Not authenticated');
+    }
+    
+    // Pass user.email as parameter
+    const { success, data, message } = await apiHelper.unsubscribe(user.email);
+    
+    if (!success) {
+      throw new Error(message || 'Unsubscription failed');
+    }
+    
+    updateUser(data);
+    return { success: true };
+  } catch (error) {
+    console.error('Unsubscription error:', error);
+    return { 
+      success: false, 
+      message: error.message || 'Unsubscription failed' 
+    };
+  }
+};
+
+  const checkSubscription = async () => {
+    try {
+      if (!user?.email) {
+        throw new Error('Not authenticated');
+      }
+      
+      const { success, data, message } = await apiHelper.getSubscriptionStatus();
+      
+      if (!success) {
+        throw new Error(message || 'Failed to check subscription status');
+      }
+      
+      return { 
+        success: true, 
+        isSubscribed: data.subscription?.plan !== null,
+        subscription: data.subscription 
+      };
+    } catch (error) {
+      console.error('Subscription check error:', error);
+      return { 
+        success: false, 
+        message: error.message || 'Failed to check subscription status' 
+      };
+    }
+  };
+
   return (
     <UserContext.Provider value={{ 
       user, 
@@ -180,6 +281,9 @@ export const UserProvider = ({ children }) => {
       updateProfile,
       fetchUserDetails,
       updateUser,
+      subscribe,
+      unsubscribe,
+      checkSubscription,
       loading 
     }}>
       {children}

@@ -1,7 +1,11 @@
 import { NextResponse } from "next/server";
 import dbConnect from "@/lib/dbConnect";
 import User from "@/models/User";
+import Subscription from "@/models/Subscription";
 import bcrypt from "bcryptjs";
+import Patient from "../../../models/Patient";
+import Therapist from "../../../models/Therapist";
+import sendSubscriptionEmail from "../../../utils/email"
 
 export async function GET(request) {
   try {
@@ -49,6 +53,10 @@ export async function POST(request) {
         return handleRegister(payload);
       case 'reset-password':
         return handleResetPassword(payload);
+      case 'subscribe':
+        return handleSubscribe(payload);
+      case 'unsubscribe':
+        return handleUnsubscribe(payload);
       default:
         return NextResponse.json(
           { message: 'Invalid operation' },
@@ -63,38 +71,67 @@ export async function POST(request) {
   }
 }
 
+// app/api/profile/route.js
 export async function PUT(request) {
   try {
     await dbConnect();
     const data = await request.json();
     
-    if (!data.email) {
-      return NextResponse.json(
-        { message: 'Email is required' },
-        { status: 400 }
-      );
+    // Handle different operations with different requirements
+    switch (data.operation) {
+      case 'subscribe':
+      case 'unsubscribe':
+        // For subscriptions, require userId instead of email
+        if (!data.userId) {
+          return NextResponse.json(
+            { message: 'User ID is required for subscription operations' },
+            { status: 400 }
+          );
+        }
+        return data.operation === 'subscribe' 
+          ? handleSubscribe(data) 
+          : handleUnsubscribe(data);
+        
+      case 'update-profile':
+        // Only profile updates require email
+        if (!data.email) {
+          return NextResponse.json(
+            { message: 'Email is required for profile updates' },
+            { status: 400 }
+          );
+        }
+        return handleProfileUpdate(data);
+        
+      default:
+        return NextResponse.json(
+          { message: 'Invalid operation' },
+          { status: 400 }
+        );
     }
-    
-    const updatedUser = await User.findOneAndUpdate(
-      { email: data.email },
-      { $set: data },
-      { new: true }
-    ).select('-password');
-    
-    if (!updatedUser) {
-      return NextResponse.json(
-        { message: 'User not found' },
-        { status: 404 }
-      );
-    }
-    
-    return NextResponse.json(updatedUser);
   } catch (error) {
     return NextResponse.json(
       { message: 'Server error', error: error.message },
       { status: 500 }
     );
   }
+}
+
+// Separate handler for profile updates
+async function handleProfileUpdate(data) {
+  const updatedUser = await User.findOneAndUpdate(
+    { email: data.email },
+    { $set: data },
+    { new: true }
+  ).select('-password');
+  
+  if (!updatedUser) {
+    return NextResponse.json(
+      { message: 'User not found' },
+      { status: 404 }
+    );
+  }
+  
+  return NextResponse.json(updatedUser);
 }
 
 // Helper functions
@@ -144,35 +181,74 @@ async function handleRegister({
   // Hash password
   const hashedPassword = await bcrypt.hash(password, 10);
   
-  // Create user with all provided data
-  const newUser = new User({
-    fullName,
-    email,
-    password: hashedPassword,
-    userType,
-    // Professional fields
-    ...(userType === 'professional' && { 
-      licenseNumber,
-      specialization,
-      organizationName
-    }),
-    // Client fields
-    ...(userType === 'client' && { 
-      strugglingWith 
-    }),
-    // Any additional fields
-    ...additionalData
-  });
+  // Start a session for transaction
+  const session = await User.startSession();
+  session.startTransaction();
   
-  await newUser.save();
-  
-  // Return the new user without password
-  const { password: _, ...userData } = newUser.toObject();
-  
-  return NextResponse.json(
-    { message: 'User created successfully', user: userData },
-    { status: 201 }
-  );
+  try {
+    // Create user with all provided data
+    const newUser = new User({
+      fullName,
+      email,
+      password: hashedPassword,
+      userType,
+      // Professional fields
+      ...(userType === 'professional' && { 
+        licenseNumber,
+        specialization,
+        organizationName
+      }),
+      // Client fields
+      ...(userType === 'client' && { 
+        strugglingWith 
+      }),
+      // Any additional fields
+      ...additionalData
+    });
+    
+    await newUser.save({ session });
+    
+    // Create role-specific document based on userType
+    if (userType === 'professional') {
+      const newTherapist = new Therapist({
+        userId: newUser._id,
+        fullName,
+        email,
+        licenseNumber,
+        specialization,
+        organization: organizationName,
+        ...additionalData
+      });
+      await newTherapist.save({ session });
+    } else if (userType === 'client') {
+      const newPatient = new Patient({
+        userId: newUser._id,
+        fullName,
+        email,
+        strugglingWith,
+        ...additionalData
+      });
+      await newPatient.save({ session });
+    }
+    
+    // Commit the transaction
+    await session.commitTransaction();
+    session.endSession();
+    
+    // Return the new user without password
+    const { password: _, ...userData } = newUser.toObject();
+    
+    return NextResponse.json(
+      { message: 'User created successfully', user: userData },
+      { status: 201 }
+    );
+  } catch (error) {
+    // If an error occurs, abort the transaction
+    await session.abortTransaction();
+    session.endSession();
+    
+    throw error;
+  }
 }
 
 async function handleResetPassword({ email }) {
@@ -189,4 +265,84 @@ async function handleResetPassword({ email }) {
     { message: 'If an account exists with this email, a reset link has been sent' },
     { status: 200 }
   );
+}
+
+async function handleSubscribe({ userId, plan, paymentMethod }) {
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      return NextResponse.json(
+        { message: 'User not found' },
+        { status: 404 }
+      );
+    }
+
+    const newSubscription = new Subscription({
+      user: userId,
+      plan,
+      paymentMethod,
+      status: 'active',
+      startDate: new Date(),
+      endDate: new Date(new Date().setMonth(new Date().getMonth() + 1))
+    });
+
+    await newSubscription.save();
+
+    // Update user with subscription reference
+    await User.findByIdAndUpdate(
+      userId,
+      { subscription: newSubscription._id }
+    );
+
+    // Send email in background without waiting
+    sendSubscriptionEmail(user.email, plan)
+      .then(success => {
+        console.log(success ? 
+          `📧 Email sent successfully to ${user.email}` : 
+          `❌ Failed to send email to ${user.email}`);
+      })
+      .catch(error => {
+        console.error(`⚠️ Email error for ${user.email}:`, error.message);
+      });
+
+    return NextResponse.json({
+      success: true,
+      subscription: newSubscription
+    });
+
+  } catch (error) {
+    console.error('Subscription error:', error);
+    return NextResponse.json(
+      { success: false, message: error.message },
+      { status: 500 }
+    );
+  }
+}
+
+async function handleUnsubscribe({ userId }) {
+  try {
+    const user = await User.findById(userId);
+    if (!user || !user.subscription) {
+      return NextResponse.json(
+        { message: 'No active subscription found' },
+        { status: 404 }
+      );
+    }
+
+    await Subscription.findByIdAndUpdate(
+      user.subscription,
+      { status: 'canceled' }
+    );
+
+    return NextResponse.json({
+      success: true,
+      message: 'Successfully unsubscribed'
+    });
+  } catch (error) {
+    console.error('Unsubscription error:', error);
+    return NextResponse.json(
+      { success: false, message: error.message },
+      { status: 500 }
+    );
+  }
 }
