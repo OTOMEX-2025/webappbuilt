@@ -1,80 +1,253 @@
-'use client';
+"use client";
+import { useState, useEffect, useRef } from 'react';
+import EmotionAnalyzer from './EmotionAnalyzer';
+import ResponseGenerator from './ResponseGenerator';
+import TherapeuticTools from './TherapeuticTools';
+import EmergencyHandler from './EmergencyHandler';
+import SelfLearningEngine from './SelfLearningEngine';
+import DynamicModuleManager from './DynamicModuleManager';
+import TrainingScheduler from './TrainingScheduler';
 
-import React, { useState } from 'react';
-import { Send, Bot, User } from 'lucide-react';
-import { useTheme } from '../../../context/ThemeContext';
+export default function App() {
+  const [messages, setMessages] = useState([]);
+  const [input, setInput] = useState('');
+  const [isClient, setIsClient] = useState(false);
+  const messagesEndRef = useRef(null);
+  
+  // Initialize core components
+  const [emotionAnalyzer] = useState(new EmotionAnalyzer());
+  const [responseGenerator] = useState(new ResponseGenerator());
+  const [therapeuticTools] = useState(new TherapeuticTools());
+  const [selfLearningEngine] = useState(new SelfLearningEngine());
+  const [dynamicModuleManager] = useState(new DynamicModuleManager());
+  const [trainingScheduler] = useState(
+    new TrainingScheduler(selfLearningEngine, dynamicModuleManager)
+  );
 
-const Chat = () => {
-  const { theme } = useTheme();
-  const [message, setMessage] = useState('');
+  // Set client-side flag and initialize
+  useEffect(() => {
+    setIsClient(true);
+    initializeChat();
+  }, []);
 
-  const dummyMessages = [
-    { type: 'bot', content: 'Hello! I\'m your MindPal AI companion. How are you feeling today?' },
-    { type: 'user', content: 'I\'m feeling a bit anxious today.' },
-    { type: 'bot', content: 'I understand that anxiety can be challenging. Would you like to talk about what\'s causing your anxiety, or would you prefer some relaxation techniques that might help?' },
-    { type: 'user', content: 'Some relaxation techniques would be helpful.' },
-    { type: 'bot', content: 'I\'d be happy to guide you through a simple breathing exercise. It\'s called the 4-7-8 technique. Would you like to try it?' }
+  const initializeChat = () => {
+    setMessages([{
+      text: "Hello, I'm your mental health companion. How are you feeling today?",
+      sender: 'bot',
+      emotion: 'neutral',
+      timestamp: new Date().toISOString()
+    }]);
+    
+    if (typeof window !== 'undefined') {
+      trainingScheduler.start();
+      
+      // Load any saved conversations
+      const savedConversations = localStorage.getItem('chatHistory');
+      if (savedConversations) {
+        try {
+          const parsed = JSON.parse(savedConversations);
+          if (Array.isArray(parsed)) {
+            selfLearningEngine.memoryBuffer = parsed.slice(-100);
+          }
+        } catch (e) {
+          console.error('Failed to load conversation history:', e);
+        }
+      }
+    }
+  };
+
+  // Scroll to bottom and save conversations
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    if (messages.length > 1 && typeof window !== 'undefined') {
+      localStorage.setItem('chatHistory', JSON.stringify(messages));
+      selfLearningEngine.memoryBuffer = messages.slice(-100);
+    }
+  }, [messages]);
+
+  const handleSendMessage = () => {
+    if (!input.trim()) return;
+
+    // Add user message
+    const userMessage = {
+      text: input,
+      sender: 'user',
+      emotion: '',
+      timestamp: new Date().toISOString()
+    };
+    
+    setMessages(prev => [...prev, userMessage]);
+    setInput('');
+
+    // Analyze emotion
+    const emotions = emotionAnalyzer.analyze(input);
+    userMessage.emotion = emotions[0];
+
+    // Process response after short delay
+    setTimeout(() => {
+      // Handle emergency first
+      if (emotions.includes('suicidal')) {
+        const emergencyResponse = EmergencyHandler.handleEmergency();
+        setMessages(prev => [...prev, {
+          text: emergencyResponse.immediateResponse,
+          sender: 'bot',
+          emotion: 'emergency',
+          timestamp: new Date().toISOString()
+        }]);
+        
+        // Create emergency follow-up
+        setTimeout(() => {
+          setMessages(prev => [...prev, {
+            text: "Would you like me to help you contact someone or do a grounding exercise?",
+            sender: 'bot',
+            emotion: 'emergency',
+            timestamp: new Date().toISOString()
+          }]);
+        }, 2000);
+        return;
+      }
+
+      // Generate response
+      const response = responseGenerator.getResponse(emotions, messages);
+      const botResponse = {
+        text: response,
+        sender: 'bot',
+        emotion: emotions[0],
+        timestamp: new Date().toISOString()
+      };
+      
+      setMessages(prev => [...prev, botResponse]);
+
+      // Learn from this interaction
+      selfLearningEngine.updateResponseModels([...messages, userMessage, botResponse], responseGenerator);
+      selfLearningEngine.checkForNewModules([...messages, userMessage, botResponse]);
+    }, 500);
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleSendMessage();
+    }
+  };
+
+  const startExercise = (moduleName) => {
+    let exercise;
+    
+    if (dynamicModuleManager.activeModules[moduleName]) {
+      exercise = dynamicModuleManager.activeModules[moduleName].getExercise();
+    } else {
+      // Fallback to basic exercises
+      switch(moduleName) {
+        case 'breathing':
+          exercise = therapeuticTools.breathingExercise();
+          break;
+        case 'gratitude':
+          exercise = { instructions: therapeuticTools.gratitudePrompt() };
+          break;
+        default:
+          exercise = { instructions: "Let's focus on the present moment." };
+      }
+    }
+    
+    setMessages(prev => [...prev, {
+      text: exercise.instructions,
+      sender: 'bot',
+      emotion: 'exercise',
+      timestamp: new Date().toISOString()
+    }]);
+  };
+
+  // Get available tools, marking which are newly discovered
+  const availableTools = [
+    ...Object.entries(dynamicModuleManager.activeModules).map(([name]) => ({
+      name,
+      isNew: false
+    })),
+    ...dynamicModuleManager.availableModules
+      .filter(m => !dynamicModuleManager.activeModules[m])
+      .map(name => ({ name, isNew: true }))
   ];
 
   return (
-    <div className={`flex flex-col w-screen h-screen ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>
-      <div className="flex-1 overflow-hidden">
-        <div className="h-full flex flex-col">
-          {/* Chat header */}
-          <div className={`p-4 border-b ${theme === 'dark' ? 'border-gray-700 bg-gray-800' : 'border-gray-200 bg-white'}`}>
-            <div className="flex items-center">
-              <div className={`p-2 rounded-full ${theme === 'dark' ? 'bg-blue-900' : 'bg-blue-100'} text-blue-600 mr-3`}>
-                <Bot size={20} />
-              </div>
-              <h2 className="text-xl font-semibold">MindPal AI Companion</h2>
+    <div className="flex flex-col h-[90vh] w-full mx-auto bg-gray-50 rounded-lg shadow-lg overflow-hidden">
+      {/* Header */}
+      <header className="bg-indigo-600 text-white p-4 shadow-md">
+        <h1 className="text-xl font-bold">Mental Health Companion</h1>
+        <p className="text-sm">Your private, self-learning emotional support</p>
+      </header>
+
+      {/* Chat container */}
+      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+        {messages.map((msg, index) => (
+          <div 
+            key={`${index}-${msg.timestamp}`} 
+            className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
+          >
+            <div 
+              className={`max-w-xs md:max-w-md rounded-lg p-3 ${
+                msg.sender === 'user' 
+                  ? 'bg-indigo-500 text-white' 
+                  : msg.emotion === 'emergency' 
+                    ? 'bg-red-100 border-l-4 border-red-500 text-black'
+                    : msg.emotion === 'exercise'
+                      ? 'bg-green-50 border-l-4 border-green-500 text-black'
+                      : 'bg-white border border-gray-200 text-black'
+              }`}
+            >
+              <p className="whitespace-pre-line break-words">{msg.text}</p>
+              {msg.emotion && msg.sender === 'user' && (
+                <span className="text-xs opacity-70 mt-1 block">
+                  Detected: {msg.emotion}
+                </span>
+              )}
             </div>
           </div>
-          
-          {/* Messages container */}
-          <div className="flex-1 overflow-y-auto p-4">
-            <div className="space-y-4">
-              {dummyMessages.map((msg, index) => (
-                <div
-                  key={index}
-                  className={`flex ${msg.type === 'user' ? 'justify-end' : 'justify-start'}`}
-                >
-                  <div className={`flex max-w-xs md:max-w-md lg:max-w-lg ${msg.type === 'user' ? 'flex-row-reverse' : ''}`}>
-                    <div className={`flex-shrink-0 h-10 w-10 rounded-full flex items-center justify-center ${msg.type === 'bot' ? 'bg-blue-100 text-blue-600' : 'bg-blue-600 text-white'}`}>
-                      {msg.type === 'bot' ? <Bot size={18} /> : <User size={18} />}
-                    </div>
-                    <div className={`mx-3 px-4 py-2 rounded-lg ${msg.type === 'bot' ? 
-                      (theme === 'dark' ? 'bg-gray-700' : 'bg-white border border-gray-200') : 
-                      (theme === 'dark' ? 'bg-blue-800' : 'bg-blue-600 text-white')}`}>
-                      <p>{msg.content}</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-          
-          {/* Input container */}
-          <div className={`p-4 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} border-t ${theme === 'dark' ? 'border-gray-700' : 'border-gray-200'}`}>
-            <div className="flex items-center">
-              <input
-                type="text"
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                placeholder="Type your message..."
-                className={`flex-1 py-2 px-4 rounded-full ${theme === 'dark' ? 'bg-gray-700 text-white placeholder-gray-400' : 'bg-gray-100 text-gray-800 placeholder-gray-500'} focus:outline-none focus:ring-2 focus:ring-blue-500`}
-              />
-              <button 
-                className={`ml-2 p-2 rounded-full ${message ? 'bg-blue-600 text-white' : theme === 'dark' ? 'bg-gray-700 text-gray-400' : 'bg-gray-200 text-gray-500'}`}
-                disabled={!message}
-              >
-                <Send size={20} />
-              </button>
-            </div>
-          </div>
+        ))}
+        <div ref={messagesEndRef} />
+      </div>
+
+      {/* Toolbar */}
+      <div className="border-t border-gray-200 p-2 bg-gray-100 overflow-x-auto">
+        <div className="flex space-x-2">
+          {availableTools.map(({name, isNew}) => (
+            <button 
+              key={name}
+              onClick={() => startExercise(name)}
+              className={`flex-shrink-0 px-3 py-1 rounded-full text-sm ${
+                isNew 
+                  ? 'bg-purple-100 text-purple-800 hover:bg-purple-200'
+                  : 'bg-blue-100 text-blue-800 hover:bg-blue-200'
+              }`}
+            >
+              {name.replace(/([A-Z])/g, ' $1').trim()}
+              {isNew && ' (New)'}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Input area */}
+      <div className="border-t border-gray-200 p-4 bg-white">
+        <div className="flex space-x-2">
+          <input
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyPress={handleKeyPress}
+            placeholder="How are you feeling today?"
+            className="flex-1 text-black border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          />
+          <button
+            onClick={handleSendMessage}
+            className="bg-indigo-600 text-white rounded-full px-4 py-2 hover:bg-indigo-700 focus:outline-none"
+          >
+            Send
+          </button>
         </div>
       </div>
     </div>
   );
 }
-
-export default Chat;
