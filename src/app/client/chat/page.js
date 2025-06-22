@@ -7,12 +7,14 @@ import EmergencyHandler from './EmergencyHandler';
 import SelfLearningEngine from './SelfLearningEngine';
 import DynamicModuleManager from './DynamicModuleManager';
 import TrainingScheduler from './TrainingScheduler';
+import { useTheme } from '../../../context/ThemeContext';
 
 export default function App() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [isClient, setIsClient] = useState(false);
   const messagesEndRef = useRef(null);
+  const { theme } = useTheme();
   
   // Initialize core components
   const [emotionAnalyzer] = useState(new EmotionAnalyzer());
@@ -172,9 +174,9 @@ export default function App() {
   ];
 
   return (
-    <div className="flex flex-col h-[90vh] w-full mx-auto bg-gray-50 rounded-lg shadow-lg overflow-hidden">
+    <div className="flex flex-col h-[90vh] w-[115vh] max-w-6xl mx-auto bg-gray-50 rounded-lg shadow-lg overflow-hidden">
       {/* Header */}
-      <header className="bg-indigo-600 text-white p-4 shadow-md">
+      <header className={`${ theme === "dark" ? "bg-gray-600 text-white70/50" :  "bg-indigo-600 text-white"} p-4 shadow-md`}>
         <h1 className="text-xl font-bold">Mental Health Companion</h1>
         <p className="text-sm">Your private, self-learning emotional support</p>
       </header>
