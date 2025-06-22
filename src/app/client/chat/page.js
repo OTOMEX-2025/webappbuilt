@@ -173,10 +173,67 @@ export default function App() {
       .map(name => ({ name, isNew: true }))
   ];
 
+  // Theme-based styles
+  const containerStyles = {
+    light: 'bg-gray-50 text-gray-900',
+    dark: 'bg-gray-900 text-gray-100'
+  };
+
+  const headerStyles = {
+    light: 'bg-indigo-600 text-white',
+    dark: 'bg-indigo-800 text-indigo-100'
+  };
+
+  const messageStyles = {
+    light: {
+      user: 'bg-indigo-500 text-white',
+      bot: 'bg-white text-gray-800 border border-gray-200',
+      emergency: 'bg-red-100 text-gray-800 border-l-4 border-red-500',
+      exercise: 'bg-green-50 text-gray-800 border-l-4 border-green-500'
+    },
+    dark: {
+      user: 'bg-indigo-700 text-white',
+      bot: 'bg-gray-800 text-gray-100 border border-gray-700',
+      emergency: 'bg-red-900 text-white border-l-4 border-red-500',
+      exercise: 'bg-green-900 text-white border-l-4 border-green-500'
+    }
+  };
+
+  const toolbarStyles = {
+    light: 'bg-gray-100 border-gray-200',
+    dark: 'bg-gray-800 border-gray-700'
+  };
+
+  const toolButtonStyles = {
+    light: {
+      default: 'bg-blue-100 text-blue-800 hover:bg-blue-200',
+      new: 'bg-purple-100 text-purple-800 hover:bg-purple-200'
+    },
+    dark: {
+      default: 'bg-blue-900 text-blue-100 hover:bg-blue-800',
+      new: 'bg-purple-900 text-purple-100 hover:bg-purple-800'
+    }
+  };
+
+  const inputAreaStyles = {
+    light: 'bg-white border-gray-200',
+    dark: 'bg-gray-800 border-gray-700'
+  };
+
+  const inputStyles = {
+    light: 'text-black border-gray-300 focus:ring-indigo-500',
+    dark: 'text-white bg-gray-700 border-gray-600 focus:ring-indigo-400'
+  };
+
+  const buttonStyles = {
+    light: 'bg-indigo-600 hover:bg-indigo-700',
+    dark: 'bg-indigo-700 hover:bg-indigo-800'
+  };
+
   return (
-    <div className="flex flex-col h-[90vh] w-[115vh] max-w-6xl mx-auto bg-gray-50 rounded-lg shadow-lg overflow-hidden">
+    <div className={`flex flex-col h-[90vh] w-[115vh] max-w-6xl mx-auto rounded-lg shadow-lg overflow-hidden ${containerStyles[theme]}`}>
       {/* Header */}
-      <header className={`${ theme === "dark" ? "bg-gray-600 text-white70/50" :  "bg-indigo-600 text-white"} p-4 shadow-md`}>
+      <header className={`p-4 shadow-md ${headerStyles[theme]}`}>
         <h1 className="text-xl font-bold">Mental Health Companion</h1>
         <p className="text-sm">Your private, self-learning emotional support</p>
       </header>
@@ -191,12 +248,12 @@ export default function App() {
             <div 
               className={`max-w-xs md:max-w-md rounded-lg p-3 ${
                 msg.sender === 'user' 
-                  ? 'bg-indigo-500 text-white' 
+                  ? messageStyles[theme].user
                   : msg.emotion === 'emergency' 
-                    ? 'bg-red-100 border-l-4 border-red-500 text-black'
+                    ? messageStyles[theme].emergency
                     : msg.emotion === 'exercise'
-                      ? 'bg-green-50 border-l-4 border-green-500 text-black'
-                      : 'bg-white border border-gray-200 text-black'
+                      ? messageStyles[theme].exercise
+                      : messageStyles[theme].bot
               }`}
             >
               <p className="whitespace-pre-line break-words">{msg.text}</p>
@@ -212,7 +269,7 @@ export default function App() {
       </div>
 
       {/* Toolbar */}
-      <div className="border-t border-gray-200 p-2 bg-gray-100 overflow-x-auto">
+      <div className={`border-t p-2 overflow-x-auto ${toolbarStyles[theme]}`}>
         <div className="flex space-x-2">
           {availableTools.map(({name, isNew}) => (
             <button 
@@ -220,8 +277,8 @@ export default function App() {
               onClick={() => startExercise(name)}
               className={`flex-shrink-0 px-3 py-1 rounded-full text-sm ${
                 isNew 
-                  ? 'bg-purple-100 text-purple-800 hover:bg-purple-200'
-                  : 'bg-blue-100 text-blue-800 hover:bg-blue-200'
+                  ? toolButtonStyles[theme].new
+                  : toolButtonStyles[theme].default
               }`}
             >
               {name.replace(/([A-Z])/g, ' $1').trim()}
@@ -232,7 +289,7 @@ export default function App() {
       </div>
 
       {/* Input area */}
-      <div className="border-t border-gray-200 p-4 bg-white">
+      <div className={`border-t p-4 ${inputAreaStyles[theme]}`}>
         <div className="flex space-x-2">
           <input
             type="text"
@@ -240,11 +297,11 @@ export default function App() {
             onChange={(e) => setInput(e.target.value)}
             onKeyPress={handleKeyPress}
             placeholder="How are you feeling today?"
-            className="flex-1 text-black border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className={`flex-1 border rounded-full px-4 py-2 focus:outline-none focus:ring-2 ${inputStyles[theme]}`}
           />
           <button
             onClick={handleSendMessage}
-            className="bg-indigo-600 text-white rounded-full px-4 py-2 hover:bg-indigo-700 focus:outline-none"
+            className={`text-white rounded-full px-4 py-2 focus:outline-none ${buttonStyles[theme]}`}
           >
             Send
           </button>
