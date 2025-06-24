@@ -8,7 +8,7 @@ import SelfLearningEngine from './SelfLearningEngine';
 import DynamicModuleManager from './DynamicModuleManager';
 import TrainingScheduler from './TrainingScheduler';
 import { useTheme } from '../../../context/ThemeContext';
-import { getLocalStorage, setLocalStorage } from '../../../utils/storaget';
+import { getLocalStorage, setLocalStorage } from '../../../utils/storage';
 
 export default function App() {
   const [messages, setMessages] = useState([]);
