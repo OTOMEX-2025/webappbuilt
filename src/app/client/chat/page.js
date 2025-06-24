@@ -42,7 +42,6 @@ export default function App() {
     
     if (typeof window !== 'undefined') {
       trainingScheduler.start();
-      
       // Load any saved conversations
       const savedConversations = localStorage.getItem('chatHistory');
       if (savedConversations) {

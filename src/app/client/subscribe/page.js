@@ -37,7 +37,7 @@ const SubscriptionPage = () => {
     {
       id: 'basic',
       name: 'Basic Support',
-      price: 49,
+      price: 39,
       features: [
         'Weekly check-in messages',
         'Access to basic resources',
@@ -49,7 +49,7 @@ const SubscriptionPage = () => {
     {
       id: 'standard',
       name: 'Standard Care',
-      price: 65,
+      price: 49,
       features: [
         'Everything in Basic',
         'Bi-weekly therapist chat sessions',
