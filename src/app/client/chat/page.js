@@ -8,6 +8,7 @@ import SelfLearningEngine from './SelfLearningEngine';
 import DynamicModuleManager from './DynamicModuleManager';
 import TrainingScheduler from './TrainingScheduler';
 import { useTheme } from '../../../context/ThemeContext';
+import { getLocalStorage, setLocalStorage } from '../../../utils/storaget';
 
 export default function App() {
   const [messages, setMessages] = useState([]);
@@ -43,7 +44,7 @@ const initializeChat = () => {
   
   // Safely load saved conversations
   try {
-    const savedConversations = window.localStorage?.getItem('chatHistory');
+    const savedConversations = getLocalStorage("chatHistory")
     if (savedConversations) {
       const parsed = JSON.parse(savedConversations);
       if (Array.isArray(parsed)) {
@@ -67,7 +68,7 @@ useEffect(() => {
   // Only save if we're on the client and have messages
   if (typeof window !== 'undefined' && messages.length > 1) {
     try {
-      window.localStorage.setItem('chatHistory', JSON.stringify(messages));
+      setLocalStorage("chatHistory", JSON.stringify(messages));
       selfLearningEngine.memoryBuffer = messages.slice(-100);
     } catch (error) {
       console.error('Error saving to localStorage:', error);
