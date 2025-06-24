@@ -5,7 +5,7 @@ const ClientSideChatComponent = dynamic(
   () => import('./ChatContent.client'),
   { 
     ssr: false,
-    loading: () => <Loader/> // Optional loading component
+    loading: () => <p>Loading...</p>// Optional loading component
   }
 );
 
