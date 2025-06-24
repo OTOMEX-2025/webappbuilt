@@ -108,7 +108,7 @@ const Meetings = () => {
   };
   if(isLoading){
     return(
-      <Loader theme={theme}/>
+      <Loader />
     )
   }
 

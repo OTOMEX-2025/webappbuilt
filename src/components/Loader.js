@@ -1,4 +1,7 @@
-const Loader = ({theme}) =>{
+import { useTheme } from '@/context/ThemeContext';
+
+const Loader = () =>{
+  const { theme } = useTheme();
     return(
       <div className={`min-h-screen w-screen flex items-center justify-center ${theme === 'dark' ? 'bg-black text-gray-100' : 'bg-gray-50 text-gray-900'}`}>
         <div className="text-center">

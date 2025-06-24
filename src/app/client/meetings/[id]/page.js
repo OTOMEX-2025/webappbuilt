@@ -109,7 +109,7 @@ const MeetingDetail = () => {
   };
 
   if (isLoading) {
-    return <Loader theme={theme}/>;
+    return <Loader />;
   }
 
   if (error) {
