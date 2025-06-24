@@ -12,14 +12,14 @@ export function ThemeProvider({ children }) {
     const savedTheme = localStorage.getItem("theme") || 
                       (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
     setTheme(savedTheme);
-    document.documentElement.classList.toggle("dark", savedTheme === "dark");
+    document.documentElement.classList.toggle("light", savedTheme === "light");
   }, []);
 
   const toggleTheme = () => {
     const newTheme = theme === "light" ? "dark" : "light";
     setTheme(newTheme);
     localStorage.setItem("theme", newTheme);
-    document.documentElement.classList.toggle("dark", newTheme === "dark");
+    document.documentElement.classList.toggle("light", newTheme === "light");
   };
 
   return (

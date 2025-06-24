@@ -231,7 +231,7 @@ export default function App() {
   };
 
   return (
-    <div className={`flex flex-col h-[90vh] w-[115vh] max-w-6xl mx-auto rounded-lg shadow-lg overflow-hidden ${containerStyles[theme]}`}>
+    <div className={`flex flex-col h-[115] w-[1149vh] max-w-6xl mx-auto rounded-lg shadow-lg overflow-hidden ${containerStyles[theme]}`}>
       {/* Header */}
       <header className={`p-4 shadow-md ${headerStyles[theme]}`}>
         <h1 className="text-xl font-bold">Mental Health Companion</h1>
