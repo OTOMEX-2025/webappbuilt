@@ -55,6 +55,15 @@ const apiHelper = {
     });
   },
 
+  updatePassword: async (email, code, newPassword) => {
+    return apiHelper.request('POST', '', {
+      operation: 'update-password',
+      email,
+      code,
+      newPassword
+    });
+  },
+
 
 // apiHelper.js
 subscribe: async (userId, plan, paymentMethod) => {

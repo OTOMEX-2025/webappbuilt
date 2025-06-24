@@ -5,7 +5,7 @@ import Subscription from "@/models/Subscription";
 import bcrypt from "bcryptjs";
 import Patient from "../../../models/Patient";
 import Therapist from "../../../models/Therapist";
-import sendSubscriptionEmail from "../../../utils/email"
+import {sendSubscriptionEmail , sendResetPassEmail} from "../../../utils/email"
 
 export async function GET(request) {
   try {
@@ -53,6 +53,8 @@ export async function POST(request) {
         return handleRegister(payload);
       case 'reset-password':
         return handleResetPassword(payload);
+      case 'update-password':
+        return handleUpdatePassword(payload);
       case 'subscribe':
         return handleSubscribe(payload);
       case 'unsubscribe':
@@ -260,9 +262,52 @@ async function handleResetPassword({ email }) {
       { status: 200 }
     );
   }
+
+  // Generate a reset code
+  const resetCode = Math.floor(100000 + Math.random() * 900000).toString();
   
+  // Store the reset code with expiration (15 minutes)
+  user.resetPasswordToken = resetCode;
+  user.resetPasswordExpires = Date.now() + 900000; // 15 minutes
+  
+  await user.save();
+
+  // Send email
+  await sendResetPassEmail(email, resetCode);
+
   return NextResponse.json(
     { message: 'If an account exists with this email, a reset link has been sent' },
+    { status: 200 }
+  );
+}
+
+// Add a new function to handle password update
+async function handleUpdatePassword({ email, code, newPassword }) {
+  const user = await User.findOne({ 
+    email,
+    resetPasswordToken: code,
+    resetPasswordExpires: { $gt: Date.now() }
+  });
+
+  if (!user) {
+    return NextResponse.json(
+      { message: 'Invalid or expired reset code' },
+      { status: 400 }
+    );
+  }
+
+  // Hash the new password
+  const hashedPassword = await bcrypt.hash(newPassword, 10);
+  
+  // Update password and clear reset token
+  user.password = hashedPassword;
+  user.resetPasswordToken = undefined;
+  user.resetPasswordExpires = undefined;
+  
+  await user.save();
+
+  return NextResponse.json(
+    { message: 'Password updated successfully' },
     { status: 200 }
   );
 }

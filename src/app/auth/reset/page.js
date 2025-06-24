@@ -7,7 +7,7 @@ import styles from '../../../styles/ResetPassword.module.css';
 
 export default function ResetPassword() {
   const router = useRouter();
-  const { resetPassword } = useUser();
+  const { resetPassword, updatePassword } = useUser();
   const [step, setStep] = useState(1); // 1: email, 2: code, 3: new password
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
@@ -16,11 +16,6 @@ export default function ResetPassword() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [generatedCode, setGeneratedCode] = useState("");
-
-  const generateRandomCode = () => {
-    return Math.floor(100000 + Math.random() * 900000).toString();
-  };
 
   const handleSubmitEmail = async (e) => {
     e.preventDefault();
@@ -28,12 +23,12 @@ export default function ResetPassword() {
     setError("");
     
     try {
-      // In a real implementation, this would call your API to send an email
-      const verificationCode = generateRandomCode();
-      setGeneratedCode(verificationCode);
-      console.log(`Verification code for ${email}: ${verificationCode}`);
+      const result = await resetPassword(email);
       
-      // For demo purposes, we'll proceed to the next step
+      if (!result.success) {
+        throw new Error(result.message || "Failed to send reset code");
+      }
+      
       setStep(2);
       setSuccess(`A verification code has been sent to ${email}`);
     } catch (err) {
@@ -49,10 +44,7 @@ export default function ResetPassword() {
     setError("");
     
     try {
-      if (code !== generatedCode) {
-        throw new Error("Invalid verification code");
-      }
-      
+      // Just proceed to next step - actual verification happens in updatePassword
       setStep(3);
       setSuccess("Code verified. Please set your new password.");
     } catch (err) {
@@ -76,8 +68,7 @@ export default function ResetPassword() {
         throw new Error("Passwords do not match");
       }
       
-      // Call the resetPassword function from UserContext
-      const result = await resetPassword(email);
+      const result = await updatePassword(email, code, newPassword);
       
       if (!result.success) {
         throw new Error(result.message || "Failed to reset password");
@@ -110,7 +101,7 @@ export default function ResetPassword() {
         {step === 1 && (
           <form onSubmit={handleSubmitEmail} className={styles.form}>
             <p className={styles.description}>
-              Enter your email address and we&apos;ll send you a verification code.
+              Enter your email address and we&pos;ll send you a verification code.
             </p>
             
             <input
@@ -157,7 +148,7 @@ export default function ResetPassword() {
             </button>
 
             <p className={styles.resend}>
-              Didn&apos;t receive a code?{" "}
+              Didn&pos;t receive a code?{" "}
               <button 
                 type="button" 
                 className={styles.linkButton}

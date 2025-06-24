@@ -80,7 +80,7 @@ export default function ClientLayout({ children }) {
             pageTitle={formattedPageName}
             isSidebarOpen={sidebarOpen} // Pass the sidebar state
           />
-          <main className={`${styles.content} pt-16`}>{children}</main>
+          <main className={`${styles.content}center items-center justify-center pt-16`}>{children}</main>
         </div>
       </div>
     </div>

@@ -3,6 +3,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import apiHelper from '@/lib/apiHelper';
 
+
 const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
@@ -154,7 +155,27 @@ const [user, setUser] = useState(null);
       };
     }
   };
-
+ const updatePassword = async (email, code, newPassword) => {
+  try {
+    const { success, message } = await apiHelper.updatePassword({
+      email,
+      code,
+      newPassword
+    });
+    
+    if (!success) {
+      throw new Error(message || 'Password update failed');
+    }
+    
+    return { success: true };
+  } catch (error) {
+    console.error('Password update error:', error);
+    return { 
+      success: false, 
+      message: error.message || 'Password update failed' 
+    };
+  }
+};
   const fetchUserDetails = async (email) => {
     try {
       const { success, data, message } = await apiHelper.getProfile(email);
@@ -201,7 +222,6 @@ const subscribe = async (plan, paymentMethod) => {
     if (!success) {
       throw new Error(message || 'Subscription failed');
     }
-    
     // Update user state
     const updatedUser = {
       ...user,
@@ -270,6 +290,8 @@ const unsubscribe = async () => {
       };
     }
   };
+ 
+
 
   return (
     <UserContext.Provider value={{ 
@@ -278,6 +300,7 @@ const unsubscribe = async () => {
       logout, 
       register,
       resetPassword,
+      updatePassword,
       updateProfile,
       fetchUserDetails,
       updateUser,
