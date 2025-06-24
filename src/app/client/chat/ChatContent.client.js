@@ -9,7 +9,7 @@ import DynamicModuleManager from './DynamicModuleManager';
 import TrainingScheduler from './TrainingScheduler';
 import { useTheme } from '../../../context/ThemeContext';
 import { getLocalStorage, setLocalStorage } from '../../../utils/storage';
-import dynamic from 'next/dynamic';
+
 
 export default function App() {
   const [messages, setMessages] = useState([]);

@@ -1,7 +1,12 @@
 import dynamic from 'next/dynamic';
 import Loader from '@/components/Loader';
-// This component will only be rendered on the client side
+import { useTheme } from '@/context/ThemeContext';
+// This component will only be rendered on the client side  
+const { theme } = useTheme();
 const ClientSideChatComponent = dynamic(
+
+
+
   () => import('./ChatContent.client'),
   { 
     ssr: false,
