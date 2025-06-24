@@ -26,48 +26,54 @@ export default function App() {
     new TrainingScheduler(selfLearningEngine, dynamicModuleManager)
   );
 
-  // Set client-side flag and initialize
+
+  // In your App component, modify the initializeChat function:
+const initializeChat = () => {
+  setMessages([{
+    text: "Hello, I'm your mental health companion. How are you feeling today?",
+    sender: 'bot',
+    emotion: 'neutral',
+    timestamp: new Date().toISOString()
+  }]);
+  
+  // Only run on client side
+  if (typeof window === 'undefined') return;
+  
+  trainingScheduler.start();
+  
+  // Safely load saved conversations
+  try {
+    const savedConversations = window.localStorage?.getItem('chatHistory');
+    if (savedConversations) {
+      const parsed = JSON.parse(savedConversations);
+      if (Array.isArray(parsed)) {
+        selfLearningEngine.memoryBuffer = parsed.slice(-100);
+      }
+    }
+  } catch (e) {
+    console.error('Failed to load conversation history:', e);
+  }
+};
   useEffect(() => {
     setIsClient(true);
     initializeChat();
   }, []);
-
-  const initializeChat = () => {
-    setMessages([{
-      text: "Hello, I'm your mental health companion. How are you feeling today?",
-      sender: 'bot',
-      emotion: 'neutral',
-      timestamp: new Date().toISOString()
-    }]);
-    
-    if (typeof window !== 'undefined') {
-      trainingScheduler.start();
-      // Load any saved conversations
-      const savedConversations = localStorage.getItem('chatHistory');
-      if (savedConversations) {
-        try {
-          const parsed = JSON.parse(savedConversations);
-          if (Array.isArray(parsed)) {
-            selfLearningEngine.memoryBuffer = parsed.slice(-100);
-          }
-        } catch (e) {
-          console.error('Failed to load conversation history:', e);
-        }
-      }
-    }
-  };
-
   // Scroll to bottom and save conversations
-  useEffect(() => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
-    
-    if (messages.length > 1 && typeof window !== 'undefined') {
-      localStorage.setItem('chatHistory', JSON.stringify(messages));
+useEffect(() => {
+  if (messagesEndRef.current) {
+    messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+  }
+  
+  // Only save if we're on the client and have messages
+  if (typeof window !== 'undefined' && messages.length > 1) {
+    try {
+      window.localStorage.setItem('chatHistory', JSON.stringify(messages));
       selfLearningEngine.memoryBuffer = messages.slice(-100);
+    } catch (error) {
+      console.error('Error saving to localStorage:', error);
     }
-  }, [messages]);
+  }
+}, [messages]);
 
   const handleSendMessage = () => {
     if (!input.trim()) return;
