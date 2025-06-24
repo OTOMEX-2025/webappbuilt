@@ -30,32 +30,30 @@ export default function App() {
 
 
   // In your App component, modify the initializeChat function:
+
 const initializeChat = () => {
-  setMessages([{
-    text: "Hello, I'm your mental health companion. How are you feeling today?",
-    sender: 'bot',
-    emotion: 'neutral',
-    timestamp: new Date().toISOString()
-  }]);
-  
-  // Only run on client side
-  if (typeof window === 'undefined') return;
-  
-  trainingScheduler.start();
-  
-  // Safely load saved conversations
-  try {
-    const savedConversations = getLocalStorage("chatHistory")
-    if (savedConversations) {
-      const parsed = JSON.parse(savedConversations);
-      if (Array.isArray(parsed)) {
-        selfLearningEngine.memoryBuffer = parsed.slice(-100);
-      }
+    const defaultMessage = {
+      text: "Hello, I'm your mental health companion. How are you feeling today?",
+      sender: 'bot',
+      emotion: 'neutral',
+      timestamp: new Date().toISOString()
     }
-  } catch (e) {
-    console.error('Failed to load conversation history:', e);
+
+    try {
+      const savedConversations = getLocalStorage('chatHistory')
+      if (savedConversations && Array.isArray(savedConversations)) {
+        setMessages(savedConversations)
+      } else {
+        setMessages([defaultMessage])
+      }
+    } catch (e) {
+      console.error('Failed to load conversation history:', e)
+      setMessages([defaultMessage])
+    }
   }
-};
+
+
+
   useEffect(() => {
     setIsClient(true);
     initializeChat();
