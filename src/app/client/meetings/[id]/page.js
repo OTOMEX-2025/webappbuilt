@@ -114,7 +114,7 @@ const MeetingDetail = () => {
 
   if (error) {
     return (
-      <div className={`min-h-screen w-screen ${theme === 'dark' ? 'bg-black text-white' : 'bg-gray-100 text-gray-900'} p-6`}>
+      <div className={`min-h-screen  ${theme === 'dark' ? 'bg-black text-white' : 'bg-gray-100 text-gray-900'} p-6`}>
         <div className="max-w-4xl mx-auto bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md">
           <h2 className="text-2xl font-bold mb-4">Error</h2>
           <p className="mb-4">{error}</p>
@@ -131,7 +131,7 @@ const MeetingDetail = () => {
 
   if (!meeting) {
     return (
-      <div className={`min-h-screen w-screen ${theme === 'dark' ? 'bg-black text-white' : 'bg-gray-100 text-gray-900'} p-6`}>
+      <div className={`min-h-screen  ${theme === 'dark' ? 'bg-black text-white' : 'bg-gray-100 text-gray-900'} p-6`}>
         <div className="max-w-4xl mx-auto bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md">
           <h2 className="text-2xl font-bold mb-4">Meeting Not Found</h2>
           <Link 

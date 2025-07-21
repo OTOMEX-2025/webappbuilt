@@ -22,7 +22,7 @@ const MusicPage = () => {
 
   if (error) {
     return (
-      <div className={`min-h-screen min-w-screen flex items-center justify-center ${theme === 'dark' ? 'bg-black text-gray-100' : 'bg-gray-50 text-gray-900'}`}>
+      <div className={`min-h-screen min-  flex items-center justify-center ${theme === 'dark' ? 'bg-black text-gray-100' : 'bg-gray-50 text-gray-900'}`}>
         <div className={`p-6 rounded-lg ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} shadow-md text-center`}>
           <h1 className="text-2xl font-bold text-red-500 mb-2">Music Error</h1>
           <p className="mb-4">{error}</p>
@@ -33,7 +33,7 @@ const MusicPage = () => {
 
   if (!musicData) {
     return (
-      <div className={`min-h-screen min-w-screen flex items-center justify-center ${theme === 'dark' ? 'bg-black text-gray-100' : 'bg-gray-50 text-gray-900'}`}>
+      <div className={`min-h-screen min-  flex items-center justify-center ${theme === 'dark' ? 'bg-black text-gray-100' : 'bg-gray-50 text-gray-900'}`}>
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mx-auto mb-4"></div>
           <p>Loading music...</p>
@@ -43,7 +43,7 @@ const MusicPage = () => {
   }
 
   return (
-    <div className={`min-h-screen min-w-screen pb-24 ${theme === 'dark' ? 'bg-black text-gray-100' : 'bg-gray-50 text-gray-900'}`}>
+    <div className={`min-h-screen min-  pb-24 ${theme === 'dark' ? 'bg-black text-gray-100' : 'bg-gray-50 text-gray-900'}`}>
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-8">Mindful Music</h1>
         

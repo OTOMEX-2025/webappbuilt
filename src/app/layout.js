@@ -20,7 +20,7 @@ export default function RootLayout({ children }) {
         <ThemeProvider> 
           <UserProvider>
           <MusicProvider>
-            <div className="main-content">{children}</div>
+            <div className=" ">{children}</div>
           </MusicProvider> 
           </UserProvider>
         </ThemeProvider>

@@ -41,7 +41,7 @@ const AnalysisPage = () => {
   });
 
   return (
-    <div className={`min-h-screen w-screen ${theme === 'dark' ? 'bg-black text-white' : 'bg-gray-100 text-gray-900'} p-6`}>
+    <div className={`min-h-screen   ${theme === 'dark' ? 'bg-black text-white' : 'bg-gray-100 text-gray-900'} p-6`}>
       <div className="max-w-7xl mx-auto">
         <h1 className="text-3xl font-bold mb-6 flex items-center">
           <RiBarChartLine className="mr-2" /> Therapy Analysis
