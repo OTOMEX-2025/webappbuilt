@@ -20,7 +20,7 @@ export default function RootLayout({ children }) {
         <ThemeProvider> 
           <UserProvider>
           <MusicProvider>
-            <div className=" ">{children}</div>
+            <div className=" overflow-x-hidden ">{children}</div>
           </MusicProvider> 
           </UserProvider>
         </ThemeProvider>

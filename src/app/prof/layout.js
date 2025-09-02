@@ -52,7 +52,13 @@ const ProfLayout = ({ children }) => {
                userName="Therapist Profile"
               pageTitle={formattedPageName} 
             />
-              <main className={`${styles.content} pt-16`}>{children}</main>
+              <main className={`flex-1 overflow-y-scroll transition-all duration-300 ${
+                        sidebarOpen ? 'lg:ml-64' : 'lg:ml-0'
+                      }`}>
+                        <div className="  w-full">
+                          {children}
+                        </div>
+                      </main>
             </div>
           </div>
         </div>
