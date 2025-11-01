@@ -124,7 +124,7 @@ const MeetingRoom = () => {
 
   if (isLoading) {
     return (
-      <div className={`min-h-screen w-screen flex items-center justify-center ${theme === 'dark' ? 'bg-black text-gray-100' : 'bg-gray-50 text-gray-900'}`}>
+      <div className={`min-h-screen   flex items-center justify-center ${theme === 'dark' ? 'bg-black text-gray-100' : 'bg-gray-50 text-gray-900'}`}>
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mx-auto mb-4"></div>
           <p>Loading meeting details...</p>
@@ -135,7 +135,7 @@ const MeetingRoom = () => {
 
   if (error) {
     return (
-      <div className={`min-h-screen w-screen ${theme === 'dark' ? 'bg-black text-gray-100' : 'bg-gray-50 text-gray-900'}`}>
+      <div className={`min-h-screen   ${theme === 'dark' ? 'bg-black text-gray-100' : 'bg-gray-50 text-gray-900'}`}>
         <div className="container mx-auto px-4 py-8">
           <div className={`p-6 rounded-lg ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} shadow-md`}>
             <h2 className="text-2xl font-bold text-red-500 mb-4">Error</h2>
@@ -154,7 +154,7 @@ const MeetingRoom = () => {
 
   if (!meeting) {
     return (
-      <div className={`min-h-screen min-w-screen ${theme === 'dark' ? 'bg-black text-gray-100' : 'bg-gray-50 text-gray-900'}`}>
+      <div className={`min-h-screen min-  ${theme === 'dark' ? 'bg-black text-gray-100' : 'bg-gray-50 text-gray-900'}`}>
         <div className="container mx-auto px-4 py-8">
           <div className={`p-6 rounded-lg ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} shadow-md`}>
             <h2 className="text-2xl font-bold mb-4">Meeting Not Found</h2>
@@ -171,7 +171,7 @@ const MeetingRoom = () => {
   }
 
   return (
-    <div className={`min-h-screen min-w-screen flex flex-col ${theme === 'dark' ? 'bg-black text-gray-100' : 'bg-gray-50 text-gray-900'}`}>
+    <div className={`min-h-screen min-  flex flex-col ${theme === 'dark' ? 'bg-black text-gray-100' : 'bg-gray-50 text-gray-900'}`}>
       {/* Header */}
       <div className={`py-4 px-6 ${theme === 'dark' ? 'bg-gray-900' : 'bg-white'} shadow-md`}>
         <div className="container mx-auto">

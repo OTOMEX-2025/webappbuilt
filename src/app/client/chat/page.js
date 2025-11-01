@@ -17,7 +17,7 @@ const Chat = () => {
   ];
 
   return (
-    <div className={`flex flex-col w-screen h-screen ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>
+    <div className={`flex flex-col h-screen ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>
       <div className="flex-1 overflow-hidden">
         <div className="h-full flex flex-col">
           {/* Chat header */}

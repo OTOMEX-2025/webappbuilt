@@ -69,14 +69,14 @@ const ProfileSettings = () => {
 
   if (!user) {
     return (
-      <div className={`w-screen min-h-screen flex items-center justify-center ${theme === 'dark' ? 'bg-black' : 'bg-gray-100'}`}>
+      <div className={`  min-h-screen flex items-center justify-center ${theme === 'dark' ? 'bg-black' : 'bg-gray-100'}`}>
         <div className="animate-pulse text-lg">Loading...</div>
       </div>
     );
   }
 
   return (
-    <div className={`w-screen min-h-screen ${theme === 'dark' ? 'bg-black text-white' : 'bg-gray-100 text-gray-900'}`}>
+    <div className={`  min-h-screen ${theme === 'dark' ? 'bg-black text-white' : 'bg-gray-100 text-gray-900'}`}>
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-8">

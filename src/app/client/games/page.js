@@ -34,7 +34,7 @@ const Games = () => {
   ];
 
   return (
-    <div className={`min-h-screen w-screen ${theme === 'dark' ? 'bg-black text-gray-100' : 'bg-gray-50 text-gray-800'}`}>
+    <div className={`min-h-screen ${theme === 'dark' ? 'bg-black text-gray-100' : 'bg-gray-50 text-gray-800'}`}>
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className={`flex justify-between items-center mb-8 p-4 rounded-lg ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} shadow`}>

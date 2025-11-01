@@ -4,19 +4,14 @@ import { usePathname } from 'next/navigation';
 import { useTheme } from "../../context/ThemeContext";
 import ReUsableSideBar from "../../components/ReUsableSideBar";
 import ReUsableNavbar from "../../components/ReUsableNavbar";
-import styles from "./Client.module.css";
 import {
-  Brain,
   Home,
   MessageSquareMore,
   Video,
   Newspaper,
   Music,
   Gamepad2,
-  CreditCard, // Added for subscription icon
-  X,
-  Moon,
-  Sun,
+  CreditCard,
 } from "lucide-react";
 
 const menuItems = [
@@ -30,17 +25,16 @@ const menuItems = [
     icon: <CreditCard size={20} />, 
     label: 'Subscription', 
     path: '/client/subscribe',
-    className: "mt-auto" // This will push the item to the bottom
   },
 ];
+
 const logo = "/MindPalLogo-removebg-preview.png";
 
 export default function ClientLayout({ children }) {
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const { theme, toggleTheme } = useTheme();
+  const { theme } = useTheme();
 
-  // Auto-close sidebar on mobile when route changes
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 768) {
@@ -51,37 +45,40 @@ export default function ClientLayout({ children }) {
     };
     
     window.addEventListener('resize', handleResize);
-    handleResize(); // Set initial state
-    
+    handleResize();
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const currentPage = pathname.split('/').pop() || 'Dashboard';
   const formattedPageName = currentPage.charAt(0).toUpperCase() + currentPage.slice(1);
 
-  const toggleSidebar = () => {
-    setSidebarOpen(!sidebarOpen);
-  };
+  const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
 
   return (
-     <div className={`${styles.appRoot} ${theme === "dark" ? styles.dark : styles.light}`}>
-      <div className={styles.layoutContainer}>
+    <div className={`flex flex-col h-screen overflow-hidden ${
+      theme === 'dark' ? 'bg-black text-white' : 'bg-white text-gray-900'
+    }`}>
+      <ReUsableNavbar 
+        onMenuToggle={toggleSidebar}
+        pageTitle={formattedPageName}
+        isSidebarOpen={sidebarOpen}
+      />
+      
+      <div className="flex flex-1 overflow-hidden">
         <ReUsableSideBar 
           isOpen={sidebarOpen} 
           setIsOpen={setSidebarOpen} 
           menuItems={menuItems} 
           logo={logo} 
         />
-        <div className={styles.mainArea}>
-          <ReUsableNavbar 
-            onMenuToggle={toggleSidebar}
-            onToggleTheme={toggleTheme}
-            theme={theme}
-            pageTitle={formattedPageName}
-            isSidebarOpen={sidebarOpen} // Pass the sidebar state
-          />
-          <main className={`${styles.content}center items-center justify-center pt-16`}>{children}</main>
-        </div>
+        
+        <main className={`flex-1 overflow-y-scroll transition-all duration-300 ${
+          sidebarOpen ? 'lg:ml-64' : 'lg:ml-0'
+        }`}>
+          <div className="p-4 lg:p-6  w-full">
+            {children}
+          </div>
+        </main>
       </div>
     </div>
   );

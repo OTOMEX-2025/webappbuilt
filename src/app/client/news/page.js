@@ -28,19 +28,19 @@ const NewsPage = () => {
   }, []);
 
   if (loading) return (
-    <div className={`flex text-center items-center justify-center min-h-screen min-w-screen ${theme === 'dark' ? 'bg-black text-white' : 'bg-white text-gray-800'}`}>
+    <div className={`flex text-center items-center justify-center min-h-screen min-  ${theme === 'dark' ? 'bg-black text-white' : 'bg-white text-gray-800'}`}>
       <div className="animate-pulse">Loading articles...</div>
     </div>
   );
 
   if (error) return (
-    <div className={`flex text-center items-center justify-center min-h-screen min-w-screen ${theme === 'dark' ? 'bg-black text-white' : 'bg-white text-gray-800'}`}>
+    <div className={`flex text-center items-center justify-center min-h-screen min-  ${theme === 'dark' ? 'bg-black text-white' : 'bg-white text-gray-800'}`}>
       <div className="text-red-500">Error: {error}</div>
     </div>
   );
 
   return (
-    <div className={`min-h-screen min-w-screen ${theme === 'dark' ? 'bg-black text-gray-100' : 'bg-gray-50 text-gray-800'}`}>
+    <div className={`min-h-screen min-  ${theme === 'dark' ? 'bg-black text-gray-100' : 'bg-gray-50 text-gray-800'}`}>
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className={`mb-8 p-6 rounded-xl ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} shadow`}>

@@ -35,7 +35,7 @@ const Home = () => {
   }
 
   return (
-    <div className={` w-screen min-h-screen ${theme === 'dark' ? 'bg-black text-gray-100' : 'bg-gray-50 text-gray-800'}`}>
+    <div className={`min-h-screen ${theme === 'dark' ? 'bg-black text-gray-100' : 'bg-gray-50 text-gray-800'}`}>
       {/* Hero Section */}
       <section className={`relative py-20 ${theme === 'dark' ? 'bg-gray-800' : 'bg-blue-50'} overflow-hidden`}>
         <div className="container mx-auto px-4 text-center">
