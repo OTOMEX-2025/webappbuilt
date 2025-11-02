@@ -1,4 +1,4 @@
-name: Deploy to MindPal Server
+name: Deploy via Webhook
 
 on:
   push:
@@ -7,142 +7,23 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    
     steps:
     - name: 🚚 Checkout code
       uses: actions/checkout@v4
 
-    - name: 🔧 Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18'
-        cache: 'npm'
-
-    - name: 📦 Install dependencies
-      run: npm ci
-
-    - name: 🏗️ Build application
-      run: npm run build
-
-    - name: 🔨 Create nginx configuration
+    - name: 📦 Notify Server via Webhook
       run: |
-        cat > nginx.conf << 'EOF'
-        # MindPal Subdomain - HTTP to HTTPS redirect
-        server {
-            listen 80;
-            listen [::]:80;
-            server_name mindpal.otomexx.co.za;
-            
-            # Redirect all HTTP to HTTPS
-            return 301 https://$server_name$request_uri;
-        }
-
-        # MindPal Subdomain - HTTPS
-        server {
-            listen 443 ssl http2;
-            listen [::]:443 ssl http2;
-            server_name mindpal.otomexx.co.za;
-            
-            # SSL configuration (managed by Cloudflare)
-            ssl_protocols TLSv1.2 TLSv1.3;
-            ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384;
-            ssl_prefer_server_ciphers off;
-            
-            # Security headers
-            add_header X-Frame-Options "SAMEORIGIN" always;
-            add_header X-XSS-Protection "1; mode=block" always;
-            add_header X-Content-Type-Options "nosniff" always;
-            add_header Referrer-Policy "no-referrer-when-downgrade" always;
-            add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
-            
-            # Proxy to Node.js app
-            location / {
-                proxy_pass http://localhost:7015;
-                proxy_http_version 1.1;
-                proxy_set_header Upgrade $http_upgrade;
-                proxy_set_header Connection 'upgrade';
-                proxy_set_header Host $host;
-                proxy_set_header X-Real-IP $remote_addr;
-                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-                proxy_set_header X-Forwarded-Proto $scheme;
-                proxy_set_header CF-Connecting-IP $http_cf_connecting_ip;
-                proxy_set_header CF-IPCountry $http_cf_ipcountry;
-                proxy_cache_bypass $http_upgrade;
-                proxy_connect_timeout 60s;
-                proxy_send_timeout 60s;
-                proxy_read_timeout 60s;
-            }
-            
-            # Health check
-            location /health {
-                access_log off;
-                return 200 "healthy\n";
-                add_header Content-Type text/plain;
-            }
-        }
-        EOF
-
-    - name: 📝 Create PM2 ecosystem file
-      run: |
-        cat > ecosystem.config.js << 'EOF'
-        module.exports = {
-          apps: [{
-            name: 'mindpal',
-            script: 'node_modules/next/dist/bin/next',
-            args: 'start',
-            instances: 1,
-            exec_mode: 'fork',
-            env: {
-              PORT: 7015,
-              NODE_ENV: 'production'
-            },
-            error_file: '/var/log/mindpal.err.log',
-            out_file: '/var/log/mindpal.out.log',
-            log_file: '/var/log/mindpal.combined.log',
-            time: true
-          }]
-        }
-        EOF
-
-    - name: 📦 Create lightweight deployment package
-      run: |
-        mkdir -p deployment
-        cp -r .next/ deployment/
-        cp -r public/ deployment/ 2>/dev/null || true
-        cp package.json deployment/
-        cp package-lock.json deployment/
-        cp next.config.js deployment/ 2>/dev/null || true
-        cp ecosystem.config.js deployment/
-        cp nginx.conf deployment/
+        # Create signature
+        TIMESTAMP=$(date +%s)
+        PAYLOAD="{\"repository\":{\"name\":\"${{ github.event.repository.name }}\"},\"ref\":\"${{ github.ref }}\",\"timestamp\":\"$TIMESTAMP\"}"
+        SIGNATURE=$(echo -n "$PAYLOAD" | openssl dgst -sha256 -hmac "${{ secrets.WEBHOOK_SECRET }}" | awk '{print "sha256="$2}')
         
-        if [ -f "standalone" ]; then
-          cp -r standalone/ deployment/
-        fi
+        # Send webhook
+        curl -X POST \
+          "http://3.92.83.123:3000/deploy" \
+          -H "Content-Type: application/json" \
+          -H "X-Hub-Signature-256: $SIGNATURE" \
+          -d "$PAYLOAD" \
+          --max-time 30
         
-        if [ -f "server.js" ]; then
-          cp server.js deployment/
-        fi
-        
-        cd deployment && zip -r ../deployment-package.zip . && cd ..
-
-    - name: 🚀 Setup SSH and Deploy
-      run: |
-        echo "${{ secrets.SERVER_SSH_KEY }}" > private_key.pem
-        chmod 600 private_key.pem
-        
-        echo "🔍 Testing SSH connection..."
-        ssh -o StrictHostKeyChecking=no -o ConnectTimeout=30 -i private_key.pem ubuntu@${{ secrets.SERVER_HOST }} "echo '✅ SSH connection successful'"
-        
-        echo "📤 Uploading deployment package..."
-        scp -o StrictHostKeyChecking=no -o ConnectTimeout=30 -i private_key.pem deployment-package.zip ubuntu@${{ secrets.SERVER_HOST }}:/var/www/mindpal.otomexx.co.za/
-        
-        echo "🛠️ Running deployment script..."
-        ssh -o StrictHostKeyChecking=no -o ConnectTimeout=30 -i private_key.pem ubuntu@${{ secrets.SERVER_HOST }} "/home/ubuntu/scripts/deploy-app.sh 'mindpal' 'mindpal.otomexx.co.za' '7015' '/var/www/mindpal.otomexx.co.za/deployment-package.zip'"
-        
-        rm -f private_key.pem
-        echo "✅ Deployment completed successfully!"
-
-    - name: 🧹 Cleanup
-      run: |
-        rm -f deployment-package.zip
-        rm -rf deployment
+        echo "✅ Deployment webhook sent successfully!"
