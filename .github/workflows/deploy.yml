@@ -39,21 +39,20 @@ jobs:
         echo "📦 Creating deployment package..."
         mkdir -p deployment-package
         
-        # Copy necessary files for production
-        cp -r .next/ deployment-package/
+        # Copy only essential files
+        cp -r .next/standalone/* deployment-package/ 2>/dev/null || cp -r .next/ deployment-package/
         cp -r public/ deployment-package/ 2>/dev/null || true
         cp package.json deployment-package/
         cp package-lock.json deployment-package/
         cp next.config.js deployment-package/ 2>/dev/null || true
-        cp ecosystem.config.js deployment-package/ 2>/dev/null || true
-        cp server.js deployment-package/ 2>/dev/null || true
+        
+        # Remove development files
+        rm -rf deployment-package/.next/cache 2>/dev/null || true
         
         echo "📁 Package contents:"
         ls -la deployment-package/
         
-        # Create deployment package
         cd deployment-package && zip -r ../deploy-package.zip . && cd ..
-        
         echo "📊 Package size:"
         ls -lh deploy-package.zip
         
