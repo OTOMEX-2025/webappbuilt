@@ -1,29 +1,59 @@
-name: Deploy via Webhook
+name: Deploy to EC2
 
 on:
   push:
     branches: [ main ]
+  workflow_dispatch:
+
+env:
+  SSH_HOST: ${{ secrets.SERVER_SSH_KEY }}
+  SSH_USER: ${{ secrets.SERVER_USERNAME }}
+  APP_NAME: MindPal
+  DOMAIN: mindpal.otomexx.co.za
+  PORT: 3000
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    
     steps:
-    - name: 🚚 Checkout code
+    - name: Checkout code
       uses: actions/checkout@v4
-
-    - name: 📦 Notify Server via Webhook
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Build application
+      run: npm run build
+      
+    - name: Create deployment package
       run: |
-        # Create signature
-        TIMESTAMP=$(date +%s)
-        PAYLOAD="{\"repository\":{\"name\":\"${{ github.event.repository.name }}\"},\"ref\":\"${{ github.ref }}\",\"timestamp\":\"$TIMESTAMP\"}"
-        SIGNATURE=$(echo -n "$PAYLOAD" | openssl dgst -sha256 -hmac "${{ secrets.WEBHOOK_SECRET }}" | awk '{print "sha256="$2}')
+        mkdir -p deployment
+        cp -r .next next.config.js package.json package-lock.json deployment/
+        if [ -f ecosystem.config.js ]; then cp ecosystem.config.js deployment/; fi
+        if [ -f server.js ]; then cp server.js deployment/; fi
+        cd deployment && zip -r ../deploy-package.zip . && cd ..
         
-        # Send webhook
-        curl -X POST \
-          "http://3.92.83.123:3000/deploy" \
-          -H "Content-Type: application/json" \
-          -H "X-Hub-Signature-256: $SIGNATURE" \
-          -d "$PAYLOAD" \
-          --max-time 30
+    - name: Deploy to EC2
+      uses: appleboy/scp-action@v0.1.3
+      with:
+        host: ${{ secrets.SERVER_SSH_KEY }}
+        username: ${{ secrets.SERVER_USERNAME }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        source: "deploy-package.zip"
+        target: "/tmp/"
         
-        echo "✅ Deployment webhook sent successfully!"
+    - name: Execute deployment script
+      uses: appleboy/ssh-action@v0.1.10
+      with:
+        host: ${{ secrets.SERVER_SSH_KEY }}
+        username: ${{ secrets.SERVER_USERNAME }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          /home/ubuntu/deploy.sh ${{ env.APP_NAME }} ${{ env.DOMAIN }} ${{ env.PORT }} /tmp/deploy-package.zip
