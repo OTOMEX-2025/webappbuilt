@@ -10,7 +10,7 @@ env:
   SSH_USER: ${{ secrets.SERVER_USERNAME }}
   APP_NAME: MindPal
   DOMAIN: mindpal.otomexx.co.za
-  PORT: 3000
+  PORT: 7014
 
 jobs:
   deploy:
