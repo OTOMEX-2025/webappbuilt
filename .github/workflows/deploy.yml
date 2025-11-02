@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 env:
-  APP_NAME: "Mind-Pal"
+  APP_NAME: "MindPal"
   DOMAIN: "mindpal.otomexx.co.za"
   PORT: "7015"
 
@@ -24,6 +24,24 @@ jobs:
         node-version: '20.x'
         cache: 'npm'
         
+    - name: Create .env file for build
+      run: |
+        echo "🔧 Creating .env file for build..."
+        cat > .env << EOF
+        MONGODB_URI=mongodb+srv://otomexinnovations:0TOMEX05@mindpal.0ikip.mongodb.net/?retryWrites=true&w=majority&appName=MindPal
+        OPENAI_API_KEY=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
+        GEMINI_API_KEY=AIzaSyD6t2SOEVLYWWwEqn4IrrsgT_DxxJi7eHg
+        EMAIL_USER=otomexinnovations@gmail.com
+        EMAIL_PASS=qmax vhuu lnvf usoj
+        EOF
+        
+        echo "✅ .env file created"
+        echo "📁 Checking .env file contents (masked):"
+        echo "MONGODB_URI=***"
+        echo "OPENAI_API_KEY=***"
+        echo "GEMINI_API_KEY=***"
+        echo "EMAIL_USER=***"
+        
     - name: Install dependencies
       run: |
         echo "📦 Installing dependencies..."
@@ -32,6 +50,8 @@ jobs:
     - name: Build application
       run: |
         echo "🏗️ Building application..."
+        # Make sure .env file exists
+        ls -la .env || echo "⚠️ .env file not found"
         npm run build
         
     - name: Create deployment package
@@ -39,20 +59,22 @@ jobs:
         echo "📦 Creating deployment package..."
         mkdir -p deployment-package
         
-        # Copy only essential files
-        cp -r .next/standalone/* deployment-package/ 2>/dev/null || cp -r .next/ deployment-package/
+        # Copy necessary files for production, including .env
+        cp -r .next/ deployment-package/
         cp -r public/ deployment-package/ 2>/dev/null || true
         cp package.json deployment-package/
         cp package-lock.json deployment-package/
         cp next.config.js deployment-package/ 2>/dev/null || true
-        
-        # Remove development files
-        rm -rf deployment-package/.next/cache 2>/dev/null || true
+        cp ecosystem.config.js deployment-package/ 2>/dev/null || true
+        cp server.js deployment-package/ 2>/dev/null || true
+        cp .env deployment-package/ 2>/dev/null || true
         
         echo "📁 Package contents:"
         ls -la deployment-package/
         
+        # Create deployment package
         cd deployment-package && zip -r ../deploy-package.zip . && cd ..
+        
         echo "📊 Package size:"
         ls -lh deploy-package.zip
         
