@@ -1,4 +1,4 @@
-name: Deploy Mind-Pal to EC2
+name: Deploy MindPal to EC2
 
 on:
   push:
@@ -24,9 +24,9 @@ jobs:
         node-version: '20.x'
         cache: 'npm'
         
-    - name: Create .env file for build
+    - name: Create .env file
       run: |
-        echo "🔧 Creating .env file for build..."
+        echo "🔧 Creating .env file..."
         cat > .env << EOF
         MONGODB_URI=mongodb+srv://otomexinnovations:0TOMEX05@mindpal.0ikip.mongodb.net/?retryWrites=true&w=majority&appName=MindPal
         OPENAI_API_KEY=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
@@ -34,37 +34,30 @@ jobs:
         EMAIL_USER=otomexinnovations@gmail.com
         EMAIL_PASS=qmax vhuu lnvf usoj
         EOF
-        
         echo "✅ .env file created"
-        echo "📁 Checking .env file contents (masked):"
-        echo "MONGODB_URI=***"
-        echo "OPENAI_API_KEY=***"
-        echo "GEMINI_API_KEY=***"
-        echo "EMAIL_USER=***"
         
     - name: Install dependencies
       run: |
         echo "📦 Installing dependencies..."
-        npm ci
+        npm install --silent --no-audit --no-fund
+        echo "✅ Dependencies installed"
         
     - name: Build application
       run: |
         echo "🏗️ Building application..."
-        echo "📁 Current directory structure:"
+        echo "📁 Directory structure:"
         ls -la
-        echo "📁 Checking for src directory:"
-        ls -la src/ || echo "No src directory found"
+        npm run build
+        echo "✅ Build completed"
         
-        # Make sure .env file exists
-        ls -la .env || echo "⚠️ .env file not found"
-        
-        # Build with explicit configuration for src directory
-        if [ -d "src/app" ] || [ -d "src/pages" ]; then
-          echo "🔧 Detected src directory structure - building with custom config"
-          npm run build
+    - name: Verify build
+      run: |
+        echo "🔍 Verifying build..."
+        if [ -d ".next" ]; then
+          echo "✅ .next directory exists"
         else
-          echo "🔧 Building standard Next.js app"
-          npm run build
+          echo "❌ .next directory missing!"
+          exit 1
         fi
         
     - name: Create deployment package
@@ -72,7 +65,7 @@ jobs:
         echo "📦 Creating deployment package..."
         mkdir -p deployment-package
         
-        # Copy ALL necessary files including src directory
+        # Copy only essential files
         cp -r .next/ deployment-package/
         cp -r public/ deployment-package/ 2>/dev/null || true
         cp -r src/ deployment-package/ 2>/dev/null || true
@@ -80,19 +73,14 @@ jobs:
         cp package-lock.json deployment-package/
         cp next.config.js deployment-package/ 2>/dev/null || true
         cp ecosystem.config.js deployment-package/ 2>/dev/null || true
-        cp server.js deployment-package/ 2>/dev/null || true
-        cp .env deployment-package/ 2>/dev/null || true
-        # REMOVE THIS LINE ↓
-        # cp -r node_modules/ deployment-package/ 2>/dev/null || true  # ← DELETE THIS LINE
+        cp .env* deployment-package/ 2>/dev/null || true
         
         echo "📁 Package contents:"
         ls -la deployment-package/
         
-        # Create deployment package
+        # Create zip
         cd deployment-package && zip -r ../deploy-package.zip . && cd ..
-        
-        echo "📊 Package size:"
-        ls -lh deploy-package.zip
+        echo "📊 Package size: $(ls -lh deploy-package.zip | awk '{print $5}')"
         
     - name: Test SSH Connection
       uses: appleboy/ssh-action@v0.1.10
@@ -102,13 +90,9 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: 22
         script: |
-          echo "🔍 SSH CONNECTION TEST SUCCESSFUL!"
-          echo "Server: $(hostname)"
-          echo "User: $(whoami)"
-          echo "Date: $(date)"
-          /home/ubuntu/scripts/test-connection.sh
+          echo "✅ SSH connection successful"
         
-    - name: Transfer deployment package via RSync
+    - name: Transfer deployment package
       uses: burnett01/rsync-deployments@7.0.1
       with:
         switches: -avz --progress --no-perms
@@ -118,40 +102,27 @@ jobs:
         remote_user: ${{ secrets.SERVER_USERNAME }}
         remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
         
-    - name: Verify file transfer
+    - name: Execute deployment
       uses: appleboy/ssh-action@v0.1.10
       with:
         host: ${{ secrets.SERVER_HOST }}
         username: ${{ secrets.SERVER_USERNAME }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: 22
-        script: |
-          echo "🔍 VERIFYING FILE TRANSFER:"
-          echo "File location: /tmp/deploy-package.zip"
-          ls -lh /tmp/deploy-package.zip
-          echo "File type:"
-          file /tmp/deploy-package.zip
-          echo "File checksum:"
-          md5sum /tmp/deploy-package.zip
-          echo "✅ File transfer verified!"
-        
-    - name: Execute deployment script
-      uses: appleboy/ssh-action@v0.1.10
-      with:
-        host: ${{ secrets.SERVER_HOST }}
-        username: ${{ secrets.SERVER_USERNAME }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        port: 22
-        script_timeout: 10m
+        script_timeout: 15m
         script: |
           set -e
-          echo "🚀 Starting deployment with timeout handling..."
-          timeout 20m /home/ubuntu/scripts/deploy-app.sh "${{ env.APP_NAME }}" "${{ env.DOMAIN }}" "${{ env.PORT }}" "/tmp/deploy-package.zip"
-          echo "✅ Deployment script completed"
+          echo "🚀 Starting deployment..."
+          /home/ubuntu/scripts/deploy-app.sh "${{ env.APP_NAME }}" "${{ env.DOMAIN }}" "${{ env.PORT }}" "/tmp/deploy-package.zip"
+          echo "✅ Deployment completed"
           
+    - name: Cleanup
+      run: |
+        rm -f deploy-package.zip
+        
     - name: Deployment success
       run: |
-        echo "✅ DEPLOYMENT COMPLETED SUCCESSFULLY!"
+        echo "🎉 DEPLOYMENT SUCCESSFUL!"
         echo "🌐 Website: https://${{ env.DOMAIN }}"
-        echo "📊 App: ${{ env.APP_NAME }}"
+        echo "📱 App: ${{ env.APP_NAME }}"
         echo "🚪 Port: ${{ env.PORT }}"
