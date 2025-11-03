@@ -75,19 +75,18 @@ jobs:
         # Copy ALL necessary files including src directory
         cp -r .next/ deployment-package/
         cp -r public/ deployment-package/ 2>/dev/null || true
-        cp -r src/ deployment-package/ 2>/dev/null || true  # ← THIS IS CRITICAL
+        cp -r src/ deployment-package/ 2>/dev/null || true
         cp package.json deployment-package/
         cp package-lock.json deployment-package/
         cp next.config.js deployment-package/ 2>/dev/null || true
         cp ecosystem.config.js deployment-package/ 2>/dev/null || true
         cp server.js deployment-package/ 2>/dev/null || true
         cp .env deployment-package/ 2>/dev/null || true
-        cp -r node_modules/ deployment-package/ 2>/dev/null || true  # Include node_modules for faster deployment
+        # REMOVE THIS LINE ↓
+        # cp -r node_modules/ deployment-package/ 2>/dev/null || true  # ← DELETE THIS LINE
         
         echo "📁 Package contents:"
         ls -la deployment-package/
-        echo "📁 Checking if src directory is included:"
-        ls -la deployment-package/src/ 2>/dev/null || echo "No src directory in package"
         
         # Create deployment package
         cd deployment-package && zip -r ../deploy-package.zip . && cd ..
