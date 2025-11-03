@@ -146,7 +146,7 @@ jobs:
         script: |
           set -e
           echo "🚀 Starting deployment with timeout handling..."
-          timeout 8m /home/ubuntu/scripts/deploy-app.sh "${{ env.APP_NAME }}" "${{ env.DOMAIN }}" "${{ env.PORT }}" "/tmp/deploy-package.zip"
+          timeout 20m /home/ubuntu/scripts/deploy-app.sh "${{ env.APP_NAME }}" "${{ env.DOMAIN }}" "${{ env.PORT }}" "/tmp/deploy-package.zip"
           echo "✅ Deployment script completed"
           
     - name: Deployment success
