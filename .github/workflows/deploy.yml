@@ -8,7 +8,7 @@ on:
 env:
   APP_NAME: "MindPal"
   DOMAIN: "mindpal.otomexx.co.za"
-  PORT: "7015"
+  PORT: "7070"
 
 jobs:
   build-and-deploy:
@@ -50,27 +50,44 @@ jobs:
     - name: Build application
       run: |
         echo "🏗️ Building application..."
+        echo "📁 Current directory structure:"
+        ls -la
+        echo "📁 Checking for src directory:"
+        ls -la src/ || echo "No src directory found"
+        
         # Make sure .env file exists
         ls -la .env || echo "⚠️ .env file not found"
-        npm run build
+        
+        # Build with explicit configuration for src directory
+        if [ -d "src/app" ] || [ -d "src/pages" ]; then
+          echo "🔧 Detected src directory structure - building with custom config"
+          npm run build
+        else
+          echo "🔧 Building standard Next.js app"
+          npm run build
+        fi
         
     - name: Create deployment package
       run: |
         echo "📦 Creating deployment package..."
         mkdir -p deployment-package
         
-        # Copy necessary files for production, including .env
+        # Copy ALL necessary files including src directory
         cp -r .next/ deployment-package/
         cp -r public/ deployment-package/ 2>/dev/null || true
+        cp -r src/ deployment-package/ 2>/dev/null || true  # ← THIS IS CRITICAL
         cp package.json deployment-package/
         cp package-lock.json deployment-package/
         cp next.config.js deployment-package/ 2>/dev/null || true
         cp ecosystem.config.js deployment-package/ 2>/dev/null || true
         cp server.js deployment-package/ 2>/dev/null || true
         cp .env deployment-package/ 2>/dev/null || true
+        cp -r node_modules/ deployment-package/ 2>/dev/null || true  # Include node_modules for faster deployment
         
         echo "📁 Package contents:"
         ls -la deployment-package/
+        echo "📁 Checking if src directory is included:"
+        ls -la deployment-package/src/ 2>/dev/null || echo "No src directory in package"
         
         # Create deployment package
         cd deployment-package && zip -r ../deploy-package.zip . && cd ..
