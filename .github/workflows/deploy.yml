@@ -1,4 +1,4 @@
-name: Deploy MindPal to EC2
+name: Deploy Mind-Pal to EC2
 
 on:
   push:
