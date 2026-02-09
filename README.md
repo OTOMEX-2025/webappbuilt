@@ -1,4 +1,4 @@
-# Mind-pal Web Application
+# Mind-pal Web-App
 
 ## Overview  
 Mind-pal is a web and mobile application developed by **OTOMEX Innovations** to provide comprehensive mental health support. The platform integrates AI-driven support, therapeutic content, and professional consultation to help individuals manage stress, anxiety, and mental well-being.  
